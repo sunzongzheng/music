@@ -1,0 +1,4 @@
+test/unit/coverage/**
+test/unit/*.js
+test/e2e/*.js
+src/renderer/assets/iconfont.js
