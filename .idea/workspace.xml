@@ -1,59 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b41ccf6-f2b9-4419-b368-4423b2b0f92c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/images/defaultAlbum.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/components/addToPlaylist/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/filters/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/store/modules/c_playlist.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/store/modules/lyrics.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/store/modules/playlist.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/store/modules/token.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/playlist/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/playlist/item.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/lyrics/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/components/current_playlist/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/components/playControl/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/components/playControl/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/components/playInfo/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/components/playInfo/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/index.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/player/index.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/renderer/view/home/playlist/index.vue" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/mongoSettings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/player.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/renderer/assets/avatar.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/renderer/components/header/index.vue" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/renderer/components/player/index.vue" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/leftMenu/avatar.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/avatar.vue" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/leftMenu/index.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/index.vue" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/leftMenu/viewControl.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/viewControl.vue" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/searchBar/index.scss" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/searchBar/index.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/searchBar/index.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/components/searchBar/index.vue" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/renderer/components/searchResult/index.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/searchResult/index.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/index.js" afterPath="$PROJECT_DIR$/src/main/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/ipcEvent/login.js" afterPath="$PROJECT_DIR$/src/main/ipcEvent/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/App.vue" afterPath="$PROJECT_DIR$/src/renderer/App.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/assets/iconfont.js" afterPath="$PROJECT_DIR$/src/renderer/assets/iconfont.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/components/icon/index.vue" afterPath="$PROJECT_DIR$/src/renderer/components/icon/index.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/components/index.js" afterPath="$PROJECT_DIR$/src/renderer/components/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/main.js" afterPath="$PROJECT_DIR$/src/renderer/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/router/index.js" afterPath="$PROJECT_DIR$/src/renderer/router/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/store/modules/api.js" afterPath="$PROJECT_DIR$/src/renderer/store/modules/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/store/modules/user.js" afterPath="$PROJECT_DIR$/src/renderer/store/modules/user.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/view/home/index.vue" afterPath="$PROJECT_DIR$/src/renderer/view/home/index.vue" />
-    </list>
+    <list default="true" id="4b41ccf6-f2b9-4419-b368-4423b2b0f92c" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -101,11 +49,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
               <caret line="12" column="6" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="35" lean-forward="true" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -180,7 +138,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/renderer/store/modules/token.js" />
         <option value="$PROJECT_DIR$/src/renderer/store/modules/user.js" />
         <option value="$PROJECT_DIR$/src/renderer/router/index.js" />
         <option value="$PROJECT_DIR$/src/renderer/components/searchBar/index.vue" />
@@ -231,6 +188,7 @@
         <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/build.js" />
       </list>
     </option>
   </component>
@@ -299,11 +257,6 @@
             <path>
               <item name="player" type="b2602c69:ProjectViewProjectNode" />
               <item name="player" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="player" type="b2602c69:ProjectViewProjectNode" />
-              <item name="player" type="462c0819:PsiDirectoryNode" />
-              <item name="releases" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -420,12 +373,20 @@
       <workItem from="1509122699525" duration="7611000" />
       <workItem from="1509155969098" duration="17365000" />
       <workItem from="1509360870350" duration="1611000" />
-      <workItem from="1509366714730" duration="1888000" />
+      <workItem from="1509366714730" duration="2070000" />
     </task>
+    <task id="LOCAL-00001" summary="init仓库">
+      <created>1509375878711</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1509375878711</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="197223000" />
+    <option name="totallyTimeSpent" value="197405000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -438,8 +399,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24892704" sideWeight="0.49203187" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24892704" sideWeight="0.49203187" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286517" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2949438" sideWeight="0.3748212" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286517" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -465,6 +427,10 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init仓库" />
+    <option name="LAST_COMMIT_MESSAGE" value="init仓库" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="4" />
@@ -472,7 +438,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/renderer/components/leftMenu/playlist/index.vue" />
     <entry file="file://$PROJECT_DIR$/src/renderer/view/home/components/leftMenu/viewControl.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
@@ -838,6 +803,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="6" lean-forward="false" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="35" lean-forward="true" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
           <folding />
         </state>
       </provider>
