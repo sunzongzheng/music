@@ -3,20 +3,27 @@ import Vue from 'vue'
 export default {
   namespaced: true,
   state: {
-    info: null
+    playlist: []
   },
   mutations: {
     update (state, val) {
-      state.info = val
-      // 初始化歌单
-      Vue.store.dispatch('playlist/init')
+      state.playlist = val
     }
   },
   actions: {
     async init ({commit}) {
       try {
-        const data = await Vue.http.get('/user')
+        let data = await Vue.http.get('/playlist')
         commit('update', data)
+      } catch (e) {
+        console.warn(e)
+      }
+    },
+    async add (store, name) {
+      try {
+        await Vue.http.post('/playlist', {
+          name
+        })
       } catch (e) {
         console.warn(e)
       }

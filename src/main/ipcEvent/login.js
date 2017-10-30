@@ -1,9 +1,10 @@
 import { BrowserWindow } from 'electron'
+import config from '../../../config/index'
 
 export default {
   loginWindow: null,
   mainWindow: null,
-  loginUrl: 'http://127.0.0.1:1903/auth/qq',
+  loginUrl: config.api + '/auth/qq',
   init (event, mainWindow) {
     this.mainWindow = mainWindow
     this.createWindow()
@@ -17,7 +18,10 @@ export default {
       height: 600,
       resizable: false,
       width: 450,
-      frame: true
+      frame: true,
+      fullscreen: false,
+      maximizable: false,
+      minimizable: false
     })
     this.initEvent()
   },
@@ -36,11 +40,12 @@ export default {
       // 将 即将跳转的url发送给登录窗口
       this.loginWindow.webContents.send('url', url)
       // 登录窗口请求数据 并将数据暴露出来
-      let {data} = await this.loginWindow.webContents.executeJavaScript(`
+      let data = await this.loginWindow.webContents.executeJavaScript(`
       fetch(window.login_callback).then(resp => resp.json())
       `)
+      console.log(data)
       this.loginWindow.destroy()
-      this.mainWindow.webContents.send('loginSuccessed', data)
+      this.mainWindow.webContents.send('loginSuccessed', data.data)
     })
   }
 }

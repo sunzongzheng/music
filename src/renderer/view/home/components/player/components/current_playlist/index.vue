@@ -1,0 +1,100 @@
+<template>
+    <div :class="{[s.app]:true,[s.active]:show}">
+        <div :class="{[s.item]:true,[s.active]:play.info.id===item.id}" v-for="item in playlist" @click="doPlay(item)">
+            <div :class="s.album_wrap">
+                <img :class="s.album" :src="item.album.coverSmall"/>
+            </div>
+            <div :class="s.main">
+                <span :class="s.name">{{item.name}}</span>
+                <span :class="s.singer">{{item.artists[0].name}}</span>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+  import { mapState, mapActions } from 'vuex'
+
+  export default {
+    props: {
+      show: {
+        type: Boolean,
+        required: true
+      }
+    },
+    computed: {
+      ...mapState('c_playlist', ['playlist']),
+      ...mapState('api', ['play'])
+    },
+    methods: {
+      ...mapActions('api', {
+        doPlay: 'play'
+      })
+    }
+  }
+</script>
+<style lang="scss" module="s">
+    .app {
+        $width: 300px;
+        position: fixed;
+        right: -$width;
+        top: 0;
+        width: 300px;
+        height: calc(100% - 60px);
+        transition: all .5s;
+        background-color: white;
+        box-shadow: -3px 0 14px #ececec;
+        overflow-y: auto;
+        overflow-x: hidden;
+        &.active {
+            right: 0;
+            transition: all .5s;
+        }
+    }
+
+    .item {
+        display: flex;
+        width: 100%;
+        padding: 16px;
+        transition: background-color .2s;
+        cursor: pointer;
+        .album_wrap {
+            width: 50px;
+            height: 50px;
+            transition: all .2s;
+            .album {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .main {
+            color: #555;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 20px;
+            & > * {
+                display: flex;
+            }
+            .name {
+                font-size: 14px;
+            }
+            .singer {
+                font-size: 13px;
+            }
+        }
+        &:hover {
+            background-color: rgba(38, 179, 108, 0.5);
+            transition: background-color .2s;
+            * {
+                color: white;
+            }
+        }
+        &.active {
+            .album_wrap {
+                transition: all .2s;
+                width: 80px;
+                height: 80px;
+            }
+        }
+    }
+</style>

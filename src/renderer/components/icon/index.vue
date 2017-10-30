@@ -1,5 +1,5 @@
 <template>
-    <svg :class="s.icon" aria-hidden="true" @click="$emit('click')">
+    <svg :class="{[s.icon]:true,[s.disabled]:disabled}" aria-hidden="true" @click="$emit('click')">
         <use :xlink:href="`#icon-${type}`"></use>
     </svg>
 </template>
@@ -9,6 +9,10 @@
       type: {
         type: String,
         required: true
+      },
+      disabled: {
+        type: Boolean,
+        default: false
       }
     }
   }
@@ -20,5 +24,9 @@
         vertical-align: -0.15em;
         fill: currentColor;
         overflow: hidden;
+        &.disabled {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+        }
     }
 </style>

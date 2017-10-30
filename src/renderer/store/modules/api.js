@@ -9,7 +9,9 @@ export default {
     },
     play: {
       url: null,
-      pause: true
+      pause: true,
+      volume: 100,
+      info: null
     }
   },
   mutations: {
@@ -28,7 +30,7 @@ export default {
     }
   },
   actions: {
-    search ({state, commit}, {keywords, page = 1, limit = 60}) {
+    search ({commit}, {keywords, page = 1, limit = 60}) {
       commit('updateSearch', {
         keywords
       })
@@ -41,48 +43,20 @@ export default {
           page
         }
       })
-      ipcRenderer.on('searchSong', (event, data) => {
-        let songList = {}
-        let result = []
-        let maxLength = 0
-        for (let i in data) {
-          songList[i] = data[i].songList || []
-          const length = songList[i].length
-          if (length > maxLength) {
-            maxLength = length
-          }
-        }
-        let cur = 0
-        while (cur < maxLength) {
-          for (let i in songList) {
-            const item = songList[i][cur]
-            if (item && !item.needPay) {
-              result.push({
-                ...item,
-                source: i
-              })
-            }
-          }
-          cur++
-        }
-        commit('updateSearch', {
-          result
-        })
-      })
     },
-    async play ({commit}, {id, source}) {
+    async play ({commit}, info) {
+      console.log(info)
+
+      commit('updatePlay', {
+        info,
+        pause: true
+      })
       ipcRenderer.send('api', {
         op: 'getSong',
-        vendor: source,
+        vendor: info.source,
         query: {
-          id
+          id: info.id
         }
-      })
-      ipcRenderer.on('getSong', (event, {url}) => {
-        commit('updatePlay', {
-          url,
-          pause: false
-        })
       })
     }
   }

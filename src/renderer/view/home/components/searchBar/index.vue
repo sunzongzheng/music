@@ -10,7 +10,7 @@
                     <Icon type="sousuo"></Icon>
                     <span v-show="empty">搜索</span>
                 </div>
-                <Icon type="close-2" :class="s.clean" v-show="!empty" @click="key = ''"></Icon>
+                <Icon type="close-2" :class="s.clean" v-show="!empty" @click.native="key = ''"></Icon>
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
   export default {
     data () {
       return {
-        key: '周杰伦'
+        key: ''
       }
     },
     computed: {
@@ -32,6 +32,7 @@
         this.$store.dispatch('api/search', {
           keywords: this.key
         })
+        this.$router.push({name: 'searchResult'})
       }
     }
   }

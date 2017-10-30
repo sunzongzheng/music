@@ -6,7 +6,64 @@
 
 <script>
   export default {
-    name: 'player'
+    methods: {
+      // 登录成功回调
+      loginSuccessed (event, info) {
+        console.log(info)
+        // 更新userInfo
+        this.$store.commit('user/update', {
+          nickname: info.nickname,
+          avatar: info.avatar
+        })
+        // 更新token
+        this.$store.commit('token/update', info.token)
+      },
+      // 获取歌曲回调
+      getSong (event, arg) {
+        this.$store.commit('api/updatePlay', {
+          url: arg.url,
+          pause: false
+        })
+      },
+      // 搜索歌曲回调
+      searchSong (event, data) {
+        console.log(data)
+        let songList = {}
+        let result = []
+        let maxLength = 0
+        for (let i in data) {
+          songList[i] = data[i].songList || []
+          const length = songList[i].length
+          if (length > maxLength) {
+            maxLength = length
+          }
+        }
+        let cur = 0
+        while (cur < maxLength) {
+          for (let i in songList) {
+            const item = songList[i][cur]
+            if (item && !item.cp) {
+              result.push({
+                ...item,
+                source: i
+              })
+            }
+          }
+          cur++
+        }
+        this.$store.commit('api/updateSearch', {
+          result
+        })
+      }
+    },
+    created () {
+      this.$ipc.on('loginSuccessed', this.loginSuccessed)
+      this.$ipc.on('getSong', this.getSong)
+      this.$ipc.on('searchSong', this.searchSong)
+      if (localStorage.token) {
+        this.$store.dispatch('user/init')
+      }
+    }
   }
 </script>
 
@@ -29,6 +86,16 @@
 
     #app {
         height: 100%;
+        background-color: white;
         -webkit-app-region: no-drag;
+    }
+
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #e0e0e0;
     }
 </style>

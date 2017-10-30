@@ -2,14 +2,16 @@
     <div :class="s.app">
         <view-control></view-control>
         <v-avatar></v-avatar>
+        <play-list></play-list>
     </div>
 </template>
 <script>
   import viewControl from './viewControl.vue'
   import vAvatar from './avatar.vue'
+  import playList from './playlist/index.vue'
 
   export default {
-    components: {vAvatar, viewControl}
+    components: {vAvatar, viewControl, playList}
   }
 </script>
 <style lang="scss" module="s">

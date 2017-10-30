@@ -24,12 +24,6 @@
           this.$ipc.send('login')
         }
       }
-    },
-    created () {
-      this.$ipc.on('loginSuccessed', (event, message) => {
-        console.log(message)
-        this.$store.commit('user/update', message)
-      })
     }
   }
 </script>

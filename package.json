@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "author": "sunzongzheng <sunzongzhengwy@163.com>",
   "description": "An electron-vue project",
-  "license": null,
+  "license": "CC0-1.0",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -20,16 +20,20 @@
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix",
-    "iconfont": "./.electron-vue/iconfont.js"
+    "iconfont": "./.electron-vue/iconfont.js",
+    "build:normal": "electron-builder --publish onTagOrDraft",
+    "build:win": "electron-builder --win --publish onTagOrDraft"
   },
   "build": {
     "productName": "player",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "org.sunzongzheng.player",
+    "artifactName": "${name}.${os}.${ext}",
     "directories": {
-      "output": "build"
+      "output": "releases"
     },
     "files": [
-      "dist/electron/**/*"
+      "**/*",
+      "build/icon.*"
     ],
     "dmg": {
       "contents": [
@@ -47,21 +51,28 @@
       ]
     },
     "mac": {
+      "target": "dmg",
       "icon": "build/icons/icon.icns"
     },
     "win": {
+      "target": "nsis",
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "target": "deb"
     }
   },
   "dependencies": {
+    "@xunlei/vue-context-menu": "^1.0.2",
     "axios": "^0.16.1",
-    "element-ui": "^2.0.0-alpha.2",
+    "element-ui": "^2.0.0",
     "fs": "0.0.1-security",
+    "install": "^0.10.1",
+    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "music-api": "git@github.com:sunzongzheng/musicAPI.git",
+    "npm": "^5.5.1",
     "passport-qq": "0.0.3",
     "request": "^2.82.0",
     "shelljs": "^0.7.8",

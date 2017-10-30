@@ -12,7 +12,17 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: require('@/view/home/index.vue')
+      component: require('@/view/home/index.vue'),
+      redirect: {name: 'searchResult'},
+      children: [{
+        path: '/searchResult',
+        name: 'searchResult',
+        component: require('@/view/home/searchResult/index.vue')
+      }, {
+        path: '/playlist/:id',
+        name: 'playlist',
+        component: require('@/view/home/playlist/index.vue')
+      }]
     }
   ]
 })
