@@ -71,7 +71,7 @@
     "install": "^0.10.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "music-api": "git@github.com:sunzongzheng/musicAPI.git",
+    "music-api": "git+https://github.com/sunzongzheng/musicAPI.git",
     "npm": "^5.5.1",
     "passport-qq": "0.0.3",
     "request": "^2.82.0",
