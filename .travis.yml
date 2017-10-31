@@ -1,7 +1,7 @@
 osx_image: xcode8.3
 
 dist: trusty
-sudo: true
+sudo: false
 
 language: node_js
 node_js: "8"
@@ -18,14 +18,16 @@ os:
 cache:
   directories:
   - node_modules
+  - $HOME/.cache/electron
+  - $HOME/.cache/electron-builder
+  - $HOME/.npm/_prebuilds
 
 script:
   - node build
 
 deploy:
   provider: releases
-  api_key:
-    secure: H+IUNQMrPYStzANqUqe2J1v/Dc1W97ULgj+93MtFU7rawX/fbW0Pkhvy+nWikIr8mWMzeJwyv9OOTwVG7h6BWgw0YxmNZgDj2i9pybVNKfFKjOJMOZr+G0PrwlMecl3V8dTsVZ+QwCf2JyVIUiTrfFcGb7Z+Xtx3F1D/8FQRdpnZt7N3xT2NcCF7toLwQ+9kvSgq8durWCA3z7mtLMcuf5kEVQBg/FY2utbcSTtG1gaBcZY5OrxAmzxAqku5QtnpbpgHtpsQur+EDrwRwuEHySnRlLIUsxPIcrkJNMklnWW/N1qkfde+xTB4PLQQ06juCx+NWH2oxcMGyNE7jPw60mIdrJJTGJ+395vwYfG5Vs8Xi0C7NV/BT5Pm2qBJPQJlNSrgfWOK7rSOoaVxRyBnC9BuVV0VbjDWX+oTHsIHFf10THmJyEUwn7KJpxdLvOpGKAFKAUH12yBe7CxDI43WD7hZBO0wIA7YLw8luEKvRCulF7aB75UPS0bj62H/NUnCh0wv9IcwR/hmTw4DD0dXv3foiUcIenFmle0OiEXa54gIc+a2+2cY4DMNAfYmn09Y2aTARDdKlQb1hMAAzBTrHER8pfm+n2OtuPGZxyIdu/7fkT9Wxsuiap67CsT33oWyZmalQdJZFZ5snZy0VS3KF897t3x/Dnqf/xN2HolkzKA=
+  api_key: ${GH_TOKEN}
   file_glob: true
   file:
     - releases/*.deb
