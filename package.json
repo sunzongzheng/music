@@ -21,8 +21,8 @@
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix",
     "iconfont": "./.electron-vue/iconfont.js",
-    "build:normal": "electron-builder --publish onTagOrDraft",
-    "build:win": "electron-builder --win --publish onTagOrDraft"
+    "build:normal": "node .electron-vue/build.js && electron-builder --publish onTagOrDraft",
+    "build:win": "node .electron-vue/build.js &&electron-builder --win --publish onTagOrDraft"
   },
   "build": {
     "productName": "player",
