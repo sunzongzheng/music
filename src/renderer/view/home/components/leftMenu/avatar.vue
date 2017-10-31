@@ -43,11 +43,13 @@
             cursor: pointer;
             background-color: #D6D6D6;
             user-select: none;
+            -webkit-app-region: no-drag;
         }
         .nickname {
             margin-top: 8px;
             font-size: 13px;
             color: #222;
+            -webkit-app-region: no-drag;
         }
         &:after {
             position: absolute;

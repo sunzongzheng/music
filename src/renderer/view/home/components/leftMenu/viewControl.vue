@@ -28,6 +28,9 @@
         width: 100%;
         justify-content: flex-start;
         padding: 4px 9px;
+        & > * {
+            -webkit-app-region: no-drag;
+        }
         .inner {
             display: flex;
         }

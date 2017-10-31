@@ -9,6 +9,7 @@
 .left {
   display: flex;
   align-items: center;
+  -webkit-app-region: no-drag;
   .icon {
     font-size: 12px;
     margin-left: 16px;

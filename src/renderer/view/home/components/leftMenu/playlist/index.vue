@@ -2,7 +2,7 @@
     <div :class="s.playlist">
         <div :class="s.titleArea">
             <span :class="s.title">创建的歌单</span>
-            <Icon type="playlist-add" :class="s.icon" @click.native="addPlaylist"></Icon>
+            <Icon type="playlist-add" :class="s.icon" @click.native="addPlaylist" v-if="info"></Icon>
         </div>
         <ul :class="s.list">
             <li v-show="add.status">
@@ -27,6 +27,7 @@
       }
     },
     computed: {
+      ...mapState('user', ['info']),
       ...mapState('playlist', ['playlist'])
     },
     methods: {
