@@ -20,8 +20,17 @@
       },
       // 获取歌曲回调
       getSong (event, arg) {
+        let lyric = arg.lyric || []
+        lyric = lyric.map(item => {
+          let arr = item[0].match(/^(\d+):(\d+).(\d+)$/)
+          if (arr) {
+            item[0] = parseInt(arr[1]) * 60 * 1000 + parseInt(arr[2]) * 1000 + parseInt(arr[3].padEnd(3, '0'))
+          }
+          return item
+        })
         this.$store.commit('api/updatePlay', {
           url: arg.url,
+          lyric,
           pause: false
         })
       },

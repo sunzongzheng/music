@@ -9,8 +9,10 @@ export default {
     },
     play: {
       url: null,
+      lyric: [],
       pause: true,
       volume: 100,
+      time: 0,
       info: null
     }
   },

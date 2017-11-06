@@ -1,5 +1,5 @@
 <template>
-    <div :class="{[s.app]:true,[s.active]:show}">
+    <div :class="{[s.app]:true,[s.active]:show,[s.lyricShow]:lyricShow}">
         <div :class="{[s.item]:true,[s.active]:play.info.id===item.id}" v-for="item in playlist" @click="doPlay(item)">
             <div :class="s.album_wrap">
                 <img :class="s.album" :src="item.album.coverSmall"/>
@@ -23,7 +23,10 @@
     },
     computed: {
       ...mapState('c_playlist', ['playlist']),
-      ...mapState('api', ['play'])
+      ...mapState('api', ['play']),
+      ...mapState('lyrics', {
+        lyricShow: 'show'
+      })
     },
     methods: {
       ...mapActions('api', {
@@ -45,6 +48,9 @@
         box-shadow: -3px 0 14px #ececec;
         overflow-y: auto;
         overflow-x: hidden;
+        &.lyricShow {
+            box-shadow: none;
+        }
         &.active {
             right: 0;
             transition: all .5s;

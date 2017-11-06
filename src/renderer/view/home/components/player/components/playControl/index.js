@@ -8,7 +8,8 @@ export default {
   },
   computed: {
     ...mapState('api', ['play']),
-    ...mapState('c_playlist', ['cycle'])
+    ...mapState('c_playlist', ['cycle']),
+    ...mapState('lyrics', ['show'])
   },
   watch: {
     volume (val) {

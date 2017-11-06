@@ -1,7 +1,12 @@
 <template>
-    <div :class="s.info">
+    <div :class="{[s.info]:true,[s.lyric]:show}">
         <!-- 专辑头像 !-->
-        <img :src="play.info | defaultAlbum" :class="s.album" @click="toggleLyrics"/>
+        <div :class="{[s.album]:true,[s.playing]:play.info}">
+            <img :src="play.info | defaultAlbum"/>
+            <div :class="s.cover" @click="toggleLyrics">
+                <Icon type="shuangjiantou"></Icon>
+            </div>
+        </div>
         <!-- 歌曲信息 !-->
         <div :class="s.inner">
             <div :class="s.song">
@@ -44,8 +49,46 @@
         border-top: 1px solid #EBEBEB;
         padding: 0 12px;
         user-select: none;
+        &.lyric {
+            background: transparent;
+            border: none;
+            .inner,
+            .inner > .song > .name,
+            .icon {
+                color: white;
+            }
+            .cover {
+                transform: rotate(180deg);
+            }
+        }
         .album {
             width: 35px;
+            position: relative;
+            img {
+                width: 35px;
+            }
+            .cover {
+                display: none;
+            }
+            &.playing {
+                &:hover {
+                    .cover {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 35px;
+                        background-color: #4e4e4e;
+                        opacity: .5;
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+                }
+            }
         }
         .inner {
             display: flex;

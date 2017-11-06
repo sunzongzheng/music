@@ -1,5 +1,5 @@
 <template>
-    <div :class="s.control">
+    <div :class="{[s.control]:true,[s.lyric]:show}">
         <!-- 播放控制 !-->
         <div :class="s.playControl">
             <!-- 上一曲 !-->
@@ -28,8 +28,11 @@
         padding: 0 10px;
         justify-content: space-around;
         background-color: #EBEAEB;
-        opacity: .6;
         user-select: none;
+        &.lyric {
+            background: transparent;
+            color: white;
+        }
         & > span {
             display: none;
         }

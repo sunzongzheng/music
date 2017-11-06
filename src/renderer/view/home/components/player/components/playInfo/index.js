@@ -26,7 +26,7 @@ export default {
       this.$nextTick(() => {
         const audio = this.$refs.audio
         if (val) {
-          this.$refs.audio.pause()
+          audio.pause()
         } else {
           audio.play()
           this.timer = window.setInterval(() => {
@@ -34,10 +34,13 @@ export default {
               cur: audio.currentTime,
               total: audio.duration
             }
-            if (this.$refs.audio.ended) {
+            if (audio.ended) {
               this.$store.dispatch('c_playlist/next')
             }
-          }, 1000)
+            this.$store.commit('api/updatePlay', {
+              time: Math.floor(audio.currentTime * 1000)
+            })
+          }, 500)
         }
       })
     },
@@ -82,9 +85,9 @@ export default {
       }
     },
     toggleLyrics () {
-      // this.$store.commit('lyrics/update', {
-      //   show: !this.show
-      // })
+      this.$store.commit('lyrics/update', {
+        show: !this.show
+      })
     }
   }
 }
