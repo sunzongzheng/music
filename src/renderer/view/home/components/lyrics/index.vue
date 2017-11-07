@@ -11,7 +11,7 @@
 </template>
 <script>
   import { mapState } from 'vuex'
-  //  import $ from 'jquery'
+  import $ from 'jquery'
 
   export default {
     data () {
@@ -59,11 +59,11 @@
         // 跳转
         const main = this.$refs.main
         if (main && main.children[answer]) {
-//          $(main).animate({
-//            scrollTop: main.children[answer].offsetTop - main.offsetHeight / 2
-//          }, 500)
           if (!this.userScrolling) {
-            main.scrollTop = main.children[answer].offsetTop - main.offsetHeight / 2
+//            main.scrollTop = main.children[answer].offsetTop - main.offsetHeight / 2
+            $(main).clearQueue().stop().animate({
+              scrollTop: main.children[answer].offsetTop - main.offsetHeight / 2
+            }, 300, 'linear')
           }
         }
 
@@ -72,6 +72,7 @@
     },
     watch: {
       'play.info' () {
+        console.log('change')
         this.$refs.main.scrollTop = 0
       }
     },
@@ -97,15 +98,16 @@
     .app {
         position: fixed;
         z-index: 5;
-        bottom: -100%;
+        transform: translateY(100%);
+        top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         padding-bottom: 60px;
-        transition: bottom .3s;
+        transition: all .3s;
         &.active {
-            transition: bottom .3s;
-            bottom: 0;
+            transition: all .3s;
+            transform: translateY(0);
         }
         .wrap,
         .cover,
