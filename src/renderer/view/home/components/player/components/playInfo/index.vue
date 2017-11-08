@@ -35,7 +35,7 @@
         <!-- 打开列表 !-->
         <Icon type="musiclist" :class="s.icon" style="margin-top: 2px;" :disabled="!playlist.length"
               @click.native="playlist.length?$emit('showPlaylist'):''"></Icon>
-        <audio :src="play.url" ref="audio" autoplay></audio>
+        <audio :src="play.url" ref="audio"></audio>
     </div>
 </template>
 <script src="./index.js"></script>

@@ -2,11 +2,14 @@
     <div :class="{[s.app]:true,[s.active]:show}">
         <div :class="s.wrap"></div>
         <div :class="s.cover" :style="style"></div>
-        <ul :class="s.main" ref="main" @wheel="scrollBarWheel">
+        <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="play.lyric.length">
             <li v-for="(item,index) in play.lyric" :class="{[s.item]:true,[s.active]:activeIndex === index}">
                 {{item[1]}}
             </li>
         </ul>
+        <div :class="s.main" v-else>
+            <span :class="[s.item,s.nolyric,s.active]">暂无歌词信息...</span>
+        </div>
     </div>
 </template>
 <script>
@@ -60,7 +63,6 @@
         const main = this.$refs.main
         if (main && main.children[answer]) {
           if (!this.userScrolling) {
-//            main.scrollTop = main.children[answer].offsetTop - main.offsetHeight / 2
             $(main).clearQueue().stop().animate({
               scrollTop: main.children[answer].offsetTop - main.offsetHeight / 2
             }, 300, 'linear')
@@ -104,9 +106,9 @@
         width: 100%;
         height: 100%;
         padding-bottom: 60px;
-        transition: all .3s;
+        transition: all .4s;
         &.active {
-            transition: all .3s;
+            transition: all .4s;
             transform: translateY(0);
         }
         .wrap,
@@ -141,6 +143,10 @@
                 &.active {
                     color: #26B36C;
                 }
+            }
+            .nolyric {
+                display: inline-flex;
+                margin-top: 20px;
             }
             &::-webkit-scrollbar {
                 display: none;

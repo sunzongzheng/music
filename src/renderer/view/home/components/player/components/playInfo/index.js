@@ -23,6 +23,7 @@ export default {
   },
   watch: {
     'play.pause' (val) {
+      window.clearInterval(this.timer)
       this.$nextTick(() => {
         const audio = this.$refs.audio
         if (val) {
