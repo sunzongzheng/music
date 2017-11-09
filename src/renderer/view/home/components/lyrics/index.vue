@@ -75,7 +75,9 @@
     watch: {
       'play.info' () {
         console.log('change')
-        this.$refs.main.scrollTop = 0
+        if (this.$refs.main) {
+          this.$refs.main.scrollTop = 0
+        }
       }
     },
     methods: {

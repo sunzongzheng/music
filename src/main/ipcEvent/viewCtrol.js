@@ -2,7 +2,11 @@ export default {
   on (win, op) {
     switch (op) {
       case 'close':
-        win.hide()
+        if (process.platform === 'darwin') {
+          win.hide()
+        } else {
+          win.minimize()
+        }
         break
       case 'minimize':
         win.minimize()

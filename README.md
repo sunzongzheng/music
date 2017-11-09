@@ -1,4 +1,4 @@
-# music player
+# music player [![Build Status](https://travis-ci.org/sunzongzheng/player.svg?branch=master)](https://travis-ci.org/sunzongzheng/player)
 - 歌曲[Api](https://github.com/sunzongzheng/musicAPI)涵盖网易云、QQ音乐、虾米
 - 界面仿QQ音乐
 - Mac > Windows > Linux都会逐步适配，移动端在计划中

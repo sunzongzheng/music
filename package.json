@@ -1,6 +1,6 @@
 {
   "name": "player",
-  "version": "0.0.0",
+  "version": "1.0.10",
   "author": "sunzongzheng <sunzongzhengwy@163.com>",
   "description": "An electron-vue project",
   "license": "CC0-1.0",
@@ -27,7 +27,7 @@
   "build": {
     "productName": "player",
     "appId": "org.sunzongzheng.player",
-    "artifactName": "${name}.${os}.${ext}",
+    "artifactName": "${name}-${version}-${os}.${ext}",
     "directories": {
       "output": "releases"
     },
