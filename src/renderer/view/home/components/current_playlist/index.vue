@@ -1,5 +1,5 @@
 <template>
-    <div :class="{[s.app]:true,[s.active]:show,[s.lyricShow]:lyricShow}">
+    <div :class="{[s.app]:true,[s.active]:show,[s.lyricShow]:lyricShow}" v-clickoutside="closeModal">
         <div :class="{[s.item]:true,[s.active]:play.info.id===item.id}" v-for="item in playlist" @click="doPlay(item)">
             <div :class="s.album_wrap">
                 <img :class="s.album" :src="item.album.coverSmall"/>
@@ -12,17 +12,13 @@
     </div>
 </template>
 <script>
+  import Clickoutside from 'element-ui/src/utils/clickoutside'
   import { mapState, mapActions } from 'vuex'
 
   export default {
-    props: {
-      show: {
-        type: Boolean,
-        required: true
-      }
-    },
+    directives: {Clickoutside},
     computed: {
-      ...mapState('c_playlist', ['playlist']),
+      ...mapState('c_playlist', ['playlist', 'show']),
       ...mapState('api', ['play']),
       ...mapState('lyrics', {
         lyricShow: 'show'
@@ -31,7 +27,12 @@
     methods: {
       ...mapActions('api', {
         doPlay: 'play'
-      })
+      }),
+      closeModal (e) {
+        if (this.show) {
+          this.$store.commit('c_playlist/toggle')
+        }
+      }
     }
   }
 </script>
@@ -39,20 +40,24 @@
     .app {
         $width: 300px;
         position: fixed;
-        right: -$width;
+        right: 0;
         top: 0;
         width: 300px;
         height: calc(100% - 60px);
+        transform: translate3d(100%, 0, 0);
+        will-change: transform;
         transition: all .5s;
         background-color: white;
         box-shadow: -3px 0 14px #ececec;
         overflow-y: auto;
         overflow-x: hidden;
+        z-index: 6;
         &.lyricShow {
             box-shadow: none;
         }
         &.active {
-            right: 0;
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
             transition: all .5s;
         }
     }

@@ -3,12 +3,16 @@ import Vue from 'vue'
 export default {
   namespaced: true,
   state: {
+    show: false,
     playlist: [],
     cycle: 'list' // list: 列表循环; random: 随机; single: 单曲
   },
   mutations: {
     update (state, val) {
       state.playlist = val
+    },
+    toggle (state) {
+      state.show = !state.show
     },
     cycleChange (state) {
       let arr = ['list', 'single', 'random']
@@ -38,7 +42,12 @@ export default {
             index = (index + state.playlist.length - 1) % state.playlist.length
             break
           case 'random':
+            const copy = index // 副本
             index = parseInt(Math.random() * (state.playlist.length - 1), 10) + 1
+            if (index === copy) { // 如果随机以后和原本一样，再随机一次
+              index = parseInt(Math.random() * (state.playlist.length - 1), 10) + 1
+            }
+            break
         }
         Vue.store.dispatch('api/play', state.playlist[index])
       }

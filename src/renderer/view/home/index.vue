@@ -9,6 +9,7 @@
         </div>
         <player :class="s.player"></player>
         <lyrics></lyrics>
+        <play-list></play-list>
     </div>
 </template>
 <script>
@@ -16,13 +17,15 @@
   import searchBar from './components/searchBar/index.vue'
   import player from './components/player/index.vue'
   import lyrics from './components/lyrics/index.vue'
+  import playList from './components/current_playlist/index.vue'
 
   export default {
     components: {
       leftMenu,
       searchBar,
       player,
-      lyrics
+      lyrics,
+      playList
     }
   }
 </script>

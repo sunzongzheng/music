@@ -4,7 +4,6 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      timer: null,
       duration: {
         cur: 0,
         total: 0
@@ -23,25 +22,12 @@ export default {
   },
   watch: {
     'play.pause' (val) {
-      window.clearInterval(this.timer)
       this.$nextTick(() => {
         const audio = this.$refs.audio
         if (val) {
           audio.pause()
         } else {
           audio.play()
-          this.timer = window.setInterval(() => {
-            this.duration = {
-              cur: audio.currentTime,
-              total: audio.duration
-            }
-            if (audio.ended) {
-              this.$store.dispatch('c_playlist/next')
-            }
-            this.$store.commit('api/updatePlay', {
-              time: Math.floor(audio.currentTime * 1000)
-            })
-          }, 500)
         }
       })
     },
@@ -89,6 +75,21 @@ export default {
       this.$store.commit('lyrics/update', {
         show: !this.show
       })
+    },
+    timeupdate () {
+      const audio = this.$refs.audio
+      this.duration = {
+        cur: audio.currentTime,
+        total: audio.duration || 0
+      }
+      this.$store.commit('api/updatePlay', {
+        time: Math.floor(audio.currentTime * 1000)
+      })
+    },
+    toggleList () {
+      if (this.playlist.length) {
+        this.$store.commit('c_playlist/toggle')
+      }
     }
   }
 }

@@ -1,8 +1,7 @@
 <template>
     <div :class="s.main">
         <play-control></play-control>
-        <play-info @showPlaylist="modal = true"></play-info>
-        <play-list :show.sync="modal" v-clickoutside="closeModal"></play-list>
+        <play-info></play-info>
     </div>
 </template>
 <script src="./index.js"></script>

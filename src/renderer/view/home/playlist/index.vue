@@ -1,7 +1,7 @@
 <template>
     <div :class="s.app">
         <a :class="s.title">{{name}}</a>
-        <el-table :data="list" :class="s.table">
+        <el-table :data="list" :class="s.table" v-loading="loading">
             <el-table-column label="歌曲" :width="220">
                 <template scope="scope">
                     <div :class="s.nameItem">
@@ -34,7 +34,8 @@
   export default {
     data () {
       return {
-        list: []
+        list: [],
+        loading: false
       }
     },
     computed: {
@@ -50,12 +51,14 @@
     methods: {
       ...mapActions('api', ['play']),
       async getSong (id = this.id) {
+        this.loading = true
         try {
           this.list = await this.$http.get(`playlist/${id}`)
         } catch (e) {
           console.warn(e)
           this.$router.push('/')
         }
+        this.loading = false
       },
       async removeFromPlaylist (item) {
         try {

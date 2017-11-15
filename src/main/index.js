@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, Menu, Tray, BrowserWindow } from 'electron'
 import ipcEvent from './ipcEvent'
 /**
  * Set `__static` path to static files in production
@@ -15,11 +15,40 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+function initialTray (mainWindow) {
+  var trayIconPath = __static + '/images/logo_32.png'
+  let appTray = new Tray(trayIconPath)
+
+  function toggleVisiable () {
+    var isVisible = mainWindow.isVisible()
+    if (isVisible) {
+      mainWindow.hide()
+    } else {
+      mainWindow.show()
+    }
+  }
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '退出',
+      click () {
+        app.quit()
+      }
+    }
+  ])
+  appTray.setContextMenu(contextMenu)
+  appTray.on('click', function handleClicked () {
+    toggleVisiable()
+  })
+}
+
 function createWindow () {
   mainWindow = new BrowserWindow({
     height: 650,
     useContentSize: true,
-    // resizable: false,
+    minimizable: true,
+    fullscreenable: true,
+    maximizable: false,
     width: 980,
     frame: false
   })
@@ -28,6 +57,9 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  if (process.platform !== 'darwin') {
+    initialTray(mainWindow)
+  }
 }
 
 app.on('ready', createWindow)

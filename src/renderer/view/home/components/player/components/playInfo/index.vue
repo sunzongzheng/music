@@ -34,8 +34,13 @@
         <Icon type="download" :class="s.icon" :disabled="true"></Icon>
         <!-- 打开列表 !-->
         <Icon type="musiclist" :class="s.icon" style="margin-top: 2px;" :disabled="!playlist.length"
-              @click.native="playlist.length?$emit('showPlaylist'):''"></Icon>
-        <audio :src="play.url" ref="audio"></audio>
+              @click.native="toggleList"></Icon>
+        <audio :src="play.url"
+               ref="audio"
+               preload="true"
+               @timeupdate="timeupdate"
+               @ended="$store.dispatch('c_playlist/next')"
+        ></audio>
     </div>
 </template>
 <script src="./index.js"></script>

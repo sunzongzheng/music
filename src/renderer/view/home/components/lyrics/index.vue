@@ -2,6 +2,15 @@
     <div :class="{[s.app]:true,[s.active]:show}">
         <div :class="s.wrap"></div>
         <div :class="s.cover" :style="style"></div>
+        <div :class="s.control">
+            <div :class="s.inner" v-if="status!=='fullscreen'">
+                <Icon type="bottom" :class="s.close" @click.native="close"></Icon>
+                <Icon type="fullscreen" :class="s.fullscreen" @click.native="op('fullscreen')"></Icon>
+                <Icon type="narrow" :class="s.narrow" @click.native="op('minimize')"></Icon>
+            </div>
+            <!-- 全屏状态只有离开全屏 !-->
+            <Icon type="fullscreenexit" :class="s.fullscreen" @click.native="op('leaveFullscreen')" v-else></Icon>
+        </div>
         <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="play.lyric.length">
             <li v-for="(item,index) in play.lyric" :class="{[s.item]:true,[s.active]:activeIndex === index}">
                 {{item[1]}}
@@ -26,6 +35,7 @@
     computed: {
       ...mapState('lyrics', ['show']),
       ...mapState('api', ['play']),
+      ...mapState('windowStatus', ['status']),
       style () {
         if (this.play.info) {
           return {
@@ -94,6 +104,9 @@
         this.timer = window.setTimeout(() => {
           this.userScrolling = false
         }, 2000)
+      },
+      op (val) {
+        this.$store.commit('windowStatus/update', val)
       }
     }
   }
@@ -102,7 +115,8 @@
     .app {
         position: fixed;
         z-index: 5;
-        transform: translateY(100%);
+        transform: translate3d(0, 100%, 0);
+        will-change: transform;
         top: 0;
         left: 0;
         width: 100%;
@@ -111,7 +125,8 @@
         transition: all .4s;
         &.active {
             transition: all .4s;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
         }
         .wrap,
         .cover,
@@ -152,6 +167,27 @@
             }
             &::-webkit-scrollbar {
                 display: none;
+            }
+        }
+        .control {
+            position: absolute;
+            left: 16px;
+            top: 12px;
+            background-color: transparent;
+            z-index: 7;
+            width: 200px;
+            height: 50px;
+            -webkit-app-region: no-drag;
+            .inner {
+                display: flex;
+            }
+            svg {
+                font-size: 24px;
+                margin-right: 8px;
+                color: #B7B7B7;
+                &:hover {
+                    color: #f2f2f2;
+                }
             }
         }
     }
