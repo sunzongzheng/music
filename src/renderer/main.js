@@ -3,8 +3,7 @@ import axios from 'axios'
 import ElementUI from 'element-ui'
 import VueContextMenu from '@xunlei/vue-context-menu'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'element-ui/packages/popover'
-
+import directive from 'element-ui/packages/popover/src/directive'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -16,6 +15,7 @@ import config from '../../config/index'
 
 Vue.use(ElementUI)
 Vue.use(VueContextMenu)
+Vue.directive('popover', directive)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
