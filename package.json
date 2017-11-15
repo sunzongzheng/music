@@ -1,6 +1,6 @@
 {
   "name": "player",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "author": "sunzongzheng <sunzongzhengwy@163.com>",
   "description": "An electron-vue project",
   "license": "CC0-1.0",
@@ -21,8 +21,9 @@
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix",
     "iconfont": "./.electron-vue/iconfont.js",
-    "build:normal": "node .electron-vue/build.js && electron-builder --publish onTagOrDraft",
-    "build:win": "node .electron-vue/build.js &&electron-builder --win --publish onTagOrDraft"
+    "build-file": "node .electron-vue/build.js",
+    "build:normal": "electron-builder --publish onTagOrDraft",
+    "build:win": "electron-builder --win --publish onTagOrDraft"
   },
   "build": {
     "productName": "player",
