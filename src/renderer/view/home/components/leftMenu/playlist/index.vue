@@ -6,7 +6,7 @@
         </div>
         <ul :class="s.list">
             <li v-show="add.status">
-                <input v-model="add.name" ref="input" @blur="save"/>
+                <input v-model="add.name" ref="input" style="width: 135px;" @blur="save"/>
             </li>
             <v-item v-for="(item,index) in playlist" :info="item" :key="index"></v-item>
         </ul>
