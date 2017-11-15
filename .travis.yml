@@ -4,7 +4,7 @@ dist: trusty
 sudo: true
 
 language: node_js
-node_js: "8"
+node_js: "6"
 
 os:
   - linux
