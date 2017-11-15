@@ -3,7 +3,7 @@ import axios from 'axios'
 import ElementUI from 'element-ui'
 import VueContextMenu from '@xunlei/vue-context-menu'
 import 'element-ui/lib/theme-chalk/index.css'
-import Popover from 'element-ui/packages/popover'
+import 'element-ui/packages/popover'
 
 import App from './App'
 import router from './router'
@@ -51,7 +51,6 @@ Vue.config.productionTip = false
 
 Vue.ipc = Vue.prototype.$ipc = ipcRenderer
 
-Vue.directive('Popover', Popover)
 /* eslint-disable no-new */
 new Vue({
   components: {App},
