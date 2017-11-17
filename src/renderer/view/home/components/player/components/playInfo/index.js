@@ -22,6 +22,7 @@ export default {
   },
   watch: {
     'play.pause' (val) {
+      this.$ipc.send('tray-control-pause', val)
       this.$nextTick(() => {
         const audio = this.$refs.audio
         if (val) {

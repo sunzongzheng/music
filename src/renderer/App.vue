@@ -90,6 +90,18 @@
       this.$ipc.on('loginSuccessed', this.loginSuccessed)
       this.$ipc.on('getSong', this.getSong)
       this.$ipc.on('searchSong', this.searchSong)
+      // 状态栏 播放暂停
+      this.$ipc.on('tray-control-pause', (event, pause) => {
+        if (this.play.info) {
+          this.$store.commit('api/updatePlay', {
+            pause
+          })
+        }
+      })
+      // 状态栏 下一首
+      this.$ipc.on('tray-control-next', () => {
+        this.$store.dispatch('c_playlist/next')
+      })
       if (localStorage.token) {
         this.$store.dispatch('user/init')
       }

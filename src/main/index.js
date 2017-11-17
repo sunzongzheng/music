@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, Menu, Tray, BrowserWindow } from 'electron'
+import { app, Menu, Tray, BrowserWindow, nativeImage, ipcMain } from 'electron'
 import ipcEvent from './ipcEvent'
 /**
  * Set `__static` path to static files in production
@@ -42,6 +42,31 @@ function initialTray (mainWindow) {
   })
 }
 
+function initMacTray (mainWindow) {
+  let next = new Tray(__static + '/images/next_16.png')
+  let play = new Tray(__static + '/images/play_16.png')
+  let text = new Tray(nativeImage.createEmpty())
+  text.setTitle('听想听的音乐')
+  play.setToolTip('播放/暂停')
+  next.setToolTip('下一首')
+  let pause = true
+  play.on('click', () => {
+    mainWindow.webContents.send('tray-control-pause', !pause)
+  })
+  next.on('click', () => {
+    mainWindow.webContents.send('tray-control-next')
+  })
+  ipcMain.on('tray-control-pause', (event, arg) => {
+    pause = arg
+    text.setTitle('听想听的音乐')
+    play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
+    next.setToolTip('下一首')
+  })
+  ipcMain.on('tray-control-lyrics', (event, arg) => {
+    text.setTitle(arg)
+  })
+}
+
 function createWindow () {
   mainWindow = new BrowserWindow({
     height: 650,
@@ -59,6 +84,8 @@ function createWindow () {
   })
   if (process.platform !== 'darwin') {
     initialTray(mainWindow)
+  } else {
+    initMacTray(mainWindow)
   }
 }
 

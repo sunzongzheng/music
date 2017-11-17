@@ -72,6 +72,9 @@
         // 跳转
         const main = this.$refs.main
         if (main && main.children[answer]) {
+          // 传递到状态栏
+          this.$ipc.send('tray-control-lyrics', lyric[answer][1])
+          // 判断是否用户处于滚动浏览中
           if (!this.userScrolling) {
             $(main).clearQueue().stop().animate({
               scrollTop: main.children[answer].offsetTop - main.offsetHeight / 2
@@ -88,6 +91,10 @@
         if (this.$refs.main) {
           this.$refs.main.scrollTop = 0
         }
+      },
+      'activeIndex' (val) {
+        console.log(this.play.lyric[val][1])
+        this.$ipc.send('tray-control-lyrics', this.play.lyric[val][1])
       }
     },
     methods: {
