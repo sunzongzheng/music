@@ -11,7 +11,7 @@ export default {
       url: null,
       lyric: [],
       pause: true,
-      volume: 100,
+      volume: isNaN(localStorage.volume) ? 100 : parseInt(localStorage.volume),
       time: 0,
       info: null
     }

@@ -91,5 +91,8 @@ export default {
         this.$store.commit('c_playlist/toggle')
       }
     }
+  },
+  mounted () {
+    this.$refs.audio.volume = this.play.volume / 100
   }
 }

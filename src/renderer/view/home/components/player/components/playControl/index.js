@@ -1,21 +1,20 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  data () {
-    return {
-      volume: 100
-    }
-  },
   computed: {
     ...mapState('api', ['play']),
     ...mapState('c_playlist', ['cycle']),
-    ...mapState('lyrics', ['show'])
-  },
-  watch: {
-    volume (val) {
-      this.$store.commit('api/updatePlay', {
-        volume: val
-      })
+    ...mapState('lyrics', ['show']),
+    volume: {
+      get () {
+        return this.play.volume
+      },
+      set (val) {
+        this.$store.commit('api/updatePlay', {
+          volume: val
+        })
+        localStorage.volume = val
+      }
     }
   },
   methods: {
