@@ -41,18 +41,10 @@
             pause: false
           })
         } else {
-          if (this.play.info.source === 'xiami' && this.play.info.file) {
-            this.$store.commit('api/updatePlay', {
-              url: this.play.info.file,
-              lyric: [],
-              pause: false
-            })
-          } else {
-            this.$message({
-              message: arg.message,
-              type: 'warning'
-            })
-          }
+          this.$message({
+            message: arg.message,
+            type: 'warning'
+          })
         }
       },
       // 搜索歌曲回调

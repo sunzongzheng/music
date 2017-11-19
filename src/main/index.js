@@ -58,7 +58,6 @@ function initMacTray (mainWindow) {
   })
   ipcMain.on('tray-control-pause', (event, arg) => {
     pause = arg
-    text.setTitle('听想听的音乐')
     play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
     next.setToolTip('下一首')
   })

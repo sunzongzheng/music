@@ -48,7 +48,6 @@ export default {
     },
     async play ({commit}, info) {
       console.log(info)
-
       commit('updatePlay', {
         info,
         pause: true

@@ -29,7 +29,8 @@
     data () {
       return {
         userScrolling: false,
-        timer: null
+        timer: null,
+        indexCopy: -1 // 当前歌词 active行 的下标副本
       }
     },
     computed: {
@@ -73,7 +74,10 @@
         const main = this.$refs.main
         if (main && main.children[answer]) {
           // 传递到状态栏
-          this.$ipc.send('tray-control-lyrics', lyric[answer][1])
+          if (answer !== this.indexCopy) {
+            this.indexCopy = answer
+            this.transfer(answer)
+          }
           // 判断是否用户处于滚动浏览中
           if (!this.userScrolling) {
             $(main).clearQueue().stop().animate({
@@ -91,10 +95,6 @@
         if (this.$refs.main) {
           this.$refs.main.scrollTop = 0
         }
-      },
-      'activeIndex' (val) {
-        console.log(this.play.lyric[val][1])
-        this.$ipc.send('tray-control-lyrics', this.play.lyric[val][1])
       }
     },
     methods: {
@@ -114,6 +114,51 @@
       },
       op (val) {
         this.$store.commit('windowStatus/update', val)
+      },
+      async transfer (index) {
+        const lyric = this.play.lyric
+        const singleLyric = lyric[index][1] // 单句歌词
+        // 先计算当前句 和 下一句 的时间差
+        let time = 0
+        if (index === lyric.length - 1) { // 如果是最后一行 就默认10s吧，没有可靠的逻辑
+          time = 10 * 1000
+        } else {
+          time = lyric[index + 1][0] - lyric[index][0]
+        }
+        // 再计算一下总字符长度 决定了要截断几次
+        let totalLength = 0
+        for (let i = 0; i < singleLyric.length; i++) {
+          if (singleLyric.charCodeAt(i) > 127 || singleLyric.charCodeAt(i) === 94) {
+            totalLength += 2
+          } else {
+            totalLength += 1
+          }
+        }
+        // 开始截断
+        let str = ''
+        let len = 0
+        let singleLen = 0
+        for (let i = 0; i < singleLyric.length; i++) {
+          if (singleLyric.charCodeAt(i) > 127 || singleLyric.charCodeAt(i) === 94) {
+            singleLen = 2
+          } else {
+            singleLen = 1
+          }
+          if (len + singleLen > 26) { // 超出 直接传递到控制台
+            this.$ipc.send('tray-control-lyrics', str)
+            str = singleLyric[i]
+            len = singleLen
+            await new Promise((resolve) => {
+              window.setTimeout(() => resolve(), parseInt(time * 26 / totalLength)) // 延时
+            })
+          } else {
+            str += singleLyric[i]
+            len += singleLen
+            if (i === singleLyric.length - 1) {
+              this.$ipc.send('tray-control-lyrics', str)
+            }
+          }
+        }
       }
     }
   }
