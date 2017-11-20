@@ -94,13 +94,18 @@
       this.$ipc.on('tray-control-next', () => {
         this.$store.dispatch('c_playlist/next')
       })
+      this.$ipc.on('version_new', () => {
+        this.$notify({
+          dangerouslyUseHTMLString: true,
+          message: '发现新版本 <a style="color:#2d8cf0;" target="_blank" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
+        })
+      })
       if (localStorage.token) {
         this.$store.dispatch('user/init')
       }
     }
   }
 </script>
-
 <style>
     html,
     body {

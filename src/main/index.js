@@ -2,6 +2,7 @@
 
 import { app, Menu, Tray, BrowserWindow, nativeImage, ipcMain } from 'electron'
 import ipcEvent from './ipcEvent'
+import { version } from '../../package.json'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -77,6 +78,13 @@ function createWindow () {
     frame: false
   })
   ipcEvent.on(mainWindow)
+  fetch('https://raw.githubusercontent.com/sunzongzheng/music/master/package.json')
+    .then(res => res.json())
+    .then(data => {
+      if (version !== data.version) {
+        mainWindow.webContents.send('version_new')
+      }
+    })
   mainWindow.loadURL(winURL)
   mainWindow.on('closed', () => {
     mainWindow = null
