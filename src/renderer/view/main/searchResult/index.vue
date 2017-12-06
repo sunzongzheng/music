@@ -1,7 +1,12 @@
 <template>
-    <div :class="s.main" v-if="search.result.length">
+    <div :class="s.main">
         <a :class="s.title">搜索<span>{{search.keywords}}</span></a>
-        <el-table :data="search.result" :class="s.table" :row-class-name="s.row">
+        <el-table :data="search.result"
+                  :class="s.table"
+                  :row-class-name="s.row"
+                  v-loading="search.loading"
+                  element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
+        >
             <el-table-column label="歌曲" :width="220">
                 <template scope="scope">
                     <div :class="s.nameItem">
@@ -33,7 +38,7 @@
 
   export default {
     filters: {
-      minute (val) {
+      minute(val) {
         return moment(val).format('mm:ss')
       }
     },
@@ -42,7 +47,7 @@
     },
     methods: {
       ...mapActions('api', ['play']),
-      doPlay (item) {
+      doPlay(item) {
         this.$store.commit('c_playlist/update', [])
         this.play(item)
       }
@@ -66,8 +71,6 @@
         }
         .table {
             width: 100%;
-            height: calc(100% - 46px);
-            overflow: auto;
             .row {
                 &:hover {
                     .songControl {

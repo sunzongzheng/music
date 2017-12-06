@@ -5,15 +5,16 @@ export default {
   loginWindow: null,
   mainWindow: null,
   loginUrl: config.api + '/auth/qq',
-  init (event, mainWindow) {
+  init(event, mainWindow) {
     this.mainWindow = mainWindow
     this.createWindow()
     this.loginWindow.loadURL(this.loginUrl)
     this.loginWindow.show()
   },
   // 创建窗口
-  createWindow () {
+  createWindow() {
     this.loginWindow = new BrowserWindow({
+      title: 'QQ登录',
       parent: this.mainWindow,
       height: 600,
       resizable: false,
@@ -26,7 +27,7 @@ export default {
     this.initEvent()
   },
   // 初始化  事件
-  initEvent () {
+  initEvent() {
     // url 接收
     this.loginWindow.webContents.executeJavaScript(`
       require('electron').ipcRenderer.on('url', (event, message) => {

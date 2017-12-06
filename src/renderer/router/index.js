@@ -7,22 +7,26 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: {name: 'home'}
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: require('@/view/home/index.vue'),
-      redirect: {name: 'searchResult'},
-      children: [{
-        path: '/searchResult',
-        name: 'searchResult',
-        component: require('@/view/home/searchResult/index.vue')
-      }, {
-        path: '/playlist/:id',
-        name: 'playlist',
-        component: require('@/view/home/playlist/index.vue')
-      }]
+      component: require('@/view/main/index.vue'),
+      redirect: {
+        name: 'rank'
+      },
+      children: [
+        {
+          path: '/searchResult',
+          name: 'searchResult',
+          component: require('@/view/main/searchResult/index.vue')
+        }, {
+          path: '/playlist/:id',
+          name: 'playlist',
+          component: require('@/view/main/playlist/index.vue')
+        },
+        {
+          path: '/rank',
+          name: 'rank',
+          component: require('@/view/rank/index.vue')
+        }
+      ]
     }
   ]
 })

@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron'
+import Vue from 'vue'
 
 export default {
   namespaced: true,
@@ -6,9 +6,23 @@ export default {
     status: 'show' // 默认显示状态  close:隐藏; minimize:最小化; fullscreen: 全屏; leaveFullscreen: 离开全屏
   },
   mutations: {
-    update (state, val) {
+    update(state, val) {
       state.status = val
-      ipcRenderer.send('viewControl', val)
+      const win = Vue.win
+      switch (val) {
+        case 'close':
+          win.hide()
+          break
+        case 'minimize':
+          win.minimize()
+          break
+        case 'fullscreen':
+          win.setFullScreen(true)
+          break
+        case 'leaveFullscreen':
+          win.setFullScreen(false)
+          break
+      }
     }
   }
 }

@@ -9,7 +9,7 @@ import router from './router'
 import store from './store'
 import './assets/iconfont'
 import './components'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import './filters'
 import config from '../../config/index'
 
@@ -45,11 +45,19 @@ instance.interceptors.response.use(function (response) {
 })
 Vue.http = Vue.prototype.$http = instance
 
+Vue.clientApi = remote.getGlobal('clientApi')
+
+Vue.api = Vue.prototype.$api = remote.getGlobal('api')
+
+Vue.win = Vue.prototype.$win = remote.getGlobal('win')
+
 Vue.store = Vue.prototype.$store = store
 
 Vue.config.productionTip = false
 
 Vue.ipc = Vue.prototype.$ipc = ipcRenderer
+
+Vue.$message = ElementUI.Message
 
 /* eslint-disable no-new */
 new Vue({

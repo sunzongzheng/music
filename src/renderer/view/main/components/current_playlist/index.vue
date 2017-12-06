@@ -1,8 +1,11 @@
 <template>
-    <div :class="{[s.app]:true,[s.active]:show,[s.lyricShow]:lyricShow}" v-clickoutside="closeModal">
-        <div :class="{[s.item]:true,[s.active]:play.info.id===item.id}" v-for="item in playlist" @click="doPlay(item)">
+    <div v-if="play.info" :class="{[s.app]:true,[s.active]:show,[s.lyricShow]:lyricShow}" v-clickoutside="closeModal">
+        <div v-for="item in playlist"
+             :class="{[s.item]:true,[s.active]:play.info.id===item.id}"
+             @click="doPlay(item)"
+        >
             <div :class="s.album_wrap">
-                <img :class="s.album" :src="item.album.coverSmall"/>
+                <img :class="s.album" :src="item.album.cover | defaultAlbum"/>
             </div>
             <div :class="s.main">
                 <span :class="s.name">{{item.name}}</span>
@@ -28,7 +31,7 @@
       ...mapActions('api', {
         doPlay: 'play'
       }),
-      closeModal (e) {
+      closeModal(e) {
         if (this.show) {
           this.$store.commit('c_playlist/toggle')
         }
@@ -48,7 +51,7 @@
         will-change: transform;
         transition: all .5s;
         background-color: white;
-        box-shadow: -3px 0 14px #ececec;
+        box-shadow: 0 0 6px #ececec;
         overflow-y: auto;
         overflow-x: hidden;
         z-index: 6;

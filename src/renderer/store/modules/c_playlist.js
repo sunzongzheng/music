@@ -5,20 +5,21 @@ export default {
   state: {
     show: false,
     playlist: [],
-    cycle: 'list' // list: 列表循环; random: 随机; single: 单曲
+    cycle: localStorage.cycle ? localStorage.cycle : 'list' // list: 列表循环; random: 随机; single: 单曲
   },
   mutations: {
-    update (state, val) {
+    update(state, val) {
       state.playlist = val
     },
-    toggle (state) {
+    toggle(state) {
       state.show = !state.show
     },
-    cycleChange (state) {
+    cycleChange(state) {
       let arr = ['list', 'single', 'random']
       arr.every((item, index) => {
         if (item === state.cycle) {
           state.cycle = arr[(index + 1) % 3]
+          localStorage.cycle = state.cycle
           return false
         } else {
           return true
@@ -27,7 +28,7 @@ export default {
     }
   },
   actions: {
-    last ({state}) {
+    last({state}) {
       if (state.playlist.length) {
         const cur = Vue.store.state.api.play.info
         let index = -1
@@ -52,7 +53,7 @@ export default {
         Vue.store.dispatch('api/play', state.playlist[index])
       }
     },
-    next ({state}) {
+    next({state}) {
       if (state.playlist.length) {
         const cur = Vue.store.state.api.play.info
         let index = -1

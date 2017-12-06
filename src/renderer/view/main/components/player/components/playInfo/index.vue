@@ -2,7 +2,7 @@
     <div :class="{[s.info]:true,[s.lyric]:show}">
         <!-- 专辑头像 !-->
         <div :class="{[s.album]:true,[s.playing]:play.info}">
-            <img :src="play.info | defaultAlbum"/>
+            <img :src="(play.info?play.info.album.cover:'') | defaultAlbum"/>
             <div :class="s.cover" @click="toggleLyrics">
                 <Icon type="shuangjiantou"></Icon>
             </div>
@@ -13,7 +13,7 @@
                 <template v-if="play.url">
                     <span :class="s.name">{{play.info.name}}</span>
                     <span>-</span>
-                    <span>{{play.info.artists[0].name}}</span>
+                    <span v-for="item in play.info.artists">{{item.name}} </span>
                 </template>
                 <template v-else>听你想听的音乐</template>
                 <!-- 时间 !-->
@@ -71,6 +71,7 @@
             position: relative;
             img {
                 width: 35px;
+                height: 35px;
             }
             .cover {
                 display: none;
@@ -98,7 +99,7 @@
         .inner {
             display: flex;
             flex-direction: column;
-            width: 80%;
+            width: calc(100% - 35px - 108px);
             font-size: 12px;
             color: gray;
             margin-left: 10px;

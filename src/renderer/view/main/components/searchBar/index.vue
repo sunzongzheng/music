@@ -5,10 +5,15 @@
             <Icon type="left" :class="[s.icon,s.right_arrow]"></Icon>
             <Icon type="shuaxin" :class="s.icon"></Icon>
             <div :class="s.inputArea">
-                <input :class="s.input" v-model="key" @keyup.enter="search"/>
+                <input :class="s.input"
+                       v-model="key"
+                       @keyup.enter="search"
+                       @compositionstart="ime = true"
+                       @compositionend="ime = false"
+                />
                 <div :class="{[s.holder]:true,[s.empty]:empty}">
                     <Icon type="sousuo"></Icon>
-                    <span v-show="empty">搜索</span>
+                    <span v-show="empty && !ime">搜索</span>
                 </div>
                 <Icon type="close-2" :class="s.clean" v-show="!empty" @click.native="key = ''"></Icon>
             </div>
@@ -17,22 +22,34 @@
 </template>
 <script>
   export default {
-    data () {
+    data() {
       return {
-        key: ''
+        key: '',
+        ime: false
       }
     },
     computed: {
-      empty () {
+      empty() {
         return this.key.length < 1
       }
     },
     methods: {
-      search () {
-        this.$store.dispatch('api/search', {
-          keywords: this.key
+      async search() {
+        this.$store.commit('api/updateSearch', {
+          keywords: this.key,
+          loading: true,
+          result: []
         })
         this.$router.push({name: 'searchResult'})
+        let data = await this.$api.searchSong(this.key)
+        if (data.status) {
+          this.$store.commit('api/updateSearch', {
+            result: data.data,
+            loading: false
+          })
+        } else {
+          this.$message.warning(e.msg)
+        }
       }
     }
   }

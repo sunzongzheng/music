@@ -1,11 +1,14 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
     </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import { shell } from 'electron'
 
   export default {
     computed: {
@@ -13,7 +16,7 @@
     },
     methods: {
       // 登录成功回调
-      loginSuccessed (event, info) {
+      loginSuccessed(event, info) {
         console.log(info)
         // 更新userInfo
         this.$store.commit('user/update', {
@@ -23,65 +26,9 @@
         // 更新token
         this.$store.commit('token/update', info.token)
       },
-      // 获取歌曲回调
-      getSong (event, arg) {
-        console.log(arg)
-        if (arg.success) {
-          let lyric = arg.lyric || []
-          lyric = lyric.map(item => {
-            let arr = item[0].match(/^(\d+):(\d+).(\d+)$/)
-            if (arr) {
-              item[0] = parseInt(arr[1]) * 60 * 1000 + parseInt(arr[2]) * 1000 + parseInt(arr[3].padEnd(3, '0'))
-            }
-            return item
-          })
-          this.$store.commit('api/updatePlay', {
-            url: arg.file || arg.url,
-            lyric,
-            pause: false
-          })
-        } else {
-          this.$message({
-            message: arg.message,
-            type: 'warning'
-          })
-        }
-      },
-      // 搜索歌曲回调
-      searchSong (event, data) {
-        console.log(data)
-        let songList = {}
-        let result = []
-        let maxLength = 0
-        for (let i in data) {
-          songList[i] = data[i].songList || []
-          const length = songList[i].length
-          if (length > maxLength) {
-            maxLength = length
-          }
-        }
-        let cur = 0
-        while (cur < maxLength) {
-          for (let i in songList) {
-            const item = songList[i][cur]
-            if (item && !item.cp) {
-              result.push({
-                ...item,
-                source: i
-              })
-            }
-          }
-          cur++
-        }
-        this.$store.commit('api/updateSearch', {
-          result
-        })
-      }
     },
-    created () {
+    created() {
       this.$ipc.on('loginSuccessed', this.loginSuccessed)
-      this.$ipc.on('getSong', this.getSong)
-      this.$ipc.on('searchSong', this.searchSong)
       // 状态栏 播放暂停
       this.$ipc.on('tray-control-pause', (event, pause) => {
         if (this.play.info) {
@@ -97,7 +44,18 @@
       this.$ipc.on('version_new', () => {
         this.$notify({
           dangerouslyUseHTMLString: true,
-          message: '发现新版本 <a style="color:#2d8cf0;" target="_blank" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
+          message: '发现新版本 <a style="color:#2d8cf0;" class="go2Download" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
+        })
+        const links = document.querySelectorAll('a[href].go2Download')
+
+        Array.prototype.forEach.call(links, function (link) {
+          const url = link.getAttribute('href')
+          if (url.includes('https') || url.includes('http')) {
+            link.addEventListener('click', function (e) {
+              e.preventDefault()
+              shell.openExternal(url)
+            })
+          }
         })
       })
       if (localStorage.token) {

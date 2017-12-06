@@ -1,64 +1,70 @@
-import { ipcRenderer } from 'electron'
+import Vue from 'vue'
 
 export default {
   namespaced: true,
   state: {
     search: {
       keywords: '',
+      loading: false,
       result: []
     },
     play: {
       url: null,
-      lyric: [],
       pause: true,
       volume: isNaN(localStorage.volume) ? 100 : parseInt(localStorage.volume),
-      time: 0,
       info: null
     }
   },
   mutations: {
-    updateSearch (state, val) {
+    updateSearch(state, val) {
       for (let i in val) {
         state.search[i] = val[i]
       }
     },
-    updatePlay (state, val) {
+    updatePlay(state, val) {
       for (let i in val) {
         state.play[i] = val[i]
       }
     },
-    pauseChange (state) {
+    pauseChange(state) {
       state.play.pause = !state.play.pause
     }
   },
   actions: {
-    search ({commit}, {keywords, page = 1, limit = 60}) {
-      commit('updateSearch', {
-        keywords
-      })
-      ipcRenderer.send('api', {
-        op: 'searchSong',
-        vendor: 'all',
-        query: {
-          key: keywords,
-          limit,
-          page
+    async play({commit}, info) {
+      // 首先检查ip
+      try {
+        const {data} = await Vue.clientApi('http://txt.go.sohu.com/ip/soip')
+        const match = data.match(/sohu_IP_Loc_V="(.*?)"/)
+        if (match && match[1].substr(0, 2) !== 'CN') {
+          console.log(match)
+          Vue.$message({
+            message: '当前ip来自海外,请检查是否使用了vpn,部分音乐可能无法播放',
+            duration: 5000,
+            type: 'warning'
+          })
         }
-      })
-    },
-    async play ({commit}, info) {
-      console.log(info)
+      } catch (e) {
+        console.warn(e)
+      }
       commit('updatePlay', {
         info,
         pause: true
       })
-      ipcRenderer.send('api', {
-        op: 'getSong',
-        vendor: info.source,
-        query: {
+      let data = await Vue.api.getSongUrl(info.source, info.id)
+      if (data.status) {
+        Vue.store.dispatch('lyrics/init', {
+          vendor: info.source,
           id: info.id
-        }
-      })
+        })
+        commit('updatePlay', {
+          url: data.data.url,
+          pause: false
+        })
+      } else {
+        console.log(data)
+        Vue.$message.warning(data.msg)
+      }
     }
   }
 }

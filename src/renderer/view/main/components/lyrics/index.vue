@@ -11,8 +11,8 @@
             <!-- 全屏状态只有离开全屏 !-->
             <Icon type="fullscreenexit" :class="s.fullscreen" @click.native="op('leaveFullscreen')" v-else></Icon>
         </div>
-        <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="play.lyric.length">
-            <li v-for="(item,index) in play.lyric" :class="{[s.item]:true,[s.active]:activeIndex === index}">
+        <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="lyrics.length">
+            <li v-for="(item,index) in lyrics" :class="{[s.item]:true,[s.active]:activeIndex === index}">
                 {{item[1]}}
             </li>
         </ul>
@@ -23,100 +23,84 @@
 </template>
 <script>
   import { mapState } from 'vuex'
-  import $ from 'jquery'
+  import Velocity from 'velocity-animate'
 
   export default {
-    data () {
+    data() {
       return {
         userScrolling: false,
         timer: null,
-        indexCopy: -1 // 当前歌词 active行 的下标副本
       }
     },
     computed: {
-      ...mapState('lyrics', ['show']),
+      ...mapState('lyrics', ['show', 'loading', 'lyrics', 'activeIndex']),
       ...mapState('api', ['play']),
       ...mapState('windowStatus', ['status']),
-      style () {
+      style() {
         if (this.play.info) {
           return {
-            'background-image': `url(${this.play.info.album.coverBig})`
+            'background-image': `url(${this.play.info.album.cover})`
           }
         } else {
           return {}
         }
       },
-      activeIndex () {
-        const cur = this.play.time
-        const lyric = this.play.lyric
-        let answer = 0
-        lyric.every((item, index) => {
-          if (index < lyric.length - 1) { // 非最后一行
-            if (cur >= lyric[index][0] && cur < lyric[index + 1][0]) {
-              if (lyric[index][1].length) {
-                answer = index
-              } else {
-                if (index === 0) {
-                  answer = index
-                } else {
-                  answer = index - 1
-                }
-              }
-              return false
-            }
-          } else if (cur >= lyric[index][0]) { // 最后一行 & 播放进度大于最后一行的时间
-            answer = index
-            return false
-          }
-          return true
-        })
-        // 跳转
-        const main = this.$refs.main
-        if (main && main.children[answer]) {
-          // 传递到状态栏
-          if (answer !== this.indexCopy) {
-            this.indexCopy = answer
-            this.transfer(answer)
-          }
-          // 判断是否用户处于滚动浏览中
-          if (!this.userScrolling) {
-            $(main).clearQueue().stop().animate({
-              scrollTop: main.children[answer].offsetTop - main.offsetHeight / 2
-            }, 300, 'linear')
-          }
-        }
-
-        return answer
-      }
     },
     watch: {
-      'play.info' () {
+      'play.info'() {
         console.log('change')
         if (this.$refs.main) {
           this.$refs.main.scrollTop = 0
         }
+      },
+      'activeIndex'(val) {
+        const main = this.$refs.main
+        if (main && main.children[val]) {
+          // 传递到状态栏
+          this.transfer(val)
+          const need = main.children[val].offsetTop - main.offsetHeight / 2
+          // 是否打开了歌词面板
+          if (this.show) {
+            // 判断是否用户处于滚动浏览中
+            if (!this.userScrolling) {
+              if (need !== main.scrollTop) {
+                Velocity(main, 'stop')
+                Velocity(main, 'scroll', {
+                  container: main,
+                  duration: 300,
+                  offset: need - main.scrollTop
+                })
+              }
+            }
+          } else { // 未打开的话则不用缓动歌词
+            Velocity(main, 'stop')
+            main.scrollTop = need
+          }
+        }
       }
     },
     methods: {
-      close () {
+      close() {
         this.$store.commit('lyrics/update', {
           show: false
         })
       },
-      scrollBarWheel () {
+      scrollBarWheel() {
         this.userScrolling = true
         if (this.timer) {
           window.clearTimeout(this.timer)
         }
         this.timer = window.setTimeout(() => {
+          const main = this.$refs.main
+          main.scrollTop = main.children[this.activeIndex].offsetTop - main.offsetHeight / 2
           this.userScrolling = false
         }, 2000)
       },
-      op (val) {
+      op(val) {
         this.$store.commit('windowStatus/update', val)
       },
-      async transfer (index) {
-        const lyric = this.play.lyric
+      async transfer(index) {
+        const lyric = this.lyrics
         const singleLyric = lyric[index][1] // 单句歌词
         // 先计算当前句 和 下一句 的时间差
         let time = 0

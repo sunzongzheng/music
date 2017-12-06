@@ -80,10 +80,6 @@
 <style lang="scss" module="s">
     .playlist {
         width: 100%;
-        padding: 20px;
-        height: calc(100% - 195px);
-        overflow: auto;
-        -webkit-app-region: no-drag;
         .titleArea {
             display: flex;
             align-items: center;
