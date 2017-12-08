@@ -37,7 +37,7 @@
     methods: {
       async getList() {
         try {
-          for (let i = 0; i < 16; i++) {
+          for (let i = 0; i < 21; i++) {
             const {data} = await this.$api.getTopList(i.toString())
             this.list.push(data)
           }

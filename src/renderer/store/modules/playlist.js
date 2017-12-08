@@ -16,6 +16,7 @@ export default {
         let data = await Vue.http.get('/playlist')
         commit('update', data)
       } catch (e) {
+        commit('update', [])
         console.warn(e)
       }
     },

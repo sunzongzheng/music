@@ -1,6 +1,13 @@
 <template>
     <div :class="s.app" @click="onClick">
-        <img :src="info | avatar">
+        <el-popover popper-class="avatarPopover"
+                    :disabled="!info"
+                    ref="popover1"
+                    placement="bottom"
+                    trigger="hover">
+            <span @click="logout">退出账号</span>
+        </el-popover>
+        <img :src="info | avatar" v-popover:popover1>
         <span :class="s.nickname">{{info | nickname}}</span>
     </div>
 </template>
@@ -16,13 +23,17 @@
       nickname: (info) => info ? info.nickname : '登录'
     },
     methods: {
-      onClick () {
+      onClick() {
         // 已登录
         if (this.info) {
 
         } else { // 未登录
           this.$ipc.send('login')
         }
+      },
+      // 退出
+      logout() {
+        this.$store.dispatch('user/logout')
       }
     }
   }
@@ -61,6 +72,18 @@
             margin: auto;
             height: 1px;
             width: 180px;
+        }
+    }
+</style>
+<style lang="scss">
+    .avatarPopover {
+        -webkit-app-region: no-drag;
+        span {
+            font-size: 12px;
+            cursor: pointer;
+            &:hover {
+                color: #26B36C;
+            }
         }
     }
 </style>
