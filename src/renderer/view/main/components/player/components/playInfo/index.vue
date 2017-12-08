@@ -40,8 +40,6 @@
                preload="true"
                @timeupdate="timeupdate"
                @ended="$store.dispatch('c_playlist/next')"
-               @abort="$store.dispatch('c_playlist/next')"
-               @stalled="$store.dispatch('c_playlist/next')"
                @error="$store.dispatch('c_playlist/next')"
         ></audio>
     </div>
