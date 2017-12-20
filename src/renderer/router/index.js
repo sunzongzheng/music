@@ -24,7 +24,22 @@ export default new Router({
         {
           path: '/rank',
           name: 'rank',
-          component: require('@/view/rank/index.vue')
+          component: require('@/view/rank/index.vue'),
+          redirect: {
+            name: 'rank.main'
+          },
+          children: [
+            {
+              path: 'main',
+              name: 'rank.main',
+              component: require('@/view/rank/main/index.vue')
+            },
+            {
+              path: 'detail',
+              name: 'rank.detail',
+              component: require('@/view/rank/detail/index.vue')
+            }
+          ]
         }
       ]
     }

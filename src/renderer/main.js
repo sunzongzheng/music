@@ -53,6 +53,8 @@ Vue.win = Vue.prototype.$win = remote.getGlobal('win')
 
 Vue.store = Vue.prototype.$store = store
 
+Vue.router = router
+
 Vue.config.productionTip = false
 
 Vue.ipc = Vue.prototype.$ipc = ipcRenderer

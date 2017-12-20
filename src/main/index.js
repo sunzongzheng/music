@@ -14,13 +14,14 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+let appTray // 声明在外层 保证不会被垃圾回收 解决windows托盘图标会消失的问题
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
 function initialTray(mainWindow) {
   var trayIconPath = __static + '/images/logo_32.png'
-  let appTray = new Tray(trayIconPath)
+  appTray = new Tray(trayIconPath)
 
   function toggleVisiable() {
     var isVisible = mainWindow.isVisible()

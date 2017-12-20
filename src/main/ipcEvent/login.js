@@ -24,6 +24,7 @@ export default {
       maximizable: false,
       minimizable: false
     })
+    this.loginWindow.setMenu(null) // 去掉windows linux下的Menu
     this.initEvent()
   },
   // 初始化  事件
