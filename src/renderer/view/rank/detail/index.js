@@ -1,9 +1,11 @@
-import { mapState, mapActions } from 'vuex'
-import Vue from 'vue'
+import { mapActions } from 'vuex'
+import eventBus from '../eventBus'
 
 export default {
   computed: {
-    ...mapState('rank', ['info'])
+    info() {
+      return eventBus.rankInfo
+    }
   },
   methods: {
     ...mapActions('api', ['play']),
@@ -16,8 +18,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    console.log(Vue.store.state.rank.info)
-    if (Vue.store.state.rank.info) {
+    if (eventBus.rankInfo) {
       next()
     } else {
       Vue.router.push({name: 'rank.main'})
