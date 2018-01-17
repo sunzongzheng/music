@@ -51,6 +51,13 @@
         this.$store.commit('c_playlist/update', [])
         this.play(item)
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      if (Vue.store.state.api.search.keywords.length > 0) {
+        next()
+      } else {
+        Vue.router.push('/')
+      }
     }
   }
 </script>

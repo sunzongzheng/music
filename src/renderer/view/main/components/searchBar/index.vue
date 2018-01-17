@@ -35,6 +35,9 @@
     },
     methods: {
       async search() {
+        if (this.empty) {
+          return
+        }
         this.$store.commit('api/updateSearch', {
           keywords: this.key,
           loading: true,

@@ -10,10 +10,7 @@ export default {
   methods: {
     ...mapActions('api', ['play']),
     doPlay(item) {
-      this.$store.commit('c_playlist/update', this.info.list.map(item => {
-        item.source = 'netease'
-        return item
-      }))
+      this.$store.commit('c_playlist/update', this.info.list)
       this.play(item)
     }
   },

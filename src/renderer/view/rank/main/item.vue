@@ -40,6 +40,7 @@
         try {
           let {data} = await this.$api.getTopList(this.id.toString())
           data.list = data.list.map(item => {
+            item.source = 'netease'
             if (item.album.cover) {
               item.album.cover += '?param=140y140'
             }
@@ -52,12 +53,6 @@
       },
       // 播放排行榜
       playList(list) {
-        list = list.map(item => {
-          return {
-            ...item,
-            source: 'netease'
-          }
-        })
         this.$store.dispatch('api/play', list[0])
         this.$store.commit('c_playlist/update', list.splice(0, 30))
       },
