@@ -1,7 +1,7 @@
 <template>
     <div :class="s.main">
         <a :class="s.title">搜索<span>{{search.keywords}}</span></a>
-        <el-table :data="search.result"
+        <el-table :data="result"
                   :class="s.table"
                   :row-class-name="s.row"
                   v-loading="search.loading"
@@ -35,6 +35,7 @@
 <script>
   import { mapState, mapActions } from 'vuex'
   import moment from 'moment'
+  import eventBus from '@/eventBus/searchResult'
 
   export default {
     filters: {
@@ -43,7 +44,10 @@
       }
     },
     computed: {
-      ...mapState('api', ['search'])
+      ...mapState('api', ['search']),
+      result() {
+        return eventBus.searchResult
+      }
     },
     methods: {
       ...mapActions('api', ['play']),

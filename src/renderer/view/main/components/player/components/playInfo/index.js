@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -14,7 +14,7 @@ export default {
   computed: {
     ...mapState('api', ['play']),
     ...mapState('user', ['info']),
-    ...mapState('c_playlist', ['playlist']),
+    ...mapGetters('c_playlist', ['playlist']),
     ...mapState('lyrics', ['show', 'lyrics', 'activeIndex']),
     percentage() {
       return this.duration.total ? (this.duration.cur / this.duration.total) * 100 : 0

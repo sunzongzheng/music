@@ -12,6 +12,7 @@ import './components'
 import { ipcRenderer, remote } from 'electron'
 import './filters'
 import config from '../../config/index'
+require('electron').webFrame.setZoomLevelLimits(1,1) // 禁用缩放
 
 Vue.use(ElementUI)
 Vue.use(VueContextMenu)

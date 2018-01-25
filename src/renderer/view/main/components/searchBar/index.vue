@@ -21,6 +21,8 @@
     </div>
 </template>
 <script>
+  import eventBus from '@/eventBus/searchResult'
+
   export default {
     data() {
       return {
@@ -41,13 +43,13 @@
         this.$store.commit('api/updateSearch', {
           keywords: this.key,
           loading: true,
-          result: []
         })
+        eventBus.searchResult = []
         this.$router.push({name: 'searchResult'})
         let data = await this.$api.searchSong(this.key)
         if (data.status) {
+          eventBus.searchResult = data.data
           this.$store.commit('api/updateSearch', {
-            result: data.data,
             loading: false
           })
         } else {

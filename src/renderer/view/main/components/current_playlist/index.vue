@@ -16,16 +16,17 @@
 </template>
 <script>
   import Clickoutside from 'element-ui/src/utils/clickoutside'
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
 
   export default {
     directives: {Clickoutside},
     computed: {
-      ...mapState('c_playlist', ['playlist', 'show']),
+      ...mapState('c_playlist', ['show']),
+      ...mapGetters('c_playlist', ['playlist']),
       ...mapState('api', ['play']),
       ...mapState('lyrics', {
         lyricShow: 'show'
-      })
+      }),
     },
     methods: {
       ...mapActions('api', {

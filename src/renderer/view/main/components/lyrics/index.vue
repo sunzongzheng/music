@@ -1,5 +1,5 @@
 <template>
-    <div :class="{[s.app]:true,[s.active]:show}">
+    <div :class="{[s.app]:true}">
         <div :class="s.wrap"></div>
         <div :class="s.cover" :style="style"></div>
         <div :class="s.control">
@@ -151,19 +151,13 @@
     .app {
         position: fixed;
         z-index: 5;
-        transform: translate3d(0, 100%, 0);
-        will-change: transform;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         padding-bottom: 60px;
+        will-change: transform;
         transition: all .4s;
-        &.active {
-            transition: all .4s;
-            transform: translate3d(0, 0, 0);
-            will-change: transform;
-        }
         .wrap,
         .cover,
         .main {

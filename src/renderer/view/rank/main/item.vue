@@ -54,7 +54,7 @@
       // 播放排行榜
       playList(list) {
         this.$store.dispatch('api/play', list[0])
-        this.$store.commit('c_playlist/update', list.splice(0, 30))
+        this.$store.commit('c_playlist/update', list)
       },
       // 跳转至排行榜详情
       go2RankList() {

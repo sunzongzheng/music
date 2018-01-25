@@ -58,5 +58,14 @@ export default {
         log: e
       }
     }
+  },
+  async getTopList(id) {
+    const data = await api.getTopList(id)
+    if (data.status) {
+      for (let item of data.data.list) {
+        item.source = 'netease'
+      }
+    }
+    return data
   }
 }

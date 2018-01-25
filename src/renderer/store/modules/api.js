@@ -6,7 +6,6 @@ export default {
     search: {
       keywords: '',
       loading: false,
-      result: []
     },
     play: {
       url: null,
