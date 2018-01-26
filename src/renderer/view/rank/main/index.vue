@@ -2,7 +2,11 @@
     <div :class="s.app">
         <p>网易云音乐排行榜</p>
         <ul :class="s.main">
-            <v-item v-for="(item,index) in list" :key="index" :id="index"></v-item>
+            <v-item v-for="(item,index) in list"
+                    :key="index"
+                    :id="index"
+                    :class="s.item"
+            ></v-item>
         </ul>
     </div>
 </template>
@@ -10,6 +14,7 @@
   import vItem from './item.vue'
 
   export default {
+    name: 'rankMain',
     components: {vItem},
     data() {
       return {
@@ -24,6 +29,7 @@
         .main {
             display: flex;
             flex-wrap: wrap;
+            margin-right: -20px;
         }
     }
 </style>

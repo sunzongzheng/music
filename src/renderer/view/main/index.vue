@@ -4,7 +4,9 @@
         <div :class="s.right">
             <search-bar :class="s.searchBar"></search-bar>
             <div :class="s.main">
-                <router-view></router-view>
+                <keep-alive include="rankMain,rankDetail">
+                    <router-view></router-view>
+                </keep-alive>
             </div>
         </div>
         <player :class="s.player"></player>

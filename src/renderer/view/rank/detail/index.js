@@ -2,6 +2,7 @@ import { mapActions } from 'vuex'
 import eventBus from '../eventBus'
 
 export default {
+  name: 'rankDetail',
   computed: {
     info() {
       return eventBus.rankInfo

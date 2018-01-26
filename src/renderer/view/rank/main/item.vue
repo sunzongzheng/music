@@ -1,23 +1,25 @@
 <template>
-    <li :class="s.item" v-if="info">
-        <div :class="s.cover">
-            {{info.name}}
-            <Icon type="play1" :class="s.play" @click.native="playList(info.list)"></Icon>
-        </div>
-        <div :class="s.img">
-            <img :src="info.list[0].album.cover"/>
-        </div>
-        <ul :class="s.songs" @click="go2RankList">
-            <li v-for="(song,index) in info.list.splice(0,3)" :class="s.song">
-                <span>{{index + 1}}</span>
-                <span>{{song.name}}</span>-
-                <span>
+    <li :class="s.item">
+        <template v-if="info">
+            <div :class="s.cover">
+                {{info.name}}
+                <Icon type="play1" :class="s.play" @click.native="playList(info.list)"></Icon>
+            </div>
+            <div :class="s.img">
+                <img :src="info.list[0].album.cover"/>
+            </div>
+            <ul :class="s.songs" @click="go2RankList">
+                <li v-for="(song,index) in info.list.splice(0,3)" :class="s.song">
+                    <span>{{index + 1}}</span>
+                    <span>{{song.name}}</span>-
+                    <span>
                     <template v-for="singer in song.artists">
                         {{singer.name}}
                     </template>
                 </span>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </template>
     </li>
 </template>
 <script>
@@ -70,10 +72,12 @@
 <style lang="scss" module="s">
     .item {
         display: inline-flex;
-        width: 50%;
+        width: calc(50% - 10px);
         height: 120px;
         margin-bottom: 20px;
         position: relative;
+        margin-right: 10px;
+        background-color: #f9f9f9;
         .cover {
             display: flex;
             justify-content: center;
@@ -140,6 +144,7 @@
             list-style: none;
             background-color: #FBFBFB;
             cursor: pointer;
+            width: calc(100% - 120px);
             &:hover {
                 background-color: #f2f2f2;
             }

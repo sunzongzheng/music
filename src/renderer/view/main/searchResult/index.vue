@@ -38,6 +38,7 @@
   import eventBus from '@/eventBus/searchResult'
 
   export default {
+    name: 'searchResult',
     filters: {
       minute(val) {
         return moment(val).format('mm:ss')
