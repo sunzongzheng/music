@@ -3,7 +3,7 @@
         <left-menu style="width: 200px;"></left-menu>
         <div :class="s.right">
             <search-bar :class="s.searchBar"></search-bar>
-            <div :class="s.main">
+            <div :class="s.main" ref="main">
                 <keep-alive include="rankMain,rankDetail">
                     <router-view></router-view>
                 </keep-alive>
@@ -38,6 +38,10 @@
     },
     computed: {
       ...mapState('lyrics', ['show']),
+    },
+    beforeRouteUpdate(to, from, next) {
+      this.$refs.main.scrollTop = 0
+      next()
     }
   }
 </script>

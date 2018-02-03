@@ -187,7 +187,10 @@
             height: calc(100% - 60px);
             .item {
                 padding: 8px 0;
+                transition: scale 1s;
                 &.active {
+                    transform: scale(1.2);
+                    transition: scale 1s;
                     color: #26B36C;
                 }
             }

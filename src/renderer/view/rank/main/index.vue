@@ -26,6 +26,7 @@
 <style lang="scss" module="s">
     .app {
         padding: 0 16px;
+        overflow: hidden;
         .main {
             display: flex;
             flex-wrap: wrap;

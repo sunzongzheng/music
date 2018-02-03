@@ -20,6 +20,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
  */
 let whiteListedModules = ['vue']
 
+const scss_loader = [
+  'vue-style-loader',
+  'css-loader',
+  'sass-loader',
+  {
+    loader: 'sass-resources-loader',
+    options: {
+      resources: [path.join(__dirname, '../src/renderer/assets/variable.scss')]
+    }
+  }
+]
 let rendererConfig = {
   devtool: '#cheap-module-eval-source-map',
   entry: {
@@ -51,6 +62,10 @@ let rendererConfig = {
         use: 'node-loader'
       },
       {
+        test: /\.scss$/,
+        use: scss_loader
+      },
+      {
         test: /\.vue$/,
         use: {
           loader: 'vue-loader',
@@ -58,7 +73,7 @@ let rendererConfig = {
             extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
-              scss: 'vue-style-loader!css-loader!sass-loader'
+              scss: scss_loader
             }
           }
         }

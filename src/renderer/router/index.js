@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -43,5 +43,14 @@ export default new Router({
         }
       ]
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return {x: 0, y: 0}
+  }
 })
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  next()
+})
+export default router
+
