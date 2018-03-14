@@ -27,7 +27,10 @@ const scss_loader = [
   {
     loader: 'sass-resources-loader',
     options: {
-      resources: [path.join(__dirname, '../src/renderer/assets/variable.scss')]
+      resources: [
+        path.join(__dirname, '../src/renderer/assets/variable.scss'),
+        path.join(__dirname, '../src/renderer/assets/mixin.scss')
+      ]
     }
   }
 ]
@@ -74,6 +77,10 @@ let rendererConfig = {
             loaders: {
               sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
               scss: scss_loader
+            },
+            cssModules: {
+              localIdentName: '[local]-[hash:base64:5]',
+              camelCase: true
             }
           }
         }

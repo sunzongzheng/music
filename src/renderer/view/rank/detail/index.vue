@@ -24,9 +24,11 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="歌手">
+            <el-table-column label="歌手" :class-name="s.singer">
                 <template scope="scope">
-                    {{scope.row.artists[0].name}}
+                    <template v-for="singer in scope.row.artists">
+                        {{singer.name}}
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑">
@@ -115,6 +117,13 @@
                     svg {
                         margin-left: 6px;
                         cursor: pointer;
+                    }
+                }
+            }
+            .singer {
+                :global {
+                    .cell {
+                        @include text-ellipsis;
                     }
                 }
             }

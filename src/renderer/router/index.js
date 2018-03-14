@@ -13,16 +13,17 @@ const router = new Router({
       },
       children: [
         {
-          path: '/searchResult',
+          path: '/searchResult', // 搜索结果
           name: 'searchResult',
           component: require('@/view/main/searchResult/index.vue')
-        }, {
-          path: '/playlist/:id',
+        },
+        {
+          path: '/playlist/:id', // 创建的歌单详情
           name: 'playlist',
           component: require('@/view/main/playlist/index.vue')
         },
         {
-          path: '/rank',
+          path: '/rank', // 排行列表
           name: 'rank',
           component: require('@/view/rank/index.vue'),
           redirect: {
@@ -40,7 +41,12 @@ const router = new Router({
               component: require('@/view/rank/detail/index.vue')
             }
           ]
-        }
+        },
+        {
+          path: '/song/:id/comments', // 歌曲评论
+          name: 'song.comments',
+          component: require('@/view/comments/index.vue')
+        },
       ]
     }
   ],

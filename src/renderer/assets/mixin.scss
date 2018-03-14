@@ -1,0 +1,10 @@
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin size($size) {
+  width: $size;
+  height: $size;
+}

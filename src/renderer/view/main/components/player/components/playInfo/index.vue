@@ -13,7 +13,11 @@
                 <template v-if="play.url">
                     <span :class="s.name">{{play.info.name}}</span>
                     <span>-</span>
-                    <span v-for="item in play.info.artists">{{item.name}} </span>
+                    <span :class="s.singer">
+                        <template v-for="item in play.info.artists">
+                            {{item.name}}
+                        </template>
+                    </span>
                 </template>
                 <template v-else>听你想听的音乐</template>
                 <!-- 时间 !-->
@@ -110,6 +114,12 @@
                 .name {
                     color: #333;
                     font-size: 13px;
+                }
+                .singer {
+                    display: inline-block;
+                    width: 300px;
+                    vertical-align: top;
+                    @include text-ellipsis;
                 }
                 .duration {
                     position: absolute;
