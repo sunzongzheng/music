@@ -55,6 +55,7 @@
         this.loading = true
         try {
           this.list = await this.$http.get(`playlist/${id}`)
+          console.log(JSON.stringify(this.list))
         } catch (e) {
           console.warn(e)
           this.$router.push('/')

@@ -1,12 +1,17 @@
 import { mapState } from 'vuex'
 import Velocity from 'velocity-animate'
+import { remote } from 'electron'
+import '@/assets/hidpi-canvas.min'
+
+const setLyric = remote.getGlobal('setLyric')
 
 export default {
   data() {
     return {
       userScrolling: false,
       timer: null,
-      showComment: false
+      showComment: false,
+      singleLyric: ''
     }
   },
   computed: {
@@ -39,7 +44,8 @@ export default {
       const main = this.$refs.main
       if (main && main.children[val]) {
         // 传递到状态栏
-        this.transfer(val)
+        // this.transfer(val)
+        this.singleLyric = this.lyrics[val][1]
         const need = main.children[val].offsetTop - main.offsetHeight / 2
         // 是否打开了歌词面板
         if (this.show) {
@@ -140,6 +146,62 @@ export default {
       this.$store.commit('lyrics/update', {
         show: false
       })
+    },
+    updateLyrics() {
+      const that = this
+      var Lyrics = (function () {
+        function Lyrics(text, width, height) {
+          this.canvas = document.createElement('canvas')
+          this.width = width
+          this.height = height
+          this.canvas.width = width
+          this.canvas.height = height
+          this.ctx = this.canvas.getContext('2d')
+          this.x = 0
+          this.fontSize = 14
+          this.speed = 1
+          this.ctx.font = this.fontSize + 'px sans-serif'
+          this.text = text
+        }
+
+        // 更新视图
+        Lyrics.prototype.update = function () {
+          this.x -= this.speed
+          this.text = that.singleLyric
+          if (this.x < 0) {
+            this.x = this.width
+          }
+        }
+        Lyrics.prototype.clear = function () {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        }
+        // 绘制
+        Lyrics.prototype.draw = function () {
+          this.ctx.fillText(this.text, this.x, this.fontSize)
+        }
+        Lyrics.prototype.toDataURL = function () {
+          return this.canvas.toDataURL()
+        }
+        Lyrics.prototype.run = function () {
+          var _this = this
+          window.setInterval(function () {
+            _this.update()
+            _this.clear()
+            _this.draw()
+            setLyric(
+              _this.toDataURL(),
+              _this.width,
+              _this.height
+            )
+          }, 1000 / 45)
+        }
+        return Lyrics
+      }())
+      var lyrics = new Lyrics(this.singleLyric, 185, 20)
+      lyrics.run()
     }
+  },
+  created() {
+    this.updateLyrics()
   }
 }

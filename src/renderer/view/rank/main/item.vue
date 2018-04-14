@@ -40,6 +40,7 @@
     methods: {
       async getInfo() {
         try {
+          console.log(this.$api)
           let {data} = await this.$api.getTopList(this.id.toString())
           data.list = data.list.map(item => {
             item.source = 'netease'

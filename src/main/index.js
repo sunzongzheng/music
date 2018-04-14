@@ -5,6 +5,8 @@ import ipcEvent from './ipcEvent'
 import g from './global'
 import { version } from '../../package.json'
 import axios from 'axios'
+import { spawn } from 'child_process'
+const Canvas = require('canvas-prebuilt')
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -48,27 +50,42 @@ function initialTray(mainWindow) {
 }
 
 function initMacTray(mainWindow) {
-  let next = new Tray(__static + '/images/next_16.png')
-  let play = new Tray(__static + '/images/play_16.png')
-  let text = new Tray(nativeImage.createEmpty())
-  text.setTitle('听想听的音乐')
-  play.setToolTip('播放/暂停')
-  next.setToolTip('下一首')
-  let pause = true
-  play.on('click', () => {
-    mainWindow.webContents.send('tray-control-pause', !pause)
-  })
-  next.on('click', () => {
-    mainWindow.webContents.send('tray-control-next')
-  })
-  ipcMain.on('tray-control-pause', (event, arg) => {
-    pause = arg
-    play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
-    next.setToolTip('下一首')
-  })
-  ipcMain.on('tray-control-lyrics', (event, arg) => {
-    text.setTitle(arg)
-  })
+  // const canvas = new Canvas(200, 200)
+  // const ctx = canvas.getContext('2d')
+  //
+  // ctx.font = '30px Impact'
+  // ctx.rotate(0.1)
+  // ctx.fillText('Awesome!', 50, 100)
+
+  // let next = new Tray(__static + '/images/next_16.png')
+  // let play = new Tray(__static + '/images/play_16.png')
+  // let text = new Tray(nativeImage.createEmpty())
+  // text.setTitle('听想听的音乐')
+  // play.setToolTip('播放/暂停')
+  // next.setToolTip('下一首')
+  // let pause = true
+  // play.on('click', () => {
+  //   mainWindow.webContents.send('tray-control-pause', !pause)
+  // })
+  // next.on('click', () => {
+  //   mainWindow.webContents.send('tray-control-next')
+  // })
+  // ipcMain.on('tray-control-pause', (event, arg) => {
+  //   pause = arg
+  //   play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
+  //   next.setToolTip('下一首')
+  // })
+  // ipcMain.on('tray-control-lyrics', (event, arg) => {
+  //   text.setTitle(arg)
+  // })
+  appTray = new Tray(nativeImage.createEmpty())
+  // appTray.setImage(nativeImage.createFromDataURL(canvas.toDataURL()))
+  global.setLyric = (data, width, height) => {
+    // appTray.setImage(nativeImage.createFromDataURL(data).resize({
+    //   width,
+    //   height
+    // }))
+  }
 }
 
 function createWindow() {
@@ -79,7 +96,10 @@ function createWindow() {
     fullscreenable: true,
     maximizable: false,
     width: 980,
-    frame: false
+    frame: false,
+    webPreferences: {
+      backgroundThrottling: false
+    }
   })
   ipcEvent.on(mainWindow)
   // mainWindow.webContents.openDevTools({detach: true})
