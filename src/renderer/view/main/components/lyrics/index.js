@@ -1,7 +1,6 @@
 import {mapState} from 'vuex'
 import Velocity from 'velocity-animate'
 import {remote} from 'electron'
-import '@/assets/hidpi-canvas.min'
 
 const setLyric = remote.getGlobal('setLyric')
 
