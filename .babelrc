@@ -4,7 +4,7 @@
     "test": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "node": 7
@@ -19,10 +19,10 @@
     "main": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
-              "node": 7
+              "node": "current"
             }
           }
         ]
@@ -31,20 +31,21 @@
     "renderer": {
       "presets": [
         [
-          "env"
+          "@babel/preset-env"
         ]
       ]
     },
     "web": {
       "presets": [
         [
-          "env"
+          "@babel/preset-env"
         ]
       ]
     }
   },
   "plugins": [
-    "transform-runtime",
-    "transform-object-rest-spread"
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties"
   ]
 }

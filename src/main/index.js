@@ -1,124 +1,134 @@
 'use strict'
 
-import { app, Menu, Tray, BrowserWindow, nativeImage, ipcMain } from 'electron'
+import {app, Menu, Tray, BrowserWindow, nativeImage, ipcMain} from 'electron'
 import ipcEvent from './ipcEvent'
 import g from './global'
-import { version } from '../../package.json'
+import {version} from '../../package.json'
 import axios from 'axios'
+import Lyric from "./lyrics"
+
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow
 let appTray // 声明在外层 保证不会被垃圾回收 解决windows托盘图标会消失的问题
 const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+    ? `http://localhost:9080`
+    : `file://${__dirname}/index.html`
 
 function initialTray(mainWindow) {
-  var trayIconPath = __static + '/images/logo_32.png'
-  appTray = new Tray(trayIconPath)
+    var trayIconPath = __static + '/images/logo_32.png'
+    appTray = new Tray(trayIconPath)
 
-  function toggleVisiable() {
-    var isVisible = mainWindow.isVisible()
-    if (isVisible) {
-      mainWindow.hide()
-    } else {
-      mainWindow.show()
+    function toggleVisiable() {
+        var isVisible = mainWindow.isVisible()
+        if (isVisible) {
+            mainWindow.hide()
+        } else {
+            mainWindow.show()
+        }
     }
-  }
 
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '退出',
-      click() {
-        app.quit()
-      }
-    }
-  ])
-  appTray.setToolTip('Player')
-  appTray.setContextMenu(contextMenu)
-  appTray.on('click', function handleClicked() {
-    toggleVisiable()
-  })
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: '退出',
+            click() {
+                app.quit()
+            }
+        }
+    ])
+    appTray.setToolTip('Player')
+    appTray.setContextMenu(contextMenu)
+    appTray.on('click', function handleClicked() {
+        toggleVisiable()
+    })
 }
 
+
 function initMacTray(mainWindow) {
-  let next = new Tray(__static + '/images/next_16.png')
-  let play = new Tray(__static + '/images/play_16.png')
-  let text = new Tray(nativeImage.createEmpty())
-  text.setTitle('听想听的音乐')
-  play.setToolTip('播放/暂停')
-  next.setToolTip('下一首')
-  let pause = true
-  play.on('click', () => {
-    mainWindow.webContents.send('tray-control-pause', !pause)
-  })
-  next.on('click', () => {
-    mainWindow.webContents.send('tray-control-next')
-  })
-  ipcMain.on('tray-control-pause', (event, arg) => {
-    pause = arg
-    play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
-    next.setToolTip('下一首')
-  })
-  ipcMain.on('tray-control-lyrics', (event, arg) => {
-    text.setTitle(arg)
-  })
+    // let next = new Tray(__static + '/images/next_16.png')
+    // let play = new Tray(__static + '/images/play_16.png')
+    // let text = new Tray(nativeImage.createEmpty())
+    // text.setTitle('听想听的音乐')
+    // play.setToolTip('播放/暂停')
+    // next.setToolTip('下一首')
+    // let pause = true
+    // play.on('click', () => {
+    //   mainWindow.webContents.send('tray-control-pause', !pause)
+    // })
+    // next.on('click', () => {
+    //   mainWindow.webContents.send('tray-control-next')
+    // })
+    // ipcMain.on('tray-control-pause', (event, arg) => {
+    //   pause = arg
+    //   play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
+    //   next.setToolTip('下一首')
+    // })
+    ipcMain.on('tray-control-lyrics', (event, arg) => {
+        console.log(arg)
+        lyric.updateLyric(arg)
+    })
+    appTray = new Tray(nativeImage.createEmpty())
+    const lyric = new Lyric(appTray)
 }
 
 function createWindow() {
-  mainWindow = new BrowserWindow({
-    height: 650,
-    useContentSize: true,
-    minimizable: true,
-    fullscreenable: true,
-    maximizable: false,
-    width: 980,
-    frame: false
-  })
-  ipcEvent.on(mainWindow)
-  // mainWindow.webContents.openDevTools({detach: true})
-  mainWindow.loadURL(winURL)
-  axios('https://raw.githubusercontent.com/sunzongzheng/music/master/package.json')
-    .then(({data}) => {
-      let cur_version = version.split('.')
-      data.version = data.version.split('.')
-      cur_version = parseInt(cur_version[0]) * 10000 + parseInt(cur_version[1]) * 100 + parseInt(cur_version[2])
-      data.version = parseInt(data.version[0]) * 10000 + parseInt(data.version[1]) * 100 + parseInt(data.version[2])
-      if (cur_version < data.version) {
-        mainWindow.webContents.send('version_new')
-      }
+    mainWindow = new BrowserWindow({
+        height: 650,
+        useContentSize: true,
+        minimizable: true,
+        fullscreenable: true,
+        maximizable: false,
+        width: 980,
+        frame: false,
+        webPreferences: {
+            backgroundThrottling: false
+        }
     })
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-  if (process.platform !== 'darwin') {
-    initialTray(mainWindow)
-  } else {
-    initMacTray(mainWindow)
-  }
-  g.init(mainWindow)
+    ipcEvent.on(mainWindow)
+    // mainWindow.webContents.openDevTools({detach: true})
+    mainWindow.loadURL(winURL)
+    axios('https://raw.githubusercontent.com/sunzongzheng/music/master/package.json')
+        .then(({data}) => {
+            let cur_version = version.split('.')
+            data.version = data.version.split('.')
+            cur_version = parseInt(cur_version[0]) * 10000 + parseInt(cur_version[1]) * 100 + parseInt(cur_version[2])
+            data.version = parseInt(data.version[0]) * 10000 + parseInt(data.version[1]) * 100 + parseInt(data.version[2])
+            if (cur_version < data.version) {
+                mainWindow.webContents.send('version_new')
+            }
+        })
+    mainWindow.on('closed', () => {
+        mainWindow = null
+    })
+    if (process.platform !== 'darwin') {
+        initialTray(mainWindow)
+    } else {
+        initMacTray(mainWindow)
+    }
+    g.init(mainWindow)
 }
 
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
 })
 
 app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  } else {
-    mainWindow.show()
-  }
+    if (mainWindow === null) {
+        createWindow()
+    } else {
+        mainWindow.show()
+    }
 })
 
 /**
