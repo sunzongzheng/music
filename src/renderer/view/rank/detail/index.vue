@@ -11,14 +11,14 @@
         </div>
         <el-table :data="info.list"
                   :class="s.table"
-                  :row-class-name="s.row"
+                  :row-class-name="rowClassName"
         >
             <el-table-column label="歌曲" :width="220">
                 <template scope="scope">
                     <div :class="s.nameItem">
                         <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
                         <div :class="s.songControl">
-                            <Icon type="item-play" @click.native="doPlay(scope.row)"></Icon>
+                            <Icon type="item-play" @click.native="doPlay(scope.row)" v-if="!scope.row.cp"></Icon>
                             <add-to-playlist :info="scope.row"></add-to-playlist>
                         </div>
                     </div>
@@ -100,6 +100,9 @@
                         display: inline-flex;
                         align-items: center;
                     }
+                }
+                &.disabled {
+                    opacity: .6;
                 }
             }
             .nameItem {
