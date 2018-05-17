@@ -3,16 +3,16 @@
         <a :class="s.title">搜索<span>{{search.keywords}}</span></a>
         <el-table :data="result"
                   :class="s.table"
-                  :row-class-name="s.row"
                   v-loading="search.loading"
                   element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
+                  :row-class-name="rowClassName"
         >
             <el-table-column label="歌曲" :width="220">
                 <template scope="scope">
                     <div :class="s.nameItem">
                         <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
                         <div :class="s.songControl">
-                            <Icon type="item-play" @click.native="doPlay(scope.row)"></Icon>
+                            <Icon type="item-play" @click.native="doPlay(scope.row)" v-if="!scope.row.cp"></Icon>
                             <add-to-playlist :info="scope.row"></add-to-playlist>
                         </div>
                     </div>
@@ -33,38 +33,47 @@
     </div>
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
-  import moment from 'moment'
-  import eventBus from '@/eventBus/searchResult'
+    import {mapState, mapActions} from 'vuex'
+    import moment from 'moment'
+    import eventBus from '@/eventBus/searchResult'
 
-  export default {
-    name: 'searchResult',
-    filters: {
-      minute(val) {
-        return moment(val).format('mm:ss')
-      }
-    },
-    computed: {
-      ...mapState('api', ['search']),
-      result() {
-        return eventBus.searchResult
-      }
-    },
-    methods: {
-      ...mapActions('api', ['play']),
-      doPlay(item) {
-        this.$store.commit('c_playlist/update', [])
-        this.play(item)
-      }
-    },
-    beforeRouteEnter(to, from, next) {
-      if (Vue.store.state.api.search.keywords.length > 0) {
-        next()
-      } else {
-        Vue.router.push('/')
-      }
+    export default {
+        name: 'searchResult',
+        filters: {
+            minute(val) {
+                return moment(val).format('mm:ss')
+            }
+        },
+        computed: {
+            ...mapState('api', ['search']),
+            result() {
+                return eventBus.searchResult
+            }
+        },
+        methods: {
+            ...mapActions('api', ['play']),
+            doPlay(item) {
+                this.$store.commit('c_playlist/update', [])
+                this.play(item)
+            },
+            rowClassName({row, rowIndex}) {
+                const rs = [
+                    this.s.row
+                ]
+                if (row.cp) {
+                    rs.push(this.s.disabled)
+                }
+                return rs.join(' ')
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            if (Vue.store.state.api.search.keywords.length > 0) {
+                next()
+            } else {
+                Vue.router.push('/')
+            }
+        }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .main {
@@ -89,6 +98,9 @@
                         display: inline-flex;
                         align-items: center;
                     }
+                }
+                &.disabled {
+                    opacity: .6;
                 }
             }
             .nameItem {
