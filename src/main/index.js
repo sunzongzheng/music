@@ -74,11 +74,13 @@ function initMacTray(mainWindow) {
         backgroundWindow.webContents.send("tray-control-lyrics", arg)
     })
     appTray = new Tray(nativeImage.createEmpty())
+    appTray.setHighlightMode('never')
     global.setTray = function (img, width, height) {
-        appTray.setImage(nativeImage.createFromDataURL(img).resize({
+        const Image = nativeImage.createFromDataURL(img).resize({
             width,
             height
-        }))
+        })
+        appTray.setImage(Image)
     }
 }
 

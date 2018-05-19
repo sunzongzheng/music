@@ -33,41 +33,16 @@ export default {
         },
     },
     watch: {
-        'play.info'() {
-            console.log('change')
+        lyrics() {
             this.$nextTick(() => {
                 if (this.$refs.main) {
                     this.$refs.main.scrollTop = 0
                 }
             })
+            this.handleLyric()
         },
-        'activeIndex'(val) {
-            const main = this.$refs.main
-            if (main && main.children[val]) {
-                // 传递到状态栏
-                this.transfer(val)
-                this.singleLyric = this.lyrics[val][1]
-                const need = main.children[val].offsetTop - main.offsetHeight / 2
-                // 是否打开了歌词面板
-                if (this.show) {
-                    // 判断是否用户处于滚动浏览中
-                    if (!this.userScrolling) {
-                        if (need !== main.scrollTop) {
-                            Velocity(main, 'stop')
-                            Velocity(main, 'scroll', {
-                                container: main,
-                                duration: 300,
-                                offset: need - main.scrollTop
-                            })
-                        }
-                    }
-                } else { // 未打开的话则不用缓动歌词
-                    Velocity(main, 'stop')
-                    this.$nextTick(() => {
-                        main.scrollTop = need
-                    })
-                }
-            }
+        activeIndex() {
+            this.handleLyric()
         }
     },
     methods: {
@@ -119,6 +94,34 @@ export default {
             this.$store.commit('lyrics/update', {
                 show: false
             })
+        },
+        // 处理歌词
+        handleLyric() {
+            const main = this.$refs.main
+            if (main && main.children[this.activeIndex]) {
+                // 传递到状态栏
+                this.transfer(this.activeIndex)
+                const need = main.children[this.activeIndex].offsetTop - main.offsetHeight / 2
+                // 是否打开了歌词面板
+                if (this.show) {
+                    // 判断是否用户处于滚动浏览中
+                    if (!this.userScrolling) {
+                        if (need !== main.scrollTop) {
+                            Velocity(main, 'stop')
+                            Velocity(main, 'scroll', {
+                                container: main,
+                                duration: 300,
+                                offset: need - main.scrollTop
+                            })
+                        }
+                    }
+                } else { // 未打开的话则不用缓动歌词
+                    Velocity(main, 'stop')
+                    this.$nextTick(() => {
+                        main.scrollTop = need
+                    })
+                }
+            }
         }
     }
 }
