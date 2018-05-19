@@ -5,7 +5,6 @@ import ipcEvent from './ipcEvent'
 import g from './global'
 import {version} from '../../package.json'
 import axios from 'axios'
-import Lyric from "./lyrics"
 
 
 /**
@@ -17,6 +16,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+let backgroundWindow
 let appTray // 声明在外层 保证不会被垃圾回收 解决windows托盘图标会消失的问题
 const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
@@ -71,11 +71,15 @@ function initMacTray(mainWindow) {
     //   next.setToolTip('下一首')
     // })
     ipcMain.on('tray-control-lyrics', (event, arg) => {
-        console.log(arg)
-        lyric.updateLyric(arg)
+        backgroundWindow.webContents.send("tray-control-lyrics", arg)
     })
     appTray = new Tray(nativeImage.createEmpty())
-    const lyric = new Lyric(appTray)
+    global.setTray = function (img, width, height) {
+        appTray.setImage(nativeImage.createFromDataURL(img).resize({
+            width,
+            height
+        }))
+    }
 }
 
 function createWindow() {
@@ -113,6 +117,23 @@ function createWindow() {
         initMacTray(mainWindow)
     }
     g.init(mainWindow)
+    createBackgroundWindow()
+}
+
+// 创建子渲染进程
+function createBackgroundWindow() {
+    backgroundWindow = new BrowserWindow({
+        height: 420,
+        useContentSize: true,
+        minimizable: true,
+        fullscreenable: false,
+        maximizable: false,
+        width: 300,
+        webPreferences: {
+            backgroundThrottling: false
+        }
+    })
+    backgroundWindow.loadURL(`file://${process.cwd()}/src/renderer/backgroundWindow.html`)
 }
 
 app.on('ready', createWindow)

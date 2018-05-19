@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    const {ipcRenderer} = require('electron')
+    const Lyric = require('./lyrics')
+
+    Lyric.init()
+    ipcRenderer.on('tray-control-lyrics', (event, arg) => {
+        Lyric.updateLyric(arg)
+    })
+</script>
+</body>
+</html>

@@ -1,32 +1,31 @@
-import {createCanvas} from 'canvas'
-import {nativeImage} from "electron"
+const {nativeImage, remote} = require("electron")
+const setTray = remote.getGlobal('setTray')
 
-export default class Lyric {
-    canvas = null
-    ctx = null
-    devicePixelRatio = 2
-    w = 175
-    h = 18
-    fontSize = 14
-    lyric = {
+module.exports = {
+    canvas: null,
+    ctx: null,
+    devicePixelRatio: 2,
+    w: 175,
+    h: 18,
+    fontSize: 14,
+    lyric: {
         text: '听你想听的音乐',
         width: 0,
         time: 0 // 单句歌词的播放时间
-    }
-    x = 0 // 移动的距离
-    timer = null
-    frame = 60
-    tray = null
+    },
+    x: 0, // 移动的距离
+    timer: null,
+    frame: 60,
 
-    constructor(tray) {
-        this.canvas = createCanvas(this.w * this.devicePixelRatio, this.h * this.devicePixelRatio)
+    init() {
+        this.canvas = document.createElement('canvas')
+        this.canvas.width = this.w * this.devicePixelRatio
+        this.canvas.height = this.h * this.devicePixelRatio
         this.ctx = this.canvas.getContext('2d')
         this.ctx.font = `${this.fontSize * this.devicePixelRatio}px "microsoft yahei", sans-serif`
         this.ctx.textBaseline = 'middle'
-        this.tray = tray
         this.updateLyric()
-    }
-
+    },
     updateLyric(arg = this.lyric) {
         clearInterval(this.timer)
         this.x = 0
@@ -58,8 +57,7 @@ export default class Lyric {
         } else {
             this.draw()
         }
-    }
-
+    },
     move() {
         // 计算文字超出canvas的部分
         const more = this.lyric.width - this.canvas.width
@@ -73,8 +71,7 @@ export default class Lyric {
             const distance = more / Math.max(this.lyric.time - 2000, scrollTime) * this.frame
             this.x -= distance * this.devicePixelRatio
         }
-    }
-
+    },
     draw() {
         let x
         if (this.lyric.width <= this.canvas.width) {
@@ -85,10 +82,10 @@ export default class Lyric {
             this.ctx.textAlign = 'left'
         }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        this.ctx.fillText(this.lyric.text, x, this.canvas.height / 2)
-        this.tray.setImage(this.getImage())
-    }
-
+        this.ctx.fillText(this.lyric.text, x, this.canvas.height / 2 + 2)
+        document.body.appendChild(this.canvas)
+        setTray(this.canvas.toDataURL(), this.w, this.h)
+    },
     getImage() {
         return nativeImage.createFromDataURL(this.canvas.toDataURL()).resize({
             width: this.w,

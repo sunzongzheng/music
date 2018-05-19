@@ -65,7 +65,6 @@
   "dependencies": {
     "@xunlei/vue-context-menu": "^1.0.2",
     "axios": "^0.16.1",
-    "canvas": "^2.0.0-alpha.12",
     "element-ui": "2.0.0",
     "fs": "0.0.1-security",
     "install": "^0.10.1",
