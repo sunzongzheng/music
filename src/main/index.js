@@ -123,12 +123,13 @@ function createWindow() {
 // 创建子渲染进程
 function createBackgroundWindow() {
     backgroundWindow = new BrowserWindow({
-        height: 420,
+        height: 0,
         useContentSize: true,
         minimizable: true,
         fullscreenable: false,
         maximizable: false,
-        width: 300,
+        width: 0,
+        show: false,
         webPreferences: {
             backgroundThrottling: false
         }

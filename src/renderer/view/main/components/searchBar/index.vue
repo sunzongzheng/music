@@ -21,42 +21,43 @@
     </div>
 </template>
 <script>
-  import eventBus from '@/eventBus/searchResult'
+    import eventBus from '@/eventBus/searchResult'
 
-  export default {
-    data() {
-      return {
-        key: '',
-        ime: false
-      }
-    },
-    computed: {
-      empty() {
-        return this.key.length < 1
-      }
-    },
-    methods: {
-      async search() {
-        if (this.empty) {
-          return
+    export default {
+        data() {
+            return {
+                key: '',
+                ime: false
+            }
+        },
+        computed: {
+            empty() {
+                return this.key.length < 1
+            }
+        },
+        methods: {
+            async search() {
+                if (this.empty) {
+                    return
+                }
+                this.$store.commit('api/updateSearch', {
+                    keywords: this.key,
+                    loading: true,
+                })
+                eventBus.searchResult = []
+                this.$router.push({name: 'searchResult'})
+                let data = await this.$api.searchSong(this.key)
+                if (data.status) {
+                    eventBus.searchResult = data.data
+                    this.$store.commit('api/updateSearch', {
+                        loading: false
+                    })
+                } else {
+                    console.warn(data)
+                    this.$message.warning(data.msg)
+                }
+            }
         }
-        this.$store.commit('api/updateSearch', {
-          keywords: this.key,
-          loading: true,
-        })
-        eventBus.searchResult = []
-        this.$router.push({name: 'searchResult'})
-        let data = await this.$api.searchSong(this.key)
-        if (data.status) {
-          eventBus.searchResult = data.data
-          this.$store.commit('api/updateSearch', {
-            loading: false
-          })
-        } else {
-          this.$message.warning(e.msg)
-        }
-      }
     }
-  }
 </script>
 <style lang="scss" module="s" src="./index.scss"></style>

@@ -83,7 +83,6 @@ module.exports = {
         }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillText(this.lyric.text, x, this.canvas.height / 2 + 2)
-        document.body.appendChild(this.canvas)
         setTray(this.canvas.toDataURL(), this.w, this.h)
     },
     getImage() {
