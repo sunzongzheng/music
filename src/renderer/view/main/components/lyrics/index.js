@@ -1,8 +1,5 @@
 import {mapState} from 'vuex'
 import Velocity from 'velocity-animate'
-import {remote} from 'electron'
-
-const setLyric = remote.getGlobal('setLyric')
 
 export default {
     data() {
@@ -65,7 +62,7 @@ export default {
         op(val) {
             this.$store.commit('windowStatus/update', val)
         },
-        async transfer(index) {
+        transfer(index) {
             const lyric = this.lyrics
             const singleLyric = lyric[index][1] // 单句歌词
             // 先计算当前句 和 下一句 的时间差
@@ -75,7 +72,7 @@ export default {
             } else {
                 time = lyric[index + 1][0] - lyric[index][0]
             }
-            return this.$ipc.send('tray-control-lyrics', {
+            this.$ipc.send('tray-control-lyrics', {
                 text: singleLyric,
                 time
             })

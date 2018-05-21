@@ -52,29 +52,30 @@ function initialTray(mainWindow) {
 
 
 function initMacTray(mainWindow) {
-    // let next = new Tray(__static + '/images/next_16.png')
-    // let play = new Tray(__static + '/images/play_16.png')
-    // let text = new Tray(nativeImage.createEmpty())
-    // text.setTitle('听想听的音乐')
-    // play.setToolTip('播放/暂停')
-    // next.setToolTip('下一首')
-    // let pause = true
-    // play.on('click', () => {
-    //   mainWindow.webContents.send('tray-control-pause', !pause)
-    // })
-    // next.on('click', () => {
-    //   mainWindow.webContents.send('tray-control-next')
-    // })
-    // ipcMain.on('tray-control-pause', (event, arg) => {
-    //   pause = arg
-    //   play.setImage(__static + `/images/${arg ? 'play' : 'pause'}_16.png`)
-    //   next.setToolTip('下一首')
-    // })
+    // 更新歌词
     ipcMain.on('tray-control-lyrics', (event, arg) => {
         backgroundWindow.webContents.send("tray-control-lyrics", arg)
     })
+    // 上一曲
+    ipcMain.on('tray-control-last', () => {
+        mainWindow.webContents.send("tray-control-last")
+    })
+    // 播放/暂停
+    ipcMain.on('tray-control-pause', (event, arg) => {
+        mainWindow.webContents.send('tray-control-pause', arg)
+    })
+    ipcMain.on('tray-control-pause-main', (event, arg) => {
+        backgroundWindow.webContents.send('tray-control-pause-main', arg)
+    })
+    // 下一曲
+    ipcMain.on('tray-control-next', () => {
+        mainWindow.webContents.send("tray-control-next")
+    })
     appTray = new Tray(nativeImage.createEmpty())
     appTray.setHighlightMode('never')
+    appTray.on('click', (event, bounds, position) => {
+        backgroundWindow.webContents.send('tray-click', {event, bounds, position})
+    })
     global.setTray = function (img, width, height) {
         const Image = nativeImage.createFromDataURL(img).resize({
             width,
@@ -124,19 +125,22 @@ function createWindow() {
 
 // 创建子渲染进程
 function createBackgroundWindow() {
+    const winURL = process.env.NODE_ENV === 'development'
+        ? `http://localhost:9081/background.html`
+        : `file://${__dirname}/background.html`
     backgroundWindow = new BrowserWindow({
-        height: 0,
+        height: 650,
         useContentSize: true,
         minimizable: true,
         fullscreenable: false,
         maximizable: false,
-        width: 0,
+        width: 980,
         show: false,
         webPreferences: {
             backgroundThrottling: false
         }
     })
-    backgroundWindow.loadURL(`file://${process.cwd()}/src/renderer/backgroundWindow.html`)
+    backgroundWindow.loadURL(winURL)
 }
 
 app.on('ready', createWindow)

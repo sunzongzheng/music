@@ -1,31 +1,24 @@
-const {nativeImage, remote} = require("electron")
-const setTray = remote.getGlobal('setTray')
+import Canvas from './canvas.class'
+import eventBus from './eventBus'
 
-module.exports = {
-    canvas: null,
-    ctx: null,
-    devicePixelRatio: 2,
-    w: 175,
-    h: 18,
-    fontSize: 14,
-    lyric: {
+export default class Lyric extends Canvas {
+    fontSize = 14
+    lyric = {
         text: '听你想听的音乐',
         width: 0,
         time: 0 // 单句歌词的播放时间
-    },
-    x: 0, // 移动的距离
-    timer: null,
-    frame: 60,
+    }
+    x = 0 // 移动的距离
+    timer = null
+    frame = 60
 
-    init() {
-        this.canvas = document.createElement('canvas')
-        this.canvas.width = this.w * this.devicePixelRatio
-        this.canvas.height = this.h * this.devicePixelRatio
-        this.ctx = this.canvas.getContext('2d')
+    constructor() {
+        super({devicePixelRatio: 2})
         this.ctx.font = `${this.fontSize * this.devicePixelRatio}px "microsoft yahei", sans-serif`
         this.ctx.textBaseline = 'middle'
         this.updateLyric()
-    },
+    }
+
     updateLyric(arg = this.lyric) {
         clearInterval(this.timer)
         this.x = 0
@@ -57,7 +50,8 @@ module.exports = {
         } else {
             this.draw()
         }
-    },
+    }
+
     move() {
         // 计算文字超出canvas的部分
         const more = this.lyric.width - this.canvas.width
@@ -70,8 +64,11 @@ module.exports = {
             // 根据时间 计算出每帧需要移动的距离
             const distance = more / Math.max(this.lyric.time - 2000, scrollTime) * this.frame
             this.x -= distance * this.devicePixelRatio
+        } else {
+            clearInterval(this.timer)
         }
-    },
+    }
+
     draw() {
         let x
         if (this.lyric.width <= this.canvas.width) {
@@ -83,12 +80,7 @@ module.exports = {
         }
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillText(this.lyric.text, x, this.canvas.height / 2 + 2)
-        setTray(this.canvas.toDataURL(), this.w, this.h)
-    },
-    getImage() {
-        return nativeImage.createFromDataURL(this.canvas.toDataURL()).resize({
-            width: this.w,
-            height: this.h
-        })
+        // document.body.appendChild(this.canvas)
+        eventBus.$emit('lyric-draw')
     }
 }

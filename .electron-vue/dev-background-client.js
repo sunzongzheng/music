@@ -1,4 +1,4 @@
-const hotClient = require('webpack-hot-middleware/client?name=renderer&noInfo=true&reload=true&path=/__webpack_hmr_renderer')
+const hotClient = require('webpack-hot-middleware/client?name=background&noInfo=true&reload=true&path=/__webpack_hmr_background')
 
 hotClient.subscribe(event => {
   /**
