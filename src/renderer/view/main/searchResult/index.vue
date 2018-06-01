@@ -26,7 +26,7 @@
             <el-table-column prop="album.name" label="专辑"></el-table-column>
             <el-table-column label="来源">
                 <template scope="scope">
-                    {{scope.row.source | source}}
+                    {{scope.row.vendor | source}}
                 </template>
             </el-table-column>
         </el-table>

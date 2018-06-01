@@ -10,56 +10,51 @@
     </div>
 </template>
 <script>
-  import { mapState } from 'vuex'
+    import {mapState} from 'vuex'
 
-  export default {
-    props: {
-      placement: {
-        type: String,
-        default: 'top'
-      },
-      icon: {
-        type: String,
-        default: 'item-add'
-      },
-      info: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
-      return {
-        show: false
-      }
-    },
-    computed: {
-      ...mapState('playlist', ['playlist']),
-      ...mapState('api', ['play'])
-    },
-    methods: {
-      async collect (id) {
-        console.log(this.info)
-        this.show = false
-        try {
-          await this.$http.post(`/playlist/${id}`, {
-            id: this.info.id,
-            vendor: this.info.source,
-            sourceData: this.info
-          })
-          this.$message({
-            message: '添加成功',
-            type: 'success'
-          })
-        } catch (e) {
-          console.warn(e)
-          this.$message({
-            message: e.data.msg,
-            type: 'warning'
-          })
+    export default {
+        props: {
+            placement: {
+                type: String,
+                default: 'top'
+            },
+            icon: {
+                type: String,
+                default: 'item-add'
+            },
+            info: {
+                type: Object,
+                required: true
+            }
+        },
+        data() {
+            return {
+                show: false
+            }
+        },
+        computed: {
+            ...mapState('playlist', ['playlist']),
+            ...mapState('api', ['play'])
+        },
+        methods: {
+            async collect(id) {
+                this.show = false
+                await this.$http.post(`/playlist/${id}`, {
+                    id: this.info.songId,
+                    vendor: this.info.vendor,
+                    commentId: this.info.commentId,
+                    name: this.info.name,
+                    album: this.info.album,
+                    artists: this.info.artists,
+                    cp: this.info.cp
+                })
+                this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                })
+            }
         }
-      }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .app {

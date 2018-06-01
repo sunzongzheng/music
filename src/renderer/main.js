@@ -9,10 +9,11 @@ import router from './router'
 import store from './store'
 import './assets/iconfont'
 import './components'
-import { ipcRenderer, remote } from 'electron'
+import {ipcRenderer, remote} from 'electron'
 import './filters'
 import config from '../../config/index'
-require('electron').webFrame.setVisualZoomLevelLimits(1,1) // 禁用缩放
+
+require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
 Vue.use(ElementUI)
 Vue.use(VueContextMenu)
@@ -22,28 +23,33 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
 // http instance
 const instance = axios.create({
-  baseURL: config.api,
-  timeout: 30000
+    baseURL: config.api,
+    timeout: 30000
 })
 instance.interceptors.request.use(function (config) {
-  const token = localStorage.token
-  if (token) {
-    config.headers.accesstoken = token
-  }
-  return config
+    const token = localStorage.token
+    if (token) {
+        config.headers.accesstoken = token
+    }
+    return config
 }, function (error) {
-  return Promise.reject(error)
+    return Promise.reject(error)
 })
-instance.interceptors.response.use(function (response) {
-  if (response.status < 400 && response.data.status) {
-    return response.data.data
-  } else {
-    return Promise.reject(response)
-  }
-}, function (error) {
-  // Do something with response error
-  return Promise.reject(error)
-})
+instance.interceptors.response.use(
+    response => response.data,
+    e => {
+        if (e.response) {
+            const data = e.response.data
+            if(e.response.status === 401) {
+                localStorage.removeItem('token')
+            }else if (data.msg) {
+                Vue.$message.warning(data.msg)
+            }
+        } else {
+            Vue.$message.warning('请检查网络连接')
+        }
+        return Promise.reject(e)
+    })
 Vue.http = Vue.prototype.$http = instance
 
 Vue.clientApi = remote.getGlobal('clientApi')
@@ -64,8 +70,8 @@ Vue.$message = ElementUI.Message
 
 /* eslint-disable no-new */
 new Vue({
-  components: {App},
-  router,
-  store,
-  template: '<App/>'
+    components: {App},
+    router,
+    store,
+    template: '<App/>'
 }).$mount('#app')

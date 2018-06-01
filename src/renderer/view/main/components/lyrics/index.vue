@@ -17,7 +17,7 @@
             </li>
         </ul>
         <div :class="s.main" :style="mainStyle" v-else>
-            <span :class="[s.item,s.nolyric,s.active]">暂无歌词信息...</span>
+            <span :class="[s.item,s.nolyric,s.active]">{{placeholder}}</span>
         </div>
         <span :class="s.commentIcon" @click="go2Comments">评</span>
         <!--<transition :enter-class="s.slideLeft_enter"-->

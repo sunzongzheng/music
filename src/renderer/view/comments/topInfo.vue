@@ -1,6 +1,6 @@
 <template>
     <div :class="s.topInfo" v-if="info.id">
-        <img :src="info.album.cover" :class="s.cover"/>
+        <img :src="info | defaultAlbum" :class="s.cover"/>
         <div :class="s.right">
             <p :class="s.name">{{info.name}}</p>
             <div :class="s.infoItem" style="margin-top: 12px;">

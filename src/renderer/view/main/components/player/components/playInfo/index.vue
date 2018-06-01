@@ -2,7 +2,7 @@
     <div :class="{[s.info]:true,[s.lyric]:show}">
         <!-- 专辑头像 !-->
         <div :class="{[s.album]:true,[s.playing]:play.info}">
-            <img :src="(play.info?play.info.album.cover:'') | defaultAlbum"/>
+            <img :src="play.info | defaultAlbum"/>
             <div :class="s.cover" @click="toggleLyrics">
                 <Icon type="shuangjiantou"></Icon>
             </div>
@@ -34,8 +34,8 @@
             <Icon type="add" :class="s.icon" v-else :disabled="true"></Icon>
         </template>
         <Icon v-else type="add" :class="s.icon" @click.native="$ipc.send('login')"></Icon>
-        <!-- 下载 !-->
-        <Icon type="download" :class="s.icon" :disabled="true"></Icon>
+        <!-- 分享 !-->
+        <Icon type="share" :class="s.icon" @click="showShareWindow" :disabled="!play.info"></Icon>
         <!-- 打开列表 !-->
         <Icon type="musiclist" :class="s.icon" style="margin-top: 2px;" :disabled="!playlist.length"
               @click.native="toggleList"></Icon>
@@ -117,7 +117,7 @@
                 }
                 .singer {
                     display: inline-block;
-                    width: 300px;
+                    max-width: 300px;
                     vertical-align: top;
                     @include text-ellipsis;
                 }

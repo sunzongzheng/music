@@ -5,7 +5,7 @@
              @click="doPlay(item)"
         >
             <div :class="s.album_wrap">
-                <img :class="s.album" :src="item.album.cover | defaultAlbum"/>
+                <img :class="s.album" :src="item | defaultAlbum"/>
             </div>
             <div :class="s.main">
                 <span :class="s.name">{{item.name}}</span>

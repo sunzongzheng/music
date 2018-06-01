@@ -50,11 +50,11 @@ export default {
                 info,
                 pause: true
             })
-            let data = await Vue.api.getSongUrl(info.source, info.id)
+            let data = await Vue.api.getSongUrl(info.vendor, info.songId)
             if (data.status) {
                 Vue.store.dispatch('lyrics/init', {
-                    vendor: info.source,
-                    id: info.id
+                    vendor: info.vendor,
+                    id: info.songId
                 })
                 let url = data.data.url
                 if (url) {

@@ -6,7 +6,7 @@
                 <Icon type="play1" :class="s.play" @click.native="playList(info.list)"></Icon>
             </div>
             <div :class="s.img">
-                <img :src="info.list[0].album.cover"/>
+                <img :src="info.list[0] | defaultAlbum"/>
             </div>
             <ul :class="s.songs" @click="go2RankList">
                 <li v-for="(song,index) in info.list.splice(0,3)" :class="s.song">
@@ -23,51 +23,45 @@
     </li>
 </template>
 <script>
-  import eventBus from '../eventBus'
+    import eventBus from '../eventBus'
 
-  export default {
-    props: {
-      id: {
-        type: Number,
-        required: true
-      }
-    },
-    data() {
-      return {
-        info: null
-      }
-    },
-    methods: {
-      async getInfo() {
-        try {
-          let {data} = await this.$api.getTopList(this.id.toString())
-          data.list = data.list.map(item => {
-            item.source = 'netease'
-            if (item.album.cover) {
-              item.album.cover += '?param=140y140'
+    export default {
+        name: 'rankMainItem',
+        props: {
+            id: {
+                type: Number,
+                required: true
             }
-            return item
-          })
-          this.info = data
-        } catch (e) {
-          console.warn(e)
+        },
+        data() {
+            return {
+                info: null
+            }
+        },
+        methods: {
+            async getInfo() {
+                try {
+                    const {data} = await this.$api.getTopList(this.id.toString())
+                    this.info = data
+                } catch (e) {
+                    console.warn(e)
+                }
+            },
+            // 播放排行榜
+            playList(list) {
+                this.$store.dispatch('api/play', list[0])
+                this.$store.commit('c_playlist/update', list)
+            },
+            // 跳转至排行榜详情
+            go2RankList() {
+                eventBus.rankInfo = this.info
+                this.$router.push({name: 'rank.detail'})
+            }
+        },
+        created() {
+            this.getInfo()
         }
-      },
-      // 播放排行榜
-      playList(list) {
-        this.$store.dispatch('api/play', list[0])
-        this.$store.commit('c_playlist/update', list)
-      },
-      // 跳转至排行榜详情
-      go2RankList() {
-        eventBus.rankInfo = this.info
-        this.$router.push({name: 'rank.detail'})
-      }
-    },
-    created() {
-      this.getInfo()
     }
-  }
 </script>
 <style lang="scss" module="s">
     .item {

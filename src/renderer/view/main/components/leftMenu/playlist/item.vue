@@ -17,65 +17,55 @@
     </li>
 </template>
 <script>
-  export default {
-    props: {
-      info: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
-      return {
-        contextMenuVisible: false,
-        modify: false,
-        modifyName: this.info.name
-      }
-    },
-    methods: {
-      rename () {
-        this.modifyName = this.info.name
-        this.modify = true
-        this.$nextTick(() => {
-          this.$refs.input.focus()
-        })
-        this.contextMenuVisible = false
-      },
-      async save () {
-        try {
-          await this.$http.put(`/playlist/${this.info.id}`, {
-            name: this.modifyName
-          })
-          await this.$store.dispatch('playlist/init')
-          this.modify = false
-          this.$message({
-            message: '修改成功',
-            type: 'success'
-          })
-        } catch (e) {
-          this.$message({
-            message: e.msg,
-            type: 'warning'
-          })
+    export default {
+        props: {
+            info: {
+                type: Object,
+                required: true
+            }
+        },
+        data() {
+            return {
+                contextMenuVisible: false,
+                modify: false,
+                modifyName: this.info.name
+            }
+        },
+        methods: {
+            rename() {
+                this.modifyName = this.info.name
+                this.modify = true
+                this.$nextTick(() => {
+                    this.$refs.input.focus()
+                })
+                this.contextMenuVisible = false
+            },
+            async save() {
+                await this.$http.put(`/playlist/${this.info.id}`, {
+                    name: this.modifyName
+                })
+                await this.$store.dispatch('playlist/init')
+                this.modify = false
+                this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                })
+            },
+            async del() {
+                await this.$http.delete('/playlist', {
+                    params: {
+                        id: this.info.id
+                    }
+                })
+                await this.$store.dispatch('playlist/init')
+                this.contextMenuVisible = false
+                this.$message({
+                    message: '删除成功',
+                    type: 'success'
+                })
+            }
         }
-      },
-      async del () {
-        try {
-          await this.$http.delete(`/playlist/${this.info.id}`)
-          await this.$store.dispatch('playlist/init')
-          this.contextMenuVisible = false
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-        } catch (e) {
-          this.$message({
-            message: e.msg,
-            type: 'warning'
-          })
-        }
-      }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .li {

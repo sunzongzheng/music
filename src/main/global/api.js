@@ -38,7 +38,8 @@ export default {
                             } else {
                                 result.push({
                                     ...cur,
-                                    source: j
+                                    songId: cur.id,
+                                    vendor: j
                                 })
                             }
                         }
@@ -64,7 +65,8 @@ export default {
         const data = await api.getTopList(id)
         if (data.status) {
             for (let item of data.data.list) {
-                item.source = 'netease'
+                item.vendor = 'netease'
+                item.songId = item.id
             }
         }
         return data

@@ -7,7 +7,8 @@ export default {
             userScrolling: false,
             timer: null,
             showComment: false,
-            singleLyric: ''
+            singleLyric: '',
+            placeholder: '暂无歌词信息...'
         }
     },
     computed: {
@@ -17,7 +18,7 @@ export default {
         style() {
             if (this.play.info) {
                 return {
-                    'background-image': `url(${this.play.info.album.cover})`
+                    'background-image': `url(${Vue.filter('defaultAlbum')(this.play.info)})`
                 }
             } else {
                 return {}
@@ -30,9 +31,11 @@ export default {
         },
     },
     watch: {
-        lyrics() {
+        lyrics(val) {
             this.$nextTick(() => {
                 if (this.$refs.main) {
+                    Velocity(this.$refs.main, 'stop')
+                    window.clearTimeout(this.timer)
                     this.$refs.main.scrollTop = 0
                 }
             })
@@ -63,8 +66,16 @@ export default {
             this.$store.commit('windowStatus/update', val)
         },
         transfer(index) {
+            if (this.lyrics.length < 1) {
+                this.$ipc.send('tray-control-lyrics', {
+                    text: this.placeholder,
+                    time: 0
+                })
+                return
+            }
             const lyric = this.lyrics
             const singleLyric = lyric[index][1] // 单句歌词
+            if(!singleLyric) return
             // 先计算当前句 和 下一句 的时间差
             let time = 0
             if (index === lyric.length - 1) { // 如果是最后一行 就默认10s吧，没有可靠的逻辑
@@ -82,10 +93,10 @@ export default {
             this.$router.push({
                 name: 'song.comments',
                 params: {
-                    id: this.play.info.id,
+                    id: this.play.info.songId,
                 },
                 query: {
-                    vendor: this.play.info.source
+                    vendor: this.play.info.vendor
                 }
             })
             this.$store.commit('lyrics/update', {
