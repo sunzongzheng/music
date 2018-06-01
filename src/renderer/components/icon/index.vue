@@ -1,5 +1,8 @@
 <template>
-    <svg :class="{[s.icon]:true,[s.disabled]:disabled}" aria-hidden="true" @click="$emit('click')">
+    <svg :class="{[s.icon]:true,[s.disabled]:disabled}" aria-hidden="true" v-if="disabled">
+        <use :xlink:href="`#icon-${type}`"></use>
+    </svg>
+    <svg :class="{[s.icon]:true,[s.disabled]:disabled}" aria-hidden="true" @click="$emit('click')" v-else>
         <use :xlink:href="`#icon-${type}`"></use>
     </svg>
 </template>

@@ -47,7 +47,7 @@ export default {
       `)
       console.log(data)
       this.loginWindow.destroy()
-      this.mainWindow.webContents.send('loginSuccessed', data.data)
+      this.mainWindow.webContents.send('loginSuccessed', data)
     })
   }
 }
