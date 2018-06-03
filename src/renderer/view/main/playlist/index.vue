@@ -41,17 +41,28 @@
         },
         computed: {
             ...mapState('playlist', ['playlist']),
+            ...mapState('offline-playlist', ['offline_playlist']),
             id() {
-                return parseInt(this.$route.params.id)
+                return this.$route.params.id
             },
             name() {
-                const arr = this.playlist.filter(item => item.id === this.id)
+                const arr = (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.id)
                 return arr.length ? arr[0].name : ''
-            }
+            },
+            offline() {
+                return this.$route.query.offline
+            },
         },
         methods: {
             ...mapActions('api', ['play']),
+            getOfflineStoreName(id = this.id) {
+                return `offline_playlist_${id}_song`
+            },
             async getSong(id = this.id) {
+                if (this.offline) {
+                    this.list = JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || []
+                    return
+                }
                 this.loading = true
                 try {
                     this.list = await this.$http.get(`playlist/${id}`)
@@ -62,6 +73,18 @@
                 this.loading = false
             },
             async removeFromPlaylist(item) {
+                if (this.offline) {
+                    const list = JSON.parse(localStorage.getItem(this.getOfflineStoreName())) || []
+                    for (let i in list) {
+                        if (list[i].songId === item.songId && list[i].vendor === item.vendor) {
+                            list.splice(i, 1)
+                            break
+                        }
+                    }
+                    localStorage.setItem(this.getOfflineStoreName(), JSON.stringify(list))
+                    this.getSong()
+                    return
+                }
                 await this.$http.delete(`playlist/${this.id}`, {
                     params: {
                         id: item.id
@@ -91,8 +114,8 @@
             this.getSong()
         },
         beforeRouteUpdate(to, from, next) {
-            this.getSong(to.params.id)
             next()
+            this.getSong(to.params.id)
         }
     }
 </script>

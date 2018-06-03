@@ -1,14 +1,14 @@
 <template>
     <div :class="s.playlist">
         <div :class="s.titleArea">
-            <span :class="s.title">云歌单</span>
+            <span :class="s.title">离线歌单</span>
             <Icon type="playlist-add" :class="s.icon" @click.native="addPlaylist" v-if="info"></Icon>
         </div>
         <ul :class="s.list">
             <li v-show="add.status">
                 <input v-model="add.name" ref="input" style="width: 135px;" @blur="save"/>
             </li>
-            <v-item v-for="(item,index) in playlist" :info="item" :key="index"></v-item>
+            <v-item v-for="item in offline_playlist" :info="item" :key="item.id"></v-item>
         </ul>
     </div>
 </template>
@@ -28,7 +28,7 @@
         },
         computed: {
             ...mapState('user', ['info']),
-            ...mapState('playlist', ['playlist'])
+            ...mapState('offline-playlist', ['offline_playlist'])
         },
         methods: {
             addPlaylist() {
@@ -44,7 +44,7 @@
                 let num = 1
                 let name = '新建歌单'
                 while (num) {
-                    if (this.playlist.filter(item => item.name === (name + num)).length) {
+                    if (this.offline_playlist.filter(item => item.name === (name + num)).length) {
                         num++
                     } else {
                         name += num
@@ -58,16 +58,16 @@
                     this.add.status = false
                     return
                 }
-                if (this.playlist.filter(item => item.name === this.add.name).length) {
-                  this.$message({
-                    message: '不允许创建同名歌单',
-                    type: 'warning'
-                  })
-                  this.add.status = false
-                  return
+                if (this.offline_playlist.filter(item => item.name === this.add.name).length) {
+                    this.$message({
+                        message: '不允许创建同名歌单',
+                        type: 'warning'
+                    })
+                    this.add.status = false
+                    return
                 }
-                await this.$store.dispatch('playlist/add', this.add.name)
-                this.$store.dispatch('playlist/init')
+                await this.$store.commit('offline-playlist/add', this.add.name)
+                this.$store.dispatch('offline-playlist/init')
                 this.add.status = false
             }
         }

@@ -1,16 +1,23 @@
 <template>
     <div :class="s.app">
         <el-popover :placement="placement" trigger="click" ref="playlist" v-model="show">
-            <ul :class="s.playlist" v-if="playlist">
-                <li v-for="item in playlist" @click="collect(item.id)">{{item.name}}</li>
+            <template v-if="userInfo">
+                <p :class="s.title">云歌单</p>
+                <ul :class="s.playlist">
+                    <li v-for="item in playlist" @click="collect(item.id)">{{item.name}}</li>
+                </ul>
+            </template>
+            <p :class="s.title">离线歌单</p>
+            <ul :class="s.playlist">
+                <li v-for="item in offline_playlist" @click="collectOffline(item.id)">{{item.name}}</li>
             </ul>
-            <template v-if="!playlist || !playlist.length">暂无歌单</template>
         </el-popover>
         <Icon :type="icon" :class="s.icon" v-popover:playlist></Icon>
     </div>
 </template>
 <script>
     import {mapState} from 'vuex'
+    import uuid from 'uuid/v1'
 
     export default {
         props: {
@@ -34,6 +41,10 @@
         },
         computed: {
             ...mapState('playlist', ['playlist']),
+            ...mapState('offline-playlist', ['offline_playlist']),
+            ...mapState('user', {
+                userInfo: 'info'
+            }),
             ...mapState('api', ['play'])
         },
         methods: {
@@ -52,6 +63,22 @@
                     message: '添加成功',
                     type: 'success'
                 })
+            },
+            collectOffline(id) {
+                const storage_name = `offline_playlist_${id}_song`
+                const list = JSON.parse(localStorage.getItem(storage_name)) || []
+                if (list.filter(item => item.songId === this.info.songId && item.vendor === this.info.vendor).length) {
+                    this.show = false
+                    this.$message.warning('歌曲已存在！')
+                    return
+                }
+                list.push(this.info)
+                localStorage.setItem(storage_name, JSON.stringify(list))
+                this.show = false
+                this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                })
             }
         }
     }
@@ -62,8 +89,15 @@
         align-items: center;
     }
 
+    .title {
+        font-size: 12px;
+        color: #8F8F8F;
+        margin: 0;
+    }
+
     .playlist {
         list-style: none;
+        margin-bottom: 4px;
         li {
             padding: 4px 8px;
             cursor: pointer;

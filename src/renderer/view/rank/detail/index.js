@@ -11,7 +11,6 @@ export default {
     methods: {
         ...mapActions('api', ['play']),
         doPlay(item) {
-            console.log(item)
             this.$store.commit('c_playlist/update', this.info.list)
             this.play(item)
         },

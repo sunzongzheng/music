@@ -11,6 +11,7 @@
                 </router-link>
             </ul>
             <play-list></play-list>
+            <offline-play-list></offline-play-list>
         </div>
     </div>
 </template>
@@ -18,9 +19,10 @@
   import viewControl from './viewControl.vue'
   import vAvatar from './avatar.vue'
   import playList from './playlist/index.vue'
+  import offlinePlayList from './offline-playlist/index.vue'
 
   export default {
-    components: {vAvatar, viewControl, playList}
+    components: {vAvatar, viewControl, playList, offlinePlayList}
   }
 </script>
 <style lang="scss" module="s">

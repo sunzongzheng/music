@@ -7,50 +7,52 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import { shell } from 'electron'
+    import {mapState} from 'vuex'
+    import {shell} from 'electron'
 
-  export default {
-    computed: {
-      ...mapState('api', ['play'])
-    },
-    methods: {
-      // 登录成功回调
-      loginSuccessed(event, info) {
-        console.log(info)
-        // 更新userInfo
-        this.$store.commit('user/update', {
-          nickname: info.nickname,
-          avatar: info.avatar
-        })
-        // 更新token
-        this.$store.commit('token/update', info.token)
-      },
-    },
-    created() {
-      this.$ipc.on('loginSuccessed', this.loginSuccessed)
-      this.$ipc.on('version_new', () => {
-        this.$notify({
-          dangerouslyUseHTMLString: true,
-          message: '发现新版本 <a style="color:#2d8cf0;" class="go2Download" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
-        })
-        const links = document.querySelectorAll('a[href].go2Download')
+    export default {
+        computed: {
+            ...mapState('api', ['play'])
+        },
+        methods: {
+            // 登录成功回调
+            loginSuccessed(event, info) {
+                console.log(info)
+                // 更新userInfo
+                this.$store.commit('user/update', {
+                    nickname: info.nickname,
+                    avatar: info.avatar
+                })
+                // 更新token
+                this.$store.commit('token/update', info.token)
+            },
+        },
+        created() {
+            // 初始化离线歌单
+            Vue.store.dispatch('offline-playlist/init')
+            this.$ipc.on('loginSuccessed', this.loginSuccessed)
+            this.$ipc.on('version_new', () => {
+                this.$notify({
+                    dangerouslyUseHTMLString: true,
+                    message: '发现新版本 <a style="color:#2d8cf0;" class="go2Download" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
+                })
+                const links = document.querySelectorAll('a[href].go2Download')
 
-        Array.prototype.forEach.call(links, function (link) {
-          const url = link.getAttribute('href')
-          if (url.includes('https') || url.includes('http')) {
-            link.addEventListener('click', function (e) {
-              e.preventDefault()
-              shell.openExternal(url)
+                Array.prototype.forEach.call(links, function (link) {
+                    const url = link.getAttribute('href')
+                    if (url.includes('https') || url.includes('http')) {
+                        link.addEventListener('click', function (e) {
+                            e.preventDefault()
+                            shell.openExternal(url)
+                        })
+                    }
+                })
             })
-          }
-        })
-      })
-      if (localStorage.token) {
-        this.$store.dispatch('user/init')
-      }
+            if (localStorage.token) {
+                this.$store.dispatch('user/init')
+            }
+        }
     }
-  }
 </script>
 <style>
     html,
