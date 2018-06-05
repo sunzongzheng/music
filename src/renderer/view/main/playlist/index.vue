@@ -66,6 +66,25 @@
                 this.loading = true
                 try {
                     this.list = await this.$http.get(`playlist/${id}`)
+                    // 拿到详情后更新网易云歌曲信息
+                    const data = await this.$api.getBatchSongDetail('netease', this.list.filter(item => item.vendor === 'netease').map(item => item.songId))
+                    const infoObject = {}
+                    if (data.status) {
+                        data.data.forEach(item=>{
+                            infoObject[item.id] = item
+                        })
+                        this.list = this.list.map(item => {
+                            if(item.vendor === 'netease') {
+                                const info = infoObject[item.songId]
+                                item.cp = info.cp
+                                item.name = info.name
+                                item.commentId = info.commentId
+                                item.album = info.album
+                                item.artists = info.artists
+                            }
+                            return item
+                        })
+                    }
                 } catch (e) {
                     console.warn(e)
                     this.$router.push('/')

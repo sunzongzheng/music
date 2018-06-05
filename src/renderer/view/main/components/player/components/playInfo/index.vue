@@ -29,11 +29,8 @@
             <el-progress :percentage="percentage" :stroke-width="2" :class="s.progress"></el-progress>
         </div>
         <!-- 歌曲操作 !-->
-        <template v-if="info">
-            <add-to-playlist icon="add" v-if="play.info" :class="s.icon" :info="play.info"></add-to-playlist>
-            <Icon type="add" :class="s.icon" v-else :disabled="true"></Icon>
-        </template>
-        <Icon v-else type="add" :class="s.icon" @click.native="$ipc.send('login')"></Icon>
+        <add-to-playlist icon="add" v-if="play.info" :class="s.icon" :info="play.info"></add-to-playlist>
+        <Icon type="add" :class="s.icon" v-else :disabled="true"></Icon>
         <!-- 分享 !-->
         <Icon type="share" :class="s.icon" @click="showShareWindow" :disabled="!play.info"></Icon>
         <!-- 打开列表 !-->

@@ -1,3 +1,3 @@
 export default {
-  api: 'https://player-test.zzsun.cc'
+  api: 'https://player.zzsun.cc'
 }

@@ -2,7 +2,7 @@
     <div :class="s.playlist">
         <div :class="s.titleArea">
             <span :class="s.title">离线歌单</span>
-            <Icon type="playlist-add" :class="s.icon" @click.native="addPlaylist" v-if="info"></Icon>
+            <Icon type="playlist-add" :class="s.icon" @click.native="addPlaylist"></Icon>
         </div>
         <ul :class="s.list">
             <li v-show="add.status">
@@ -27,7 +27,6 @@
             }
         },
         computed: {
-            ...mapState('user', ['info']),
             ...mapState('offline-playlist', ['offline_playlist'])
         },
         methods: {
