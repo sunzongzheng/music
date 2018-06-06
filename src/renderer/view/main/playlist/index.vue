@@ -43,7 +43,8 @@
             ...mapState('playlist', ['playlist']),
             ...mapState('offline-playlist', ['offline_playlist']),
             id() {
-                return this.$route.params.id
+                const id = this.$route.params.id
+                return isNaN(Number(id)) ? id : Number(id)
             },
             name() {
                 const arr = (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.id)
@@ -61,30 +62,13 @@
             async getSong(id = this.id) {
                 if (this.offline) {
                     this.list = JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || []
+                    this.updateSongsInfo()
                     return
                 }
                 this.loading = true
                 try {
                     this.list = await this.$http.get(`playlist/${id}`)
-                    // 拿到详情后更新网易云歌曲信息
-                    const data = await this.$api.getBatchSongDetail('netease', this.list.filter(item => item.vendor === 'netease').map(item => item.songId))
-                    const infoObject = {}
-                    if (data.status) {
-                        data.data.forEach(item=>{
-                            infoObject[item.id] = item
-                        })
-                        this.list = this.list.map(item => {
-                            if(item.vendor === 'netease') {
-                                const info = infoObject[item.songId]
-                                item.cp = info.cp
-                                item.name = info.name
-                                item.commentId = info.commentId
-                                item.album = info.album
-                                item.artists = info.artists
-                            }
-                            return item
-                        })
-                    }
+                    this.updateSongsInfo()
                 } catch (e) {
                     console.warn(e)
                     this.$router.push('/')
@@ -127,6 +111,43 @@
                     rs.push(this.s.disabled)
                 }
                 return rs.join(' ')
+            },
+            // 更新歌曲信息
+            async updateSongsInfo() {
+                const list = {
+                    netease: [],
+                    qq: [],
+                    xiami: []
+                }
+                const detail = {
+                    netease: {},
+                    qq: {},
+                    xiami: {}
+                }
+                this.list.forEach(item => {
+                    list[item.vendor].push(item)
+                })
+                const vendors = ['netease', 'qq', 'xiami']
+                for (let vendor of vendors) {
+                    const ids = list[vendor].map(item => item.songId)
+                    if (ids.length) {
+                        const data = await this.$api.getBatchSongDetail(vendor, ids)
+                        if (data.status) {
+                            data.data.forEach(item => {
+                                detail[vendor][item.id] = item
+                            })
+                        }
+                    }
+                }
+                this.list = this.list.map(item => {
+                    const info = detail[item.vendor][item.songId]
+                    item.cp = info.cp
+                    item.name = info.name
+                    item.commentId = info.commentId
+                    item.album = info.album
+                    item.artists = info.artists
+                    return item
+                })
             }
         },
         created() {
