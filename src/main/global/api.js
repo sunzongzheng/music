@@ -1,4 +1,4 @@
-import api from 'music-api'
+import api from '@suen/music-api'
 
 export default {
     ...api,

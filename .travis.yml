@@ -24,7 +24,7 @@ cache:
 
 
 script:
-  - npm update music-api
+  - npm update @suen/music-api
   - node build
 
 deploy:
