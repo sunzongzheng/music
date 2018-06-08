@@ -141,11 +141,16 @@
                 }
                 this.list = this.list.map(item => {
                     const info = detail[item.vendor][item.songId]
-                    item.cp = info.cp
-                    item.name = info.name
-                    item.commentId = info.commentId
-                    item.album = info.album
-                    item.artists = info.artists
+                    if(info) {
+                        item.cp = info.cp
+                        item.name = info.name
+                        item.commentId = info.commentId
+                        item.album = info.album
+                        item.artists = info.artists
+                    } else {
+                        // 音乐平台删歌以后这首歌就不能听了
+                        item.cp = true
+                    }
                     return item
                 })
             }
