@@ -19,8 +19,6 @@ Vue.use(ElementUI)
 Vue.use(VueContextMenu)
 Vue.directive('popover', directive)
 
-if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-
 // http instance
 const instance = axios.create({
     baseURL: config.api,
