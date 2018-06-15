@@ -22,9 +22,10 @@ cache:
   - $HOME/.cache/electron-builder
   - $HOME/.npm/_prebuilds
 
-
-script:
+before_script:
   - npm update @suen/music-api
+  
+script:
   - node build
 
 deploy:
@@ -36,10 +37,13 @@ deploy:
     - releases/*.dmg
     - releases/*.exe
   skip_cleanup: true
+  on:
+    branch: master
 
 branches:
   only:
   - master
+  - dev
   
 notifications:
   email: false

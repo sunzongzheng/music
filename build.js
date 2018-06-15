@@ -1,6 +1,6 @@
-const shell = require('shelljs')
+const { exec } = require('child_process')
 
-shell.exec('npm run build-file && npm run build:normal')
+exec('npm run build-file && npm run build:normal')
 if (process.platform !== 'linux') {
-  shell.exec('npm run build:win')
+  exec('npm run build:win')
 }
