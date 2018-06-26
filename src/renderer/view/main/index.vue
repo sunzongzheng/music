@@ -18,38 +18,59 @@
             <lyrics v-show="show"></lyrics>
         </transition>
         <play-list></play-list>
+        <div v-if="progress >= 0"
+             :class="s.progress"
+             title="下载进度"
+        >
+            {{progress}}%
+        </div>
     </div>
 </template>
 <script>
-  import leftMenu from './components/leftMenu/index.vue'
-  import searchBar from './components/searchBar/index.vue'
-  import player from './components/player/index.vue'
-  import lyrics from './components/lyrics/index.vue'
-  import playList from './components/current_playlist/index.vue'
-  import { mapState } from 'vuex'
+    import leftMenu from './components/leftMenu/index.vue'
+    import searchBar from './components/searchBar/index.vue'
+    import player from './components/player/index.vue'
+    import lyrics from './components/lyrics/index.vue'
+    import playList from './components/current_playlist/index.vue'
+    import {mapState} from 'vuex'
 
-  export default {
-    components: {
-      leftMenu,
-      searchBar,
-      player,
-      lyrics,
-      playList
-    },
-    computed: {
-      ...mapState('lyrics', ['show']),
-    },
-    beforeRouteUpdate(to, from, next) {
-      this.$refs.main.scrollTop = 0
-      next()
+    export default {
+        components: {
+            leftMenu,
+            searchBar,
+            player,
+            lyrics,
+            playList
+        },
+        data() {
+            return {
+                progress: -1
+            }
+        },
+        computed: {
+            ...mapState('lyrics', ['show']),
+        },
+        created() {
+            // 更新下载进度悬浮窗
+            this.$updater.on('download-progress', progress => {
+                this.progress = progress
+                if (this.progress === 100) {
+                    this.progress = -1
+                }
+            })
+        },
+        beforeRouteUpdate(to, from, next) {
+            this.$refs.main.scrollTop = 0
+            next()
+        }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .app {
         display: flex;
         flex-flow: row wrap;
         height: 100%;
+        position: relative;
     }
 
     .right {
@@ -72,5 +93,20 @@
 
     .slideTop_enter, .slideTop_leave_to {
         transform: translate3d(0, 100%, 0);
+    }
+
+    .progress {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        right: 20px;
+        top: 20px;
+        z-index: 1;
+        background: rgba(38, 179, 108, .6);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
     }
 </style>

@@ -3,9 +3,7 @@
 import {app, Menu, Tray, BrowserWindow, nativeImage, ipcMain} from 'electron'
 import ipcEvent from './ipcEvent'
 import g from './global'
-import {version} from '../../package.json'
-import axios from 'axios'
-
+import autoUpdater from '@suen/electron-updater'
 
 /**
  * Set `__static` path to static files in production
@@ -36,6 +34,12 @@ function initialTray(mainWindow) {
     }
 
     const contextMenu = Menu.buildFromTemplate([
+        {
+            label: '显示主界面',
+            click() {
+                mainWindow.show()
+            }
+        },
         {
             label: '退出',
             click() {
@@ -101,16 +105,6 @@ function createWindow() {
     ipcEvent.on(mainWindow)
     // mainWindow.webContents.openDevTools({detach: true})
     mainWindow.loadURL(winURL)
-    axios('https://raw.githubusercontent.com/sunzongzheng/music/master/package.json')
-        .then(({data}) => {
-            let cur_version = version.split('.')
-            data.version = data.version.split('.')
-            cur_version = parseInt(cur_version[0]) * 10000 + parseInt(cur_version[1]) * 100 + parseInt(cur_version[2])
-            data.version = parseInt(data.version[0]) * 10000 + parseInt(data.version[1]) * 100 + parseInt(data.version[2])
-            if (cur_version < data.version) {
-                mainWindow.webContents.send('version_new')
-            }
-        })
     mainWindow.on('closed', () => {
         mainWindow = null
     })
@@ -120,7 +114,17 @@ function createWindow() {
         initMacTray(mainWindow)
     }
     g.init(mainWindow)
+    const update = autoUpdater({
+        type: 'custom',
+        options: {
+            url: 'https://gist.githubusercontent.com/sunzongzheng/e7b502eee0610e316ddaa6b40ea2e5c7/raw/'
+        }
+    })
+    global.updater = update
     createBackgroundWindow()
+    setTimeout(() => {
+        update.checkForUpdatesAndNotify()
+    }, 5000)
 }
 
 // 创建子渲染进程

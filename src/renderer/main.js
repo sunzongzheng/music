@@ -64,6 +64,8 @@ Vue.config.productionTip = false
 
 Vue.ipc = Vue.prototype.$ipc = ipcRenderer
 
+Vue.updater = Vue.prototype.$updater = remote.getGlobal('updater')
+
 Vue.$message = ElementUI.Message
 
 /* eslint-disable no-new */
