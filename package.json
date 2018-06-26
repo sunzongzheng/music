@@ -46,7 +46,10 @@
       ]
     },
     "mac": {
-      "target": "dmg",
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "build/icons/icon.icns"
     },
     "win": {
@@ -55,10 +58,14 @@
     },
     "linux": {
       "icon": "build/icons",
-      "target": "deb"
+      "target": "AppImage"
+    },
+    "appImage": {
+      "systemIntegration": "doNotAsk"
     }
   },
   "dependencies": {
+    "@suen/electron-updater": "^1.0.5",
     "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
     "@xunlei/vue-context-menu": "^1.0.2",
     "axios": "^0.16.1",

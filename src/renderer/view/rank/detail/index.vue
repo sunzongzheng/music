@@ -14,7 +14,7 @@
                   :row-class-name="rowClassName"
         >
             <el-table-column label="歌曲" :width="220">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div :class="s.nameItem">
                         <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
                         <div :class="s.songControl">
@@ -25,14 +25,14 @@
                 </template>
             </el-table-column>
             <el-table-column label="歌手" :class-name="s.singer">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <template v-for="singer in scope.row.artists">
                         {{singer.name}}
                     </template>
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span :class="s.album">{{scope.row.album.name}}</span>
                 </template>
             </el-table-column>

@@ -3,7 +3,7 @@
         <a :class="s.title">{{name}}</a>
         <el-table :data="list" :class="s.table" v-loading="loading" :row-class-name="rowClassName">
             <el-table-column label="歌曲" :width="220">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div :class="s.nameItem">
                         <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
                         <div :class="s.songControl">
@@ -15,13 +15,13 @@
                 </template>
             </el-table-column>
             <el-table-column label="歌手">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.artists[0].name}}
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑"></el-table-column>
             <el-table-column label="来源">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.vendor | source}}
                 </template>
             </el-table-column>
