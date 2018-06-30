@@ -31,6 +31,11 @@ export default {
         },
     },
     watch: {
+        show(val) {
+            if (val) {
+                this.handleLyric()
+            }
+        },
         lyrics(val) {
             this.$nextTick(() => {
                 if (this.$refs.main) {
@@ -75,7 +80,7 @@ export default {
             }
             const lyric = this.lyrics
             const singleLyric = lyric[index][1] // 单句歌词
-            if(!singleLyric) return
+            if (!singleLyric) return
             // 先计算当前句 和 下一句 的时间差
             let time = 0
             if (index === lyric.length - 1) { // 如果是最后一行 就默认10s吧，没有可靠的逻辑

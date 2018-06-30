@@ -1,15 +1,17 @@
 <template>
-    <div :class="s.app">
+    <div :class="s.artist"
+         v-loading="loading"
+    >
         <div :class="s.top">
-            <img :src="info.cover"/>
+            <img :src="detail.avatar | image(vendor)"/>
             <div :class="s.right">
-                <span :class="s.name">{{info.name}}</span>
-                <p style="font-size: 12px">{{info.description}}</p>
-                <a :class="s.play" @click="doPlay(info.list[0])">立即播放</a>
-                <span :class="s.total">累计播放：{{info.playCount}}</span>
+                <span :class="s.name">{{detail.name}}</span>
+                <p v-html="detail.desc"
+                   :class="s.detail"
+                ></p>
             </div>
         </div>
-        <el-table :data="info.list"
+        <el-table :data="songs"
                   :class="s.table"
                   :row-class-name="rowClassName"
         >
@@ -26,12 +28,16 @@
             </el-table-column>
             <el-table-column label="歌手" :class-name="s.singer">
                 <template slot-scope="scope">
-                    <router-link v-for="(item,index) in scope.row.artists"
-                                 :key="index"
-                                 :class="s.link"
-                                 :to="{ name: 'artist', params: { id: item.id }, query: { vendor:  scope.row.vendor } }">
-                        {{item.name}}
-                    </router-link>
+                    <template v-for="item in scope.row.artists">
+                        <router-link v-if="item.id && item.id.toString() !== id.toString()"
+                                     :class="s.link"
+                                     :to="{ name: 'artist', params: { id: item.id }, query: { vendor } }">
+                            {{item.name}}
+                        </router-link>
+                        <template v-else>
+                            {{item.name}}
+                        </template>
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑">
@@ -42,9 +48,83 @@
         </el-table>
     </div>
 </template>
-<script src="./index.js"></script>
+<script>
+    import {mapActions} from 'vuex'
+
+    export default {
+        data() {
+            return {
+                detail: {},
+                songs: [],
+                loading: false
+            }
+        },
+        computed: {
+            id() {
+                return this.$route.params.id
+            },
+            vendor() {
+                return this.$route.query.vendor
+            }
+        },
+        methods: {
+            ...mapActions('api', ['play']),
+            async getSongs() {
+                this.loading = true
+                try {
+                    let data = await Vue.api.getArtistSongs(this.vendor, this.id)
+                    if (data.status) {
+                        this.detail = data.data.detail
+                        this.songs = data.data.songs.map(item => {
+                            return {
+                                ...item,
+                                songId: item.id,
+                                vendor: this.vendor
+                            }
+                        })
+                    }
+                } catch (e) {
+                    console.warn(e)
+                    e.msg && this.$message.warning(e.msg)
+                }
+                this.loading = false
+            },
+            rowClassName({row, rowIndex}) {
+                const rs = [
+                    this.s.row
+                ]
+                if (row.cp) {
+                    rs.push(this.s.disabled)
+                }
+                return rs.join(' ')
+            },
+            doPlay(item) {
+                const list = []
+                this.songs.forEach(item => {
+                    list.push(item)
+                })
+                this.$store.commit('c_playlist/update', list)
+                console.log(item)
+                this.play(item)
+            },
+        },
+        created() {
+            this.getSongs()
+        },
+        beforeRouteUpdate(to, form, next) {
+            next()
+            this.getSongs()
+        },
+        beforeRouteEnter(to, from, next) {
+            if (!to.query.vendor) {
+                return Vue.router.push('/')
+            }
+            next()
+        }
+    }
+</script>
 <style lang="scss" module="s">
-    .app {
+    .artist {
         .top {
             display: flex;
             background-color: #FAFAFA;
@@ -57,7 +137,7 @@
             .right {
                 display: flex;
                 flex-direction: column;
-                padding-left: 16px;
+                padding-left: 24px;
                 width: calc(100% - #{$imgWidth});
                 position: relative;
                 .name {
@@ -90,6 +170,24 @@
                     right: 0;
                     font-size: 12px;
                     color: gray;
+                }
+                .detail {
+                    font-size: 12px;
+                    height: 88px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 5;
+                    -webkit-box-orient: vertical;
+                    margin: 12px 0 0;
+                    p {
+                        font-size: 12px;
+                        color: #222;
+                        margin: 0;
+                    }
+                    strong {
+                        display: none;
+                    }
                 }
             }
         }

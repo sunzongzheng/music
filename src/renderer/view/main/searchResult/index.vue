@@ -20,7 +20,16 @@
             </el-table-column>
             <el-table-column label="歌手">
                 <template slot-scope="scope">
-                    {{scope.row.artists[0].name}}
+                    <template v-for="item in scope.row.artists">
+                        <router-link v-if="item.id"
+                                     :class="s.link"
+                                     :to="{ name: 'artist', params: { id: item.id }, query: { vendor: scope.row.vendor } }">
+                            {{item.name}}
+                        </router-link>
+                        <template v-else>
+                            {{item.name}}
+                        </template>
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑"></el-table-column>
@@ -118,6 +127,15 @@
                         margin-left: 6px;
                         cursor: pointer;
                     }
+                }
+            }
+            .link {
+                color: $color-table-text;
+                transition: color .2s;
+                text-decoration: none;
+                &:hover {
+                    transition: color .2s;
+                    color: $color-primary;
                 }
             }
         }

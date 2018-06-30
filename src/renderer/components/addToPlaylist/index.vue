@@ -1,16 +1,21 @@
 <template>
     <div :class="s.app">
         <el-popover :placement="placement" trigger="click" ref="playlist" v-model="show">
-            <template v-if="userInfo">
-                <p :class="s.title">云歌单</p>
-                <ul :class="s.playlist">
-                    <li v-for="item in playlist" @click="collect(item.id)">{{item.name}}</li>
-                </ul>
+            <template v-if="(userInfo && playlist.length) || offline_playlist.length">
+                <template v-if="userInfo && playlist.length">
+                    <p :class="s.title">云歌单</p>
+                    <ul :class="s.playlist">
+                        <li v-for="item in playlist" @click="collect(item.id)">{{item.name}}</li>
+                    </ul>
+                </template>
+                <template v-if="offline_playlist.length">
+                    <p :class="s.title">离线歌单</p>
+                    <ul :class="s.playlist">
+                        <li v-for="item in offline_playlist" @click="collectOffline(item.id)">{{item.name}}</li>
+                    </ul>
+                </template>
             </template>
-            <p :class="s.title">离线歌单</p>
-            <ul :class="s.playlist">
-                <li v-for="item in offline_playlist" @click="collectOffline(item.id)">{{item.name}}</li>
-            </ul>
+            <template v-else>暂无歌单</template>
         </el-popover>
         <Icon :type="icon" :class="s.icon" v-popover:playlist></Icon>
     </div>
