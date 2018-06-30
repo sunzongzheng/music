@@ -5,7 +5,9 @@
             <el-table-column label="歌曲" :width="220">
                 <template slot-scope="scope">
                     <div :class="s.nameItem">
-                        <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
+                        <div :class="s.songName" :title="scope.row.name">
+                            {{scope.row.name}}
+                        </div>
                         <div :class="s.songControl">
                             <Icon type="item-play" @click.native="doPlay(scope.row)" v-if="!scope.row.cp"></Icon>
                             <add-to-playlist :info="scope.row"></add-to-playlist>
@@ -16,7 +18,16 @@
             </el-table-column>
             <el-table-column label="歌手">
                 <template slot-scope="scope">
-                    {{scope.row.artists[0].name}}
+                    <template v-for="item in scope.row.artists">
+                        <router-link v-if="item.id"
+                                     :class="s.link"
+                                     :to="{ name: 'artist', params: { id: item.id }, query: { vendor:  scope.row.vendor } }">
+                            {{item.name}}
+                        </router-link>
+                        <template v-else>
+                            {{item.name}}
+                        </template>
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑"></el-table-column>
@@ -141,7 +152,7 @@
                 }
                 this.list = this.list.map(item => {
                     const info = detail[item.vendor][item.songId]
-                    if(info) {
+                    if (info) {
                         item.cp = info.cp
                         item.name = info.name
                         item.commentId = info.commentId
@@ -210,6 +221,15 @@
                         margin-left: 6px;
                         cursor: pointer;
                     }
+                }
+            }
+            .link {
+                color: $color-table-text;
+                transition: color .2s;
+                text-decoration: none;
+                &:hover {
+                    transition: color .2s;
+                    color: $color-primary;
                 }
             }
         }

@@ -47,6 +47,11 @@ const router = new Router({
                     name: 'song.comments',
                     component: require('@/view/comments/index.vue')
                 },
+                {
+                    path: '/artist/:id', // 歌手详情
+                    name: 'artist',
+                    component: require('@/view/artist/index.vue')
+                },
             ]
         },
         {
