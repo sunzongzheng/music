@@ -26,7 +26,11 @@
                 </span>
             </div>
             <!-- 歌曲进度 !-->
-            <el-progress :percentage="percentage" :stroke-width="2" :class="s.progress"></el-progress>
+            <el-slider v-model="percentage"
+                       :class="s.progress"
+                       @change="pregressChange"
+                       :disabled="!duration.total"
+            ></el-slider>
         </div>
         <!-- 歌曲操作 !-->
         <add-to-playlist icon="add" v-if="play.info" :class="s.icon" :info="play.info"></add-to-playlist>
@@ -126,14 +130,32 @@
             }
             .progress {
                 :global {
-                    .el-progress-bar {
-                        padding-right: 0;
-                    }
-                    .el-progress-bar__inner {
-                        background-color: #3AC17E;
-                    }
-                    .el-progress__text {
-                        display: none;
+                    .el-slider__runway {
+                        margin: 6px 0;
+                        height: 2px;
+                        user-select: none;
+                        .el-slider__bar {
+                            height: 2px;
+                            background-color: #3AC17E;
+                        }
+                        .el-slider__button-wrapper {
+                            height: 32px;
+                            width: 32px;
+                            outline: none;
+                        }
+                        .el-slider__button {
+                            display: none;
+                            width: 8px;
+                            height: 8px;
+                            border: 2px solid #3AC17E;
+                            background-color: #3AC17E;
+                            outline: none;
+                        }
+                        &:hover {
+                            .el-slider__button {
+                                display: inline-block;
+                            }
+                        }
                     }
                 }
             }

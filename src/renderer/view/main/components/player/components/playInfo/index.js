@@ -8,7 +8,8 @@ export default {
                 cur: 0,
                 total: 0
             },
-            modal: false
+            modal: false,
+            percentage: 0,
         }
     },
     computed: {
@@ -16,9 +17,6 @@ export default {
         ...mapState('user', ['info']),
         ...mapGetters('c_playlist', ['playlist']),
         ...mapState('lyrics', ['show', 'lyrics', 'activeIndex']),
-        percentage() {
-            return this.duration.total ? (this.duration.cur / this.duration.total) * 100 : 0
-        }
     },
     watch: {
         'play.pause'(val) {
@@ -42,6 +40,12 @@ export default {
             if (this.$refs.audio) {
                 this.$refs.audio.volume = val / 100
             }
+        },
+        'duration.total'() {
+            this.setPercentage()
+        },
+        'duration.cur'() {
+            this.setPercentage()
         }
     },
     filters: {
@@ -109,9 +113,6 @@ export default {
                     activeIndex: answer
                 })
             }
-            // this.$store.commit('api/updatePlay', {
-            //   time: Math.floor(audio.currentTime * 1000)
-            // })
         },
         toggleList() {
             if (this.playlist.length) {
@@ -120,6 +121,12 @@ export default {
         },
         showShareWindow() {
             this.$ipc.send('share', this.play.info)
+        },
+        setPercentage() {
+            this.percentage = this.duration.total ? (this.duration.cur / this.duration.total) * 100 : 0
+        },
+        pregressChange(val) {
+            this.$refs.audio && (this.$refs.audio.currentTime = val * this.duration.total / 100)
         }
     },
     mounted() {
