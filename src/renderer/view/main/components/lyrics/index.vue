@@ -16,17 +16,18 @@
                 {{item[1]}}
             </li>
         </ul>
-        <div :class="s.main" :style="mainStyle" v-else>
+        <div :class="s.main"
+             :style="mainStyle"
+             v-loading="loading"
+             element-loading-background="rgba(0, 0, 0, 0)"
+             v-else
+        >
             <span :class="[s.item,s.nolyric,s.active]">{{placeholder}}</span>
+            <p :class="s.reloadLyric"
+               @click="init"
+            >点此尝试重新加载</p>
         </div>
         <span :class="s.commentIcon" @click="go2Comments">评</span>
-        <!--<transition :enter-class="s.slideLeft_enter"-->
-                    <!--:enter-active-class="s.slideLeft_enter_active"-->
-                    <!--:leave-to-class="s.slideLeft_leave_to"-->
-                    <!--:leave-active-class="s.slideLeft_leave_active"-->
-        <!--&gt;-->
-            <!--<song-comment :class="s.comment" v-show="showComment" @close="showComment = false"></song-comment>-->
-        <!--</transition>-->
     </div>
 </template>
 <script src="./index.js"></script>
@@ -82,6 +83,14 @@
             }
             &::-webkit-scrollbar {
                 display: none;
+            }
+            .reloadLyric {
+                cursor: pointer;
+                transition: opacity .2s;
+                &:hover {
+                    transition: opacity .2s;
+                    opacity: .8;
+                }
             }
         }
         .comment {
