@@ -1,4 +1,4 @@
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import Velocity from 'velocity-animate'
 
 export default {
@@ -51,6 +51,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions('lyrics', ['init']),
         close() {
             this.$store.commit('lyrics/update', {
                 show: false
