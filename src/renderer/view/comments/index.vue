@@ -47,7 +47,7 @@
                     const data = await Vue.api.getSongDetail(vendor, id)
                     console.log(data)
                     if (data.status) {
-                        this.getComment(data.data.commentId)
+                        this.getComment(data.data.id)
                         for (let i in data.data) {
                             Vue.set(this.info, i, data.data[i])
                         }

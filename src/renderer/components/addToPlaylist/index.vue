@@ -58,7 +58,6 @@
                 await this.$http.post(`/playlist/${id}`, {
                     id: this.info.songId,
                     vendor: this.info.vendor,
-                    commentId: this.info.commentId,
                     name: this.info.name,
                     album: this.info.album,
                     artists: this.info.artists,
