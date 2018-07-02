@@ -20,7 +20,22 @@ const router = new Router({
                 {
                     path: '/playlist/:id', // 创建的歌单详情
                     name: 'playlist',
-                    component: require('@/view/main/playlist/index.vue')
+                    component: require('@/view/main/playlist/index.vue'),
+                    redirect: {
+                        name: 'playlist.detail'
+                    },
+                    children: [
+                        {
+                            path: 'detail', // 详情
+                            name: 'playlist.detail',
+                            component: require('@/view/main/playlist/detail/index.vue'),
+                        },
+                        {
+                            path: 'import', // 导入
+                            name: 'playlist.import',
+                            component: require('@/view/main/playlist/import/index.vue'),
+                        }
+                    ]
                 },
                 {
                     path: '/rank', // 排行列表
