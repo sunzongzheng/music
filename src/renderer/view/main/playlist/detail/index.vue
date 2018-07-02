@@ -161,7 +161,6 @@
                     if (info) {
                         item.cp = info.cp
                         item.name = info.name
-                        item.commentId = info.commentId
                         item.album = info.album
                         item.artists = info.artists
                     } else {

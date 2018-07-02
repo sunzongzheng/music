@@ -10,7 +10,7 @@
             this.$ipc.on('share-song-info', (event, params) => {
                 this.$nextTick(() => {
                     const url = {
-                        qq: `https://i.y.qq.com/v8/playsong.html?songid=${params.commentId}`,
+                        qq: `https://i.y.qq.com/v8/playsong.html?songid=${params.songId}`,
                         netease: `https://music.163.com/#/song?id=${params.songId}`,
                         xiami: `https://www.xiami.com/song/${params.songId}`
                     }[params.vendor]
