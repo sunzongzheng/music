@@ -75,6 +75,10 @@ function initMacTray(mainWindow) {
     ipcMain.on('tray-control-next', () => {
         mainWindow.webContents.send("tray-control-next")
     })
+    // 显示主窗口
+    ipcMain.on('tray-control-showMainWindow', () => {
+        mainWindow.show()
+    })
     appTray = new Tray(nativeImage.createEmpty())
     appTray.setHighlightMode('never')
     appTray.on('click', (event, bounds, position) => {

@@ -48,7 +48,7 @@ control.draw()
 
         ipcRenderer.on('tray-click', (event, {position}) => {
             const x = position.x - lyric.canvas.width / devicePixelRatio
-            if (x) {
+            if (x > 0) {
                 switch (parseInt(x / control.singleWidth)) {
                     case 0:
                         console.log('last')
@@ -62,6 +62,8 @@ control.draw()
                         ipcRenderer.send('tray-control-next')
                         break
                 }
+            } else {
+                ipcRenderer.send('tray-control-showMainWindow')
             }
         })
 
