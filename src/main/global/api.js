@@ -21,7 +21,7 @@ export default {
                         const cur = data[j].songs[i]
                         // 如果存在
                         if (typeof cur !== 'undefined') {
-                            // 检查是否已存在同名 同歌手 同专辑 则跳过
+                            // 检查是否已存在同名 同歌手 同专辑 且能够播放 则跳过
                             if (result.filter(item => {
                                 // 首先判断歌手是不是全等 此处歌手可能有多个
                                 let art_same = true
@@ -32,7 +32,7 @@ export default {
                                     }
                                     return true
                                 })
-                                return item.name === cur.name && art_same && item.album.name === cur.album.name
+                                return item.name === cur.name && art_same && item.album.name === cur.album.name && !item.cp
                             }).length) {
                                 continue
                             } else {
