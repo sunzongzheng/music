@@ -78,7 +78,12 @@
             },
             async getSong(id = this.id) {
                 if (this.offline) {
-                    this.list = JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || []
+                    this.list = (JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || []).map(item => {
+                        return {
+                            ...item,
+                            songId: item.commentId || item.songId
+                        }
+                    })
                     this.updateSongsInfo()
                     return
                 }
@@ -146,7 +151,7 @@
                 })
                 const vendors = ['netease', 'qq', 'xiami']
                 for (let vendor of vendors) {
-                    const ids = list[vendor].map(item => item.songId)
+                    const ids = list[vendor].map(item => item.commentId)
                     if (ids.length) {
                         const data = await this.$api.getBatchSongDetail(vendor, ids)
                         if (data.status) {
@@ -156,8 +161,8 @@
                         }
                     }
                 }
-                this.list = this.list.map(item => {
-                    const info = detail[item.vendor][item.songId]
+                for (let item of this.list) {
+                    const info = detail[item.vendor][item.commentId]
                     if (info) {
                         item.cp = info.cp
                         item.name = info.name
@@ -165,10 +170,26 @@
                         item.artists = info.artists
                     } else {
                         // 音乐平台删歌以后这首歌就不能听了
-                        item.cp = true
+                        // 如果是QQ音乐 有可能改了ID 调用单个获取信息接口验证
+                        if (item.vendor === 'qq') {
+                            const singleInfo = await this.$api.getSongDetail(item.vendor, item.songId)
+                            if (singleInfo.status) {
+                                console.log('歌曲ID变了：', item)
+                                item.cp = singleInfo.data.cp
+                                item.name = singleInfo.data.name
+                                item.album = singleInfo.data.album
+                                item.artists = singleInfo.data.artists
+                            } else {
+                                console.log('歌曲被删：', item)
+                                item.cp = true
+                            }
+                        } else {
+                            console.log('歌曲被删：', item)
+                            item.cp = true
+                        }
                     }
                     return item
-                })
+                }
             }
         },
         created() {
