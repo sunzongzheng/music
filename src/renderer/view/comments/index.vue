@@ -44,7 +44,7 @@
             async getInfo(vendor = this.vendor, id = this.id) {
                 this.loading.info = true
                 try {
-                    const data = await Vue.api.getSongDetail(vendor, id)
+                    const data = await Vue.$musicApi.getSongDetail(vendor, id)
                     console.log(data)
                     if (data.status) {
                         this.getComment(data.data.id)
@@ -62,7 +62,7 @@
             async getComment(id) {
                 this.loading.comment = true
                 try {
-                    const data = await Vue.api.getComment(this.vendor, id)
+                    const data = await Vue.$musicApi.getComment(this.vendor, id)
                     console.log(data)
                     if (data.status) {
                         eventBus.comments = data.data.comments

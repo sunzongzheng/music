@@ -72,7 +72,7 @@
             async getSongs() {
                 this.loading = true
                 try {
-                    let data = await Vue.api.getArtistSongs(this.vendor, this.id)
+                    let data = await Vue.$musicApi.getArtistSongs(this.vendor, this.id)
                     if (data.status) {
                         this.detail = data.data.detail
                         this.songs = data.data.songs.map(item => {
