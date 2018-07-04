@@ -4,7 +4,7 @@ dist: trusty
 sudo: true
 
 language: node_js
-node_js: "6"
+node_js: "lts/*"
 
 env:
   global:
@@ -33,9 +33,7 @@ deploy:
   api_key: ${GH_TOKEN}
   file_glob: true
   file:
-    - releases/*.deb
-    - releases/*.dmg
-    - releases/*.exe
+    - releases/*
   skip_cleanup: true
   on:
     branch: master
