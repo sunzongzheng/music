@@ -48,7 +48,13 @@
                 this.$router.push({name: 'searchResult'})
                 let data = await this.$api.searchSong(this.key)
                 if (data.status) {
-                    eventBus.searchResult = data.data
+                    eventBus.searchResult = data.data.filter(item => item.id).map(item => {
+                        return {
+                            ...item,
+                            commentId: item.id,
+                            songId: item.id
+                        }
+                    })
                     this.$store.commit('api/updateSearch', {
                         loading: false
                     })
