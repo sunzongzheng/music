@@ -162,15 +162,15 @@
                             ids: this.album.songs.map(item => item.id),
                             vendor: this.vendor
                         })
-                        this.album.songs = this.album.songs.map(item => {
-                            const cur = failedList.filter(item => item.id === item.id)[0]
+                        this.album.songs = this.album.songs.map(song => {
+                            const cur = failedList.filter(item => song.id === item.id)[0]
                             if (cur) {
-                                item.status = 0
-                                item.msg = cur.msg
+                                song.status = 0
+                                song.msg = cur.msg
                             } else {
-                                item.status = 1
+                                song.status = 1
                             }
-                            return item
+                            return song
                         })
                     }
                 } catch (e) {
