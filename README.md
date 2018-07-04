@@ -8,6 +8,13 @@
 - 版本计划见[Projects](https://github.com/sunzongzheng/music/projects)
 
 # 更新日志
+- 2018-07-04:
+  - 支持自动更新: 有新版本只需点击`开始下载`->`重启更新`即可完成更新
+  - 歌手详情: 歌曲列表的歌手名可点击进入歌手详情
+  - 从音乐平台导入歌单: 云歌单详情有入口，一键导入歌单
+  - 歌曲进度条允许拖动
+  - 其他细节功能 && bugfix
+  
 - 2018-06-05:
   - Mac状态栏歌词/播放控制使用Canvas画（这次实现是正经的高富帅版本了）。播放控制的点击反馈等下次更新
   - 重构后端
@@ -30,6 +37,7 @@
 - [Android客户端](https://github.com/caiyonglong/MusicLake)
 - [音乐解析Api](https://github.com/sunzongzheng/musicApi)
 - [云歌单Api](https://github.com/sunzongzheng/player-be)
+- [Mac免签名自动更新](https://github.com/sunzongzheng/electron-updater)
 
 # Demo图
 ![](demo/img1.png)
