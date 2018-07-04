@@ -41,7 +41,7 @@
         methods: {
             async getInfo() {
                 try {
-                    const {data} = await this.$api.getTopList(this.id.toString())
+                    const {data} = await this.$musicApi.getTopList(this.id.toString())
                     this.info = data
                 } catch (e) {
                     console.warn(e)

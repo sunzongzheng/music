@@ -21,7 +21,7 @@ export default {
             commit('update', {
                 loading: true
             })
-            const data = await Vue.api.getLyric(playInfo.vendor, playInfo.songId)
+            const data = await Vue.$musicApi.getLyric(playInfo.vendor, playInfo.songId)
             commit('update', {
                 lyrics: (data.status ? data.data : []).map(item => {
                     let arr = item[0].match(/^(\d+):(\d+).(\d+)$/)

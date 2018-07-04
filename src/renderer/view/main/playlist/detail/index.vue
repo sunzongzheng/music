@@ -153,7 +153,7 @@
                 for (let vendor of vendors) {
                     const ids = list[vendor].map(item => item.commentId)
                     if (ids.length) {
-                        const data = await this.$api.getBatchSongDetail(vendor, ids)
+                        const data = await this.$musicApi.getBatchSongDetail(vendor, ids)
                         if (data.status) {
                             data.data.forEach(item => {
                                 detail[vendor][item.id] = item
@@ -173,7 +173,7 @@
                         // 音乐平台删歌以后这首歌就不能听了
                         // 如果是QQ音乐 有可能改了ID 调用单个获取信息接口验证
                         if (item.vendor === 'qq') {
-                            const singleInfo = await this.$api.getSongDetail(item.vendor, item.songId)
+                            const singleInfo = await this.$musicApi.getSongDetail(item.vendor, item.songId)
                             if (singleInfo.status) {
                                 console.log('歌曲ID变了：', item)
                                 item.cp = singleInfo.data.cp

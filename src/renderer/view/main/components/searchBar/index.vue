@@ -46,7 +46,7 @@
                 })
                 eventBus.searchResult = []
                 this.$router.push({name: 'searchResult'})
-                let data = await this.$api.searchSong(this.key)
+                let data = await this.$musicApi.searchSong(this.key)
                 if (data.status) {
                     eventBus.searchResult = data.data.filter(item => item.id).map(item => {
                         return {

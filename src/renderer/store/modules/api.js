@@ -54,7 +54,7 @@ export default {
                 pause: true
             })
             console.log(info)
-            let data = await Vue.api.getSongUrl(info.vendor, info.commentId)
+            let data = await Vue.$musicApi.getSongUrl(info.vendor, info.commentId)
             if (data.status) {
                 Vue.store.dispatch('lyrics/init')
                 let url = data.data.url
