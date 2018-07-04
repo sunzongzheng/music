@@ -78,6 +78,7 @@
                         this.songs = data.data.songs.map(item => {
                             return {
                                 ...item,
+                                commentId: item.id,
                                 songId: item.id,
                                 vendor: this.vendor
                             }

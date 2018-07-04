@@ -30,7 +30,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="album.name" label="专辑"></el-table-column>
-            <el-table-column label="结果" :width="120">
+            <el-table-column label="处理结果">
                 <template v-if="scope.row.status > -1"
                           slot-scope="scope"
                 >
@@ -132,6 +132,7 @@
             }
             .result{
                 color: #F56C6C;
+                margin: 0;
                 &.success{
                     color: $color-primary;
                 }

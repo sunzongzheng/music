@@ -24,6 +24,9 @@ export default {
             for (let i in val) {
                 state.play[i] = val[i]
             }
+            if(state.play.info) {
+                state.play.info.songId = state.play.info.commentId
+            }
         },
         pauseChange(state) {
             state.play.pause = !state.play.pause
@@ -50,7 +53,8 @@ export default {
                 info,
                 pause: true
             })
-            let data = await Vue.api.getSongUrl(info.vendor, info.songId)
+            console.log(info)
+            let data = await Vue.api.getSongUrl(info.vendor, info.commentId)
             if (data.status) {
                 Vue.store.dispatch('lyrics/init')
                 let url = data.data.url

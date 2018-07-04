@@ -166,6 +166,7 @@
                     if (info) {
                         item.cp = info.cp
                         item.name = info.name
+                        item.commentId = info.id
                         item.album = info.album
                         item.artists = info.artists
                     } else {
@@ -177,6 +178,7 @@
                                 console.log('歌曲ID变了：', item)
                                 item.cp = singleInfo.data.cp
                                 item.name = singleInfo.data.name
+                                item.commentId = singleInfo.data.id
                                 item.album = singleInfo.data.album
                                 item.artists = singleInfo.data.artists
                             } else {
