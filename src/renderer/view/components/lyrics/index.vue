@@ -1,34 +1,42 @@
 <template>
-    <div :class="{[s.app]:true}">
-        <div :class="s.wrap"></div>
-        <div :class="s.cover" :style="style"></div>
-        <div :class="s.control">
-            <div :class="s.inner" v-if="status!=='fullscreen'">
-                <Icon type="bottom" :class="s.close" @click.native="close"></Icon>
-                <Icon type="fullscreen" :class="s.fullscreen" @click.native="op('fullscreen')"></Icon>
-                <Icon type="narrow" :class="s.narrow" @click.native="op('minimize')"></Icon>
-            </div>
-            <!-- 全屏状态只有离开全屏 !-->
-            <Icon type="fullscreenexit" :class="s.fullscreen" @click.native="op('leaveFullscreen')" v-else></Icon>
-        </div>
-        <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="lyrics.length" :style="mainStyle">
-            <li v-for="(item,index) in lyrics" :class="{[s.item]:true,[s.active]:activeIndex === index}">
-                {{item[1]}}
-            </li>
-        </ul>
-        <div :class="s.main"
-             :style="mainStyle"
-             v-loading="loading"
-             element-loading-background="rgba(0, 0, 0, 0)"
-             v-else
+    <transition :enter-class="s.slideTop_enter"
+                :enter-active-class="s.slideTop_enter_active"
+                :leave-to-class="s.slideTop_leave_to"
+                :leave-active-class="s.slideTop_leave_active"
+    >
+        <div :class="{[s.app]:true}"
+             v-show="show"
         >
-            <span :class="[s.item,s.nolyric,s.active]">{{placeholder}}</span>
-            <p :class="s.reloadLyric"
-               @click="init"
-            >点此尝试重新加载</p>
+            <div :class="s.wrap"></div>
+            <div :class="s.cover" :style="style"></div>
+            <div :class="s.control">
+                <div :class="s.inner" v-if="status!=='fullscreen'">
+                    <Icon type="bottom" :class="s.close" @click.native="close"></Icon>
+                    <Icon type="fullscreen" :class="s.fullscreen" @click.native="op('fullscreen')"></Icon>
+                    <Icon type="narrow" :class="s.narrow" @click.native="op('minimize')"></Icon>
+                </div>
+                <!-- 全屏状态只有离开全屏 !-->
+                <Icon type="fullscreenexit" :class="s.fullscreen" @click.native="op('leaveFullscreen')" v-else></Icon>
+            </div>
+            <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="lyrics.length" :style="mainStyle">
+                <li v-for="(item,index) in lyrics" :class="{[s.item]:true,[s.active]:activeIndex === index}">
+                    {{item[1]}}
+                </li>
+            </ul>
+            <div :class="s.main"
+                 :style="mainStyle"
+                 v-loading="loading"
+                 element-loading-background="rgba(0, 0, 0, 0)"
+                 v-else
+            >
+                <span :class="[s.item,s.nolyric,s.active]">{{placeholder}}</span>
+                <p :class="s.reloadLyric"
+                   @click="init"
+                >点此尝试重新加载</p>
+            </div>
+            <span :class="s.commentIcon" @click="go2Comments">评</span>
         </div>
-        <span :class="s.commentIcon" @click="go2Comments">评</span>
-    </div>
+    </transition>
 </template>
 <script src="./index.js"></script>
 <style lang="scss" module="s">
@@ -147,5 +155,13 @@
         .slideLeft_enter, .slideLeft_leave_to {
             transform: translate3d(100%, 0, 0);
         }
+    }
+
+    .slideTop_enter_active, .slideTop_leave_active {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .slideTop_enter, .slideTop_leave_to {
+        transform: translate3d(0, 100%, 0);
     }
 </style>

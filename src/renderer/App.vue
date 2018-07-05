@@ -1,18 +1,35 @@
 <template>
-    <div id="app">
-        <keep-alive include="rankMain,rankDetail">
-            <router-view></router-view>
-        </keep-alive>
+    <div :class="s.app">
+        <left-menu></left-menu>
+        <div :class="s.right">
+            <search-bar></search-bar>
+            <div :class="s.main">
+                <router-view></router-view>
+            </div>
+        </div>
+        <player></player>
+        <lyrics></lyrics>
+        <play-list></play-list>
+        <download-progress></download-progress>
     </div>
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    import {shell} from 'electron'
+    import leftMenu from './view/components/leftMenu/index.vue'
+    import searchBar from './view/components/searchBar/index.vue'
+    import player from './view/components/player/index.vue'
+    import lyrics from './view/components/lyrics/index.vue'
+    import playList from './view/components/current_playlist/index.vue'
+    import downloadProgress from './view/components/progress/index.vue'
 
     export default {
-        computed: {
-            ...mapState('api', ['play'])
+        components: {
+            leftMenu,
+            searchBar,
+            player,
+            lyrics,
+            playList,
+            downloadProgress
         },
         methods: {
             // 登录成功回调
@@ -31,23 +48,6 @@
             // 初始化离线歌单
             Vue.store.dispatch('offline-playlist/init')
             this.$ipc.on('loginSuccessed', this.loginSuccessed)
-            this.$ipc.on('version_new', () => {
-                this.$notify({
-                    dangerouslyUseHTMLString: true,
-                    message: '发现新版本 <a style="color:#2d8cf0;" class="go2Download" href="https://github.com/sunzongzheng/music/releases">前往下载页</a>'
-                })
-                const links = document.querySelectorAll('a[href].go2Download')
-
-                Array.prototype.forEach.call(links, function (link) {
-                    const url = link.getAttribute('href')
-                    if (url.includes('https') || url.includes('http')) {
-                        link.addEventListener('click', function (e) {
-                            e.preventDefault()
-                            shell.openExternal(url)
-                        })
-                    }
-                })
-            })
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
@@ -62,6 +62,7 @@
         height: 100%;
         font-family: arial, "Hiragino Sans GB", "Microsoft YaHei",
         "WenQuanYi Micro Hei", sans-serif;
+        background: white;
     }
 
     ul, li {
@@ -86,5 +87,23 @@
 
     ::-webkit-scrollbar-thumb {
         background-color: #e0e0e0;
+    }
+</style>
+
+<style lang="scss" module="s">
+    .app {
+        display: flex;
+        flex-flow: row wrap;
+        height: 100%;
+        position: relative;
+        .right {
+            width: calc(100% - #{$leftmenu-width});
+            padding-bottom: 60px;
+        }
+
+        .main {
+            height: calc(100% - #{$searchBar-height});
+            overflow: auto;
+        }
     }
 </style>

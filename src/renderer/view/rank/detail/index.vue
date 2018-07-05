@@ -1,7 +1,7 @@
 <template>
     <div :class="s.app">
         <div :class="s.top">
-            <img :src="info.cover"/>
+            <img :src="info.cover | image('netease', 160)"/>
             <div :class="s.right">
                 <span :class="s.name">{{info.name}}</span>
                 <p style="font-size: 12px">{{info.description}}</p>

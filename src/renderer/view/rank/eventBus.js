@@ -1,7 +1,7 @@
 export default new Vue({
-  data() {
-    return {
-      rankInfo: null
+    data() {
+        return {
+            rankInfo: null
+        }
     }
-  }
 })

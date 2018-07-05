@@ -28,7 +28,7 @@ export default {
         if (eventBus.rankInfo) {
             next()
         } else {
-            Vue.router.push({name: 'rank.main'})
+            Vue.router.push({name: 'rank.list'})
         }
     }
 }

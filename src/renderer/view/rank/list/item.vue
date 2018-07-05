@@ -3,7 +3,7 @@
         <template v-if="info">
             <div :class="s.cover">
                 {{info.name}}
-                <Icon type="play1" :class="s.play" @click.native="playList(info.list)"></Icon>
+                <Icon type="play1" :class="s.play" @click="playList(info.list)"></Icon>
             </div>
             <div :class="s.img">
                 <img :src="info.list[0] | defaultAlbum"/>
@@ -13,10 +13,10 @@
                     <span>{{index + 1}}</span>
                     <span>{{song.name}}</span>-
                     <span>
-                    <template v-for="singer in song.artists">
-                        {{singer.name}}
-                    </template>
-                </span>
+                        <template v-for="singer in song.artists">
+                            {{singer.name}}
+                        </template>
+                    </span>
                 </li>
             </ul>
         </template>
@@ -26,7 +26,6 @@
     import eventBus from '../eventBus'
 
     export default {
-        name: 'rankMainItem',
         props: {
             id: {
                 type: Number,
