@@ -30,7 +30,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
+        width: $leftmenu-width;
         height: 100%;
         background: linear-gradient(to bottom, #f6f6f6, #f2f2f2);
         -webkit-app-region: drag;

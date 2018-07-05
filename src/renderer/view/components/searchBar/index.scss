@@ -1,0 +1,81 @@
+.app {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: $searchBar-height;
+    border-bottom: 1px solid #EBEBEB;
+    -webkit-app-region: drag;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    -webkit-app-region: no-drag;
+    .icon {
+        font-size: 12px;
+        margin-left: 16px;
+        opacity: .4;
+        cursor: pointer;
+        &:hover {
+            color: $color-primary;
+        }
+        &.right_arrow {
+            transform: rotate(180deg);
+        }
+    }
+
+}
+
+.inputArea {
+    position: relative;
+    .input {
+        width: 200px;
+        height: 20px;
+        border-radius: 20px;
+        border: none;
+        background-color: #EAEAEA;
+        margin-left: 16px;
+        padding-left: 20px;
+        opacity: .7;
+        position: relative;
+        z-index: 1;
+        &:focus {
+            outline: none;
+        }
+    }
+    .input:focus + .holder {
+        left: 20px;
+        margin: 0;
+        transition: all .4s;
+    }
+    .holder {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        width: 40px;
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        margin: 0;
+        transition: all .4s;
+        &.empty {
+            left: 92px;
+            margin: auto;
+        }
+        span {
+            line-height: 1em;
+        }
+    }
+    .clean {
+        position: absolute;
+        right: 2px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        cursor: pointer;
+        z-index: 2;
+        opacity: .5;
+    }
+}

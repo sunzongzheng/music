@@ -11,17 +11,16 @@
     </div>
 </template>
 <script>
-  import vItem from './item.vue'
+    import vItem from './item.vue'
 
-  export default {
-    name: 'rankMain',
-    components: {vItem},
-    data() {
-      return {
-        list: new Array(21)
-      }
+    export default {
+        components: {vItem},
+        data() {
+            return {
+                list: new Array(21)
+            }
+        }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .app {

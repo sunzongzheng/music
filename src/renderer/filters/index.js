@@ -7,12 +7,12 @@ Vue.filter('source', val => {
         'xiami': '虾米音乐'
     }[val]
 })
-Vue.filter('image', (url, vendor) => {
+Vue.filter('image', (url, vendor, width = 140) => {
     if (!url) return require('../assets/defaultAlbum.png')
     return {
-        netease: `${url}?param=140y140`,
-        xiami: `${url}@1e_1c_100Q_140w_140h`,
-        qq: url.replace('300x300', '150x150')
+        netease: `${url}?param=${width}y${width}`,
+        xiami: `${url}@1e_1c_100Q_${width}w_${width}h`,
+        qq: url.replace('300x300', `150x150`)
     }[vendor]
 })
 Vue.filter('defaultAlbum', info => {
