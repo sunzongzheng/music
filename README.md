@@ -1,13 +1,20 @@
 # music player [![Build Status](https://travis-ci.org/sunzongzheng/music.svg?branch=master)](https://travis-ci.org/sunzongzheng/music)
 - 歌曲Api涵盖网易云、QQ音乐、虾米
 - 界面仿QQ音乐
-- Mac > Windows > Linux都会逐步适配，移动端在计划中
+- Mac > Windows > Linux都会逐步适配
+- 安卓客户端详见[caiyonglong/MusicLake](https://github.com/caiyonglong/MusicLake)
 - 登录、收藏、播放的流程基本没问题，可作为日用上班挂后台听歌程序
 - 精力有限，需求不饱和都会逐步完善，有兴趣可赏个star静等完善与bug修复，期望的功能也可提issues
 - [下载页](https://github.com/sunzongzheng/music/releases) 
 - 版本计划见[Projects](https://github.com/sunzongzheng/music/projects)
 
 # 更新日志
+- 2018-07-22:
+  - 大幅提升播放大列表性能
+  - 搜索结果页播放歌曲也会将所有搜索结果放入播放列表[@issues#12](https://github.com/sunzongzheng/music/issues/12)[@issues#13](https://github.com/sunzongzheng/music/issues/13)
+  - 优化代码
+  - jsx支持
+  
 - 2018-07-04:
   - 支持自动更新: 有新版本只需点击`开始下载`->`重启更新`即可完成更新
   - 歌手详情: 歌曲列表的歌手名可点击进入歌手详情
