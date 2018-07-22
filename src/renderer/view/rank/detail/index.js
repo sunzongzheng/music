@@ -9,10 +9,12 @@ export default {
         }
     },
     methods: {
-        ...mapActions('api', ['play']),
+        ...mapActions('play', ['play']),
         doPlay(item) {
-            this.$store.commit('c_playlist/update', this.info.list)
-            this.play(item)
+            this.play({
+                info: item,
+                playlist: this.info.list
+            })
         },
         rowClassName({row, rowIndex}) {
             const rs = [
@@ -28,7 +30,7 @@ export default {
         if (eventBus.rankInfo) {
             next()
         } else {
-            Vue.router.push({name: 'rank.list'})
+            Vue.$router.push({name: 'rank.list'})
         }
     }
 }

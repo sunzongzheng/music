@@ -13,7 +13,7 @@ export default {
     actions: {
         async init({commit}) {
             try {
-                let data = await Vue.http.get('/playlist')
+                let data = await Vue.$http.get('/playlist')
                 commit('update', data)
             } catch (e) {
                 commit('update', [])
@@ -21,7 +21,7 @@ export default {
             }
         },
         add(store, name) {
-            return Vue.http.post('/playlist', {
+            return Vue.$http.post('/playlist', {
                 name
             })
         }

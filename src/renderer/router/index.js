@@ -70,10 +70,7 @@ const router = new Router({
             path: '/share',
             component: require('@/view/share.vue')
         }
-    ],
-    scrollBehavior(to, from, savedPosition) {
-        return {x: 0, y: 0}
-    }
+    ]
 })
 router.beforeEach((to, from, next) => {
     console.log(to)

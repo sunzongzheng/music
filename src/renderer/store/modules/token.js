@@ -1,15 +1,15 @@
 export default {
-  namespaced: true,
-  state: {
-    token: null
-  },
-  mutations: {
-    update (state, val) {
-      state.token = val
-      localStorage.token = val
+    namespaced: true,
+    state: {
+        token: null
     },
-    clear () {
-      localStorage.removeItem('token')
+    mutations: {
+        update(state, val) {
+            state.token = val
+            localStorage.token = val
+        },
+        clear() {
+            localStorage.removeItem('token')
+        }
     }
-  }
 }

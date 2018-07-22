@@ -158,7 +158,7 @@
                     if (this.offline) {
 
                     } else {
-                        const {failedList} = await Vue.http.post(`/playlist/${this.albumId}/batch`, {
+                        const {failedList} = await Vue.$http.post(`/playlist/${this.albumId}/batch`, {
                             ids: this.album.songs.map(item => item.id),
                             vendor: this.vendor
                         })

@@ -3,7 +3,7 @@
         <template v-if="info">
             <div :class="s.cover">
                 {{info.name}}
-                <Icon type="play1" :class="s.play" @click="playList(info.list)"></Icon>
+                <Icon type="play1" :class="s.play" @click="playList"></Icon>
             </div>
             <div :class="s.img">
                 <img :src="info.list[0] | defaultAlbum"/>
@@ -41,15 +41,17 @@
             async getInfo() {
                 try {
                     const {data} = await this.$musicApi.getTopList(this.id.toString())
-                    this.info = data
+                    this.info = Object.freeze(data)
                 } catch (e) {
                     console.warn(e)
                 }
             },
             // 播放排行榜
-            playList(list) {
-                this.$store.dispatch('api/play', list[0])
-                this.$store.commit('c_playlist/update', list)
+            playList() {
+                this.$store.dispatch('play/play', {
+                    info: this.info.list[0],
+                    playlist: this.info.list
+                })
             },
             // 跳转至排行榜详情
             go2RankList() {

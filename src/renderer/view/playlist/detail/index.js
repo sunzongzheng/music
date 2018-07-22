@@ -24,7 +24,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('api', ['play']),
+        ...mapActions('play', ['play']),
         getOfflineStoreName(id = this.id) {
             return `offline_playlist_${id}_song`
         },
@@ -74,8 +74,10 @@ export default {
             this.list.forEach(item => {
                 list.push(item)
             })
-            this.$store.commit('c_playlist/update', list)
-            this.play(item)
+            this.play({
+                info: item,
+                playlist: list
+            })
         },
         rowClassName({row, rowIndex}) {
             const rs = [

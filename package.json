@@ -81,6 +81,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.46",
+    "@babel/helper-module-imports": "^7.0.0-beta.52",
     "@babel/node": "^7.0.0-beta.46",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
@@ -88,7 +89,10 @@
     "@babel/preset-env": "^7.0.0-beta.46",
     "@babel/register": "^7.0.0-beta.46",
     "@babel/runtime": "^7.0.0-beta.46",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^8.0.0-beta",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
     "babili-webpack-plugin": "^0.1.2",
     "cfonts": "^1.1.3",
     "chalk": "^2.1.0",

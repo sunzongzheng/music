@@ -50,12 +50,15 @@
             album: Object
         },
         methods: {
-            ...mapActions('api', ['play']),
+            ...mapActions('play', ['play']),
             async removeFromPlaylist(index) {
                 this.album.songs.splice(index, 1)
             },
             doPlay(item) {
-                this.play(item)
+                this.play({
+                    info: item
+                })
+
             },
             rowClassName({row, rowIndex}) {
                 const rs = [
@@ -130,10 +133,10 @@
                     color: $color-primary;
                 }
             }
-            .result{
+            .result {
                 color: #F56C6C;
                 margin: 0;
-                &.success{
+                &.success {
                     color: $color-primary;
                 }
             }

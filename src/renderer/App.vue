@@ -3,7 +3,7 @@
         <left-menu></left-menu>
         <div :class="s.right">
             <search-bar></search-bar>
-            <div :class="s.main">
+            <div :class="s.main" ref="main">
                 <router-view></router-view>
             </div>
         </div>
@@ -44,9 +44,14 @@
                 this.$store.commit('token/update', info.token)
             },
         },
+        watch: {
+            '$route'() {
+                this.$refs.main.scrollTop = 0
+            }
+        },
         created() {
             // 初始化离线歌单
-            Vue.store.dispatch('offline-playlist/init')
+            Vue.$store.dispatch('offline-playlist/init')
             this.$ipc.on('loginSuccessed', this.loginSuccessed)
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
@@ -96,6 +101,7 @@
         flex-flow: row wrap;
         height: 100%;
         position: relative;
+        overflow: hidden;
         .right {
             width: calc(100% - #{$leftmenu-width});
             padding-bottom: 60px;

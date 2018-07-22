@@ -13,12 +13,12 @@ export default {
     },
     computed: {
         ...mapState('lyrics', ['show', 'loading', 'lyrics', 'activeIndex']),
-        ...mapState('api', ['play']),
+        ...mapState('play', ['info']),
         ...mapState('windowStatus', ['status']),
         style() {
-            if (this.play.info) {
+            if (this.info) {
                 return {
-                    'background-image': `url(${Vue.filter('defaultAlbum')(this.play.info)})`
+                    'background-image': `url(${Vue.filter('defaultAlbum')(this.info)})`
                 }
             } else {
                 return {}
@@ -33,10 +33,10 @@ export default {
     watch: {
         show(val) {
             if (val) {
-                this.handleLyric()
+                this.handleLyric(false)
             }
         },
-        lyrics(val) {
+        lyrics() {
             this.$nextTick(() => {
                 if (this.$refs.main) {
                     Velocity(this.$refs.main, 'stop')
@@ -99,10 +99,10 @@ export default {
             this.$router.push({
                 name: 'song.comments',
                 params: {
-                    id: this.play.info.songId,
+                    id: this.info.songId,
                 },
                 query: {
-                    vendor: this.play.info.vendor
+                    vendor: this.info.vendor
                 }
             })
             this.$store.commit('lyrics/update', {
@@ -110,11 +110,11 @@ export default {
             })
         },
         // 处理歌词
-        handleLyric() {
+        handleLyric(transfer = true) {
             const main = this.$refs.main
             if (main && main.children[this.activeIndex]) {
                 // 传递到状态栏
-                this.transfer(this.activeIndex)
+                transfer && this.transfer(this.activeIndex)
                 const need = main.children[this.activeIndex].offsetTop - main.offsetHeight / 2
                 // 是否打开了歌词面板
                 if (this.show) {

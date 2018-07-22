@@ -2,15 +2,15 @@ import {mapState, mapMutations, mapActions} from 'vuex'
 
 export default {
     computed: {
-        ...mapState('api', ['play']),
+        ...mapState('play', ['volume', 'url', 'pause']),
         ...mapState('c_playlist', ['cycle']),
         ...mapState('lyrics', ['show']),
-        volume: {
+        _volume: {
             get() {
-                return this.play.volume
+                return this.volume
             },
             set(val) {
-                this.$store.commit('api/updatePlay', {
+                this.$store.commit('play/update', {
                     volume: val
                 })
                 localStorage.volume = val
@@ -21,8 +21,8 @@ export default {
         ...mapMutations('c_playlist', ['cycleChange']),
         ...mapActions('c_playlist', ['last', 'next']),
         pauseChange() {
-            if (this.play.url) {
-                this.$store.commit('api/pauseChange')
+            if (this.url) {
+                this.$store.commit('play/pauseChange')
             }
         }
     },
