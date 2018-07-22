@@ -50,7 +50,7 @@
             ...mapState('user', {
                 userInfo: 'info'
             }),
-            ...mapState('api', ['play'])
+            ...mapState('play', ['play'])
         },
         methods: {
             async collect(id) {

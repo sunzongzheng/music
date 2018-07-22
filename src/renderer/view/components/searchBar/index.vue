@@ -40,7 +40,7 @@
                 if (this.empty) {
                     return
                 }
-                this.$store.commit('api/updateSearch', {
+                this.$store.commit('search/update', {
                     keywords: this.key,
                     loading: true,
                 })
@@ -55,7 +55,7 @@
                             songId: item.id
                         }
                     })
-                    this.$store.commit('api/updateSearch', {
+                    this.$store.commit('search/update', {
                         loading: false
                     })
                 } else {

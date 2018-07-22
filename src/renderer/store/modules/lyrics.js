@@ -17,7 +17,7 @@ export default {
     },
     actions: {
         async init({commit}) {
-            const playInfo = Vue.store.state.api.play.info
+            const playInfo = Vue.$store.state.play.info
             commit('update', {
                 loading: true
             })

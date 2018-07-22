@@ -48,21 +48,21 @@ instance.interceptors.response.use(
         }
         return Promise.reject(e)
     })
-Vue.http = Vue.prototype.$http = instance
+Vue.$http = Vue.prototype.$http = instance
 
-Vue.clientApi = remote.getGlobal('clientApi')
+Vue.$clientApi = remote.getGlobal('clientApi')
 
 Vue.$musicApi = Vue.prototype.$musicApi = remote.getGlobal('musicApi')
 
-Vue.store = Vue.prototype.$store = store
+Vue.$store = Vue.prototype.$store = store
 
-Vue.router = router
+Vue.$router = router
 
 Vue.config.productionTip = false
 
-Vue.ipc = Vue.prototype.$ipc = ipcRenderer
+Vue.$ipc = Vue.prototype.$ipc = ipcRenderer
 
-Vue.updater = Vue.prototype.$updater = remote.getGlobal('updater')
+Vue.$updater = Vue.prototype.$updater = remote.getGlobal('updater')
 
 Vue.$message = ElementUI.Message
 

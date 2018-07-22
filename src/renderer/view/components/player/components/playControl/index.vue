@@ -5,13 +5,13 @@
             <!-- 上一曲 !-->
             <Icon type="last" @click.native="last"></Icon>
             <!-- 播放/暂停 !-->
-            <Icon :type="play.pause?'play':'plus-pause'" :class="s.play" @click.native="pauseChange"></Icon>
+            <Icon :type="pause?'play':'plus-pause'" :class="s.play" @click.native="pauseChange"></Icon>
             <!-- 下一曲 !-->
             <Icon type="last" :class="s.next" @click.native="next"></Icon>
         </div>
         <!-- 音量 !-->
         <el-popover ref="volume" placement="top" trigger="click" popper-class="volumeSlider">
-            <el-slider v-model="volume" vertical height="50px" :min="0" :max="100"></el-slider>
+            <el-slider v-model="_volume" vertical height="50px" :min="0" :max="100"></el-slider>
         </el-popover>
         <Icon type="volume" :class="s.volume" v-popover:volume></Icon>
         <Icon :type="'cycle-' + cycle" :class="s.volume" @click.native="cycleChange"></Icon>
@@ -67,7 +67,7 @@
             border: 2px solid #26B36C;
         }
         .el-slider.is-vertical .el-slider__button-wrapper {
-            left: -16px;
+            left: -15px;
         }
     }
 </style>

@@ -9,17 +9,17 @@ export default {
         update(state, val) {
             state.info = val
             // 初始化歌单
-            Vue.store.dispatch('playlist/init')
+            Vue.$store.dispatch('playlist/init')
         }
     },
     actions: {
         async init({commit}) {
-            const data = await Vue.http.get('/user')
+            const data = await Vue.$http.get('/user')
             commit('update', data)
         },
         logout({commit}) {
             commit('update', null)
-            Vue.store.commit('token/clear')
+            Vue.$store.commit('token/clear')
             Vue.$message.success('退出成功')
         }
     }

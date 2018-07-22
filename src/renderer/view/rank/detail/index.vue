@@ -9,37 +9,10 @@
                 <span :class="s.total">累计播放：{{info.playCount}}</span>
             </div>
         </div>
-        <el-table :data="info.list"
-                  :class="s.table"
-                  :row-class-name="rowClassName"
-        >
-            <el-table-column label="歌曲" :width="220">
-                <template slot-scope="scope">
-                    <div :class="s.nameItem">
-                        <div :class="s.songName" :title="scope.row.name">{{scope.row.name}}</div>
-                        <div :class="s.songControl">
-                            <Icon type="item-play" @click.native="doPlay(scope.row)" v-if="!scope.row.cp"></Icon>
-                            <add-to-playlist :info="scope.row"></add-to-playlist>
-                        </div>
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="歌手" :class-name="s.singer">
-                <template slot-scope="scope">
-                    <router-link v-for="(item,index) in scope.row.artists"
-                                 :key="index"
-                                 :class="s.link"
-                                 :to="{ name: 'artist', params: { id: item.id }, query: { vendor:  scope.row.vendor } }">
-                        {{item.name}}
-                    </router-link>
-                </template>
-            </el-table-column>
-            <el-table-column prop="album.name" label="专辑">
-                <template slot-scope="scope">
-                    <span :class="s.album">{{scope.row.album.name}}</span>
-                </template>
-            </el-table-column>
-        </el-table>
+        <DataTable :data="info.list"
+                   :class="s.table"
+                   :showVendor="false"
+        ></DataTable>
     </div>
 </template>
 <script src="./index.js"></script>

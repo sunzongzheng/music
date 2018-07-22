@@ -33,6 +33,9 @@
         [
           "@babel/preset-env"
         ]
+      ],
+      "plugins": [
+        "transform-vue-jsx"
       ]
     },
     "web": {
@@ -40,6 +43,9 @@
         [
           "@babel/preset-env"
         ]
+      ],
+      "plugins": [
+        "transform-vue-jsx"
       ]
     }
   },

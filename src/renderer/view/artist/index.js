@@ -17,7 +17,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('api', ['play']),
+        ...mapActions('play', ['play']),
         async getSongs() {
             this.loading = true
             try {
@@ -53,9 +53,10 @@ export default {
             this.songs.forEach(item => {
                 list.push(item)
             })
-            this.$store.commit('c_playlist/update', list)
-            console.log(item)
-            this.play(item)
+            this.play({
+                info: item,
+                playlist: list
+            })
         },
     },
     created() {
@@ -67,7 +68,7 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         if (!to.query.vendor) {
-            return Vue.router.push('/')
+            return Vue.$router.push('/')
         }
         next()
     }
