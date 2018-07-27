@@ -71,7 +71,7 @@
                     >
                         <div class={this.s.album_wrap}>
                             <img class={this.s.album}
-                                 src={Vue.filter('image')(item.album.cover, 'netease', 70)}/>
+                                 src={Vue.filter('image')(item.album.cover, item.vendor, 70)}/>
                         </div>
                         <div class={this.s.main}>
                             <span class={this.s.name}>{item.name}</span>

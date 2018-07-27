@@ -117,7 +117,9 @@
                                     </span>
                                 </div>
                                 :
-                                '听你想听的音乐'
+                                <div class={this.s.info}>
+                                    <span class={this.s.placeholder}>听你想听的音乐</span>
+                                </div>
                         }
                         <span class={this.s.duration}>
                             {this.minute(this.duration.cur)}&nbsp;/&nbsp;{this.minute(this.duration.total)}
@@ -159,6 +161,9 @@
                 align-items: center;
                 & > span {
                     line-height: 1;
+                }
+                .placeholder {
+                    font-size: 13px;
                 }
                 .name {
                     color: #333;

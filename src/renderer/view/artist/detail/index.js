@@ -38,26 +38,7 @@ export default {
                 e.msg && this.$message.warning(e.msg)
             }
             this.loading = false
-        },
-        rowClassName({row, rowIndex}) {
-            const rs = [
-                this.s.row
-            ]
-            if (row.cp) {
-                rs.push(this.s.disabled)
-            }
-            return rs.join(' ')
-        },
-        doPlay(item) {
-            const list = []
-            this.songs.forEach(item => {
-                list.push(item)
-            })
-            this.play({
-                info: item,
-                playlist: list
-            })
-        },
+        }
     },
     created() {
         this.getSongs()
