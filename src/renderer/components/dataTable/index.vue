@@ -25,7 +25,7 @@
                     <template v-for="artist in item.artists">
                         <router-link v-if="artist.id"
                                      :class="s.link"
-                                     :to="{ name: 'artist', params: { id: artist.id }, query: { vendor: item.vendor } }">
+                                     :to="{ name: 'artist.detail', params: { id: artist.id }, query: { vendor: item.vendor } }">
                             {{artist.name}}
                         </router-link>
                         <template v-else>

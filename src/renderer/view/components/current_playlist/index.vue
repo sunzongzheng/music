@@ -41,13 +41,15 @@
                         }
                         if (indexNew && indexOld) break
                     }
-                    playlistRenderCache[indexOld] = this.renderSingle(eventBus.playlist[indexOld])
-                    playlistRenderCache[indexNew] = this.renderSingle(eventBus.playlist[indexNew])
-                    if (this.strategy === 'cache') {
-                        // 由于已经是渲染cache列表 所以 $forceUpdate 也会很快
-                        this.$forceUpdate()
-                    } else {
-                        this.strategy = 'cache'
+                    if(indexOld && indexOld) {
+                        playlistRenderCache[indexOld] = this.renderSingle(eventBus.playlist[indexOld])
+                        playlistRenderCache[indexNew] = this.renderSingle(eventBus.playlist[indexNew])
+                        if (this.strategy === 'cache') {
+                            // 由于已经是渲染cache列表 所以 $forceUpdate 也会很快
+                            this.$forceUpdate()
+                        } else {
+                            this.strategy = 'cache'
+                        }
                     }
                 }
             }

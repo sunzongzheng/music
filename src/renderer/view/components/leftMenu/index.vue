@@ -9,6 +9,10 @@
                     <Icon type="paihang"></Icon>
                     排行
                 </router-link>
+                <router-link tag="li" to="/artist">
+                    <Icon type="renren"></Icon>
+                    歌手
+                </router-link>
             </ul>
             <play-list></play-list>
             <offline-play-list></offline-play-list>

@@ -62,9 +62,24 @@ const router = new Router({
             component: require('@/view/comments/index.vue')
         },
         {
-            path: '/artist/:id', // 歌手详情
+            path: '/artist', // 歌手详情
             name: 'artist',
-            component: require('@/view/artist/index.vue')
+            component: require('@/view/artist/index.vue'),
+            redirect: {
+                name: 'artist.list'
+            },
+            children: [
+                {
+                    path: 'list', // 歌手列表
+                    name: 'artist.list',
+                    component: require('@/view/artist/list/index.vue'),
+                },
+                {
+                    path: ':id/detail', // 歌手详情
+                    name: 'artist.detail',
+                    component: require('@/view/artist/detail/index.vue'),
+                }
+            ]
         },
         {
             path: '/share',
