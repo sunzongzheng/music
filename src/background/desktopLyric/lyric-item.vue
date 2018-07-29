@@ -27,7 +27,7 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 100%;
+        height: 30px;
         white-space: nowrap;
         overflow: hidden;
         font-size: 23px;

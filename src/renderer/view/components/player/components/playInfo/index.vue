@@ -109,6 +109,7 @@
             margin-right: 10px;
             cursor: pointer;
             -webkit-font-smoothing: antialiased;
+            line-height: 1;
             &.active {
                 color: $color-primary;
             }

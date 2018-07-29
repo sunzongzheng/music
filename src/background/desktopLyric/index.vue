@@ -1,6 +1,11 @@
 <template>
     <div :class="s.desktopLyric">
-        <i class="el-icon-close" :class="s.closeIcon" @click="closeLyric"></i>
+        <div :class="s.control">
+            <i class="el-icon-close" :class="s.closeIcon" @click="closeLyric"></i>
+            <Icon type="move"
+                  :class="s.moveIcon"
+            ></Icon>
+        </div>
         <lyric-item :lyric="lyric" :class="s.base"></lyric-item>
         <!--<lyric-item :lyric="lyric" :class="s.cover" color="red" :style="style" v-if="cover"></lyric-item>-->
     </div>
@@ -19,6 +24,11 @@
                 time: 0,
                 width: 0,
                 cover: false,
+                drag: {
+                    x: 0,
+                    y: 0,
+                    status: false
+                }
             }
         },
         computed: {
@@ -50,6 +60,9 @@
 </script>
 <style lang="scss" module="s">
     .desktopLyric {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 100%;
         position: relative;
@@ -61,19 +74,28 @@
             top: 0;
             z-index: 1;
         }
-        .closeIcon {
+        .control {
+            display: none;
+            align-items: center;
+            justify-content: center;
             position: absolute;
-            left: 8px;
-            top: 8px;
-            color: white;
+            left: 0;
+            top: 0;
             z-index: 2;
-            -webkit-app-region: no-drag;
-            cursor: pointer;
-            display: flex;
+            padding-top: 8px;
+            .closeIcon,
+            .moveIcon {
+                color: white;
+                cursor: pointer;
+                margin-left: 8px;
+            }
+            .moveIcon {
+                -webkit-app-region: drag;
+            }
         }
         &:hover {
-            .closeIcon {
-                display: block;
+            .control {
+                display: flex;
             }
         }
     }
