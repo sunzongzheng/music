@@ -20,6 +20,8 @@ function createWindow() {
     const windows = initWindow()
     mainWindow = windows.mainWindow
     backgroundWindow = windows.backgroundWindow
+    global.mainWindow = windows.mainWindow
+    global.backgroundWindow = windows.backgroundWindow
     initIpcEvent(mainWindow, backgroundWindow)
     // mainWindow.webContents.openDevTools({detach: true})
     mainWindow.on('closed', () => {

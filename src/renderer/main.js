@@ -52,6 +52,9 @@ Vue.$http = Vue.prototype.$http = instance
 
 Vue.$clientApi = remote.getGlobal('clientApi')
 
+Vue.$mainWindow = Vue.prototype.$mainWindow = remote.getGlobal('mainWindow')
+Vue.$backgroundWindow = Vue.prototype.$backgroundWindow = remote.getGlobal('backgroundWindow')
+
 Vue.$musicApi = Vue.prototype.$musicApi = remote.getGlobal('musicApi')
 
 Vue.$store = Vue.prototype.$store = store

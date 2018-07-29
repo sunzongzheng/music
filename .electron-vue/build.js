@@ -35,7 +35,7 @@ function build() {
 
     del.sync(['dist/electron/*', '!.gitkeep'])
 
-    const tasks = ['main', 'renderer']
+    const tasks = ['main', 'renderer', 'background']
     const m = new Multispinner(tasks, {
         preText: 'building',
         postText: 'process'

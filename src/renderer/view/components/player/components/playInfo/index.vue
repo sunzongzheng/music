@@ -3,11 +3,17 @@
     import eventBus from '@/eventBus/playlist'
     import cover from './components/cover.vue'
     import songInfo from './components/song-info.vue'
+    import {remote} from 'electron'
 
     export default {
         components: {
             cover,
             songInfo
+        },
+        data() {
+            return {
+                backgroundWindowShow: false
+            }
         },
         computed: {
             ...mapState('play', ['info']),
@@ -40,7 +46,24 @@
             },
             showShareWindow() {
                 this.$ipc.send('share', this.info)
+            },
+            toggleDesktopLyric() {
+                this.$ipc.send('backgroundWindowStatusChange', !this.backgroundWindowShow)
+            },
+            judgeShowDesktopLyric() {
+                if (this.backgroundWindowShow) {
+                    remote.getGlobal('backgroundWindow').show()
+                } else {
+                    remote.getGlobal('backgroundWindow').hide()
+                }
             }
+        },
+        created() {
+            this.judgeShowDesktopLyric()
+            this.$ipc.on('backgroundWindowStatusChange', (evnet, val) => {
+                this.backgroundWindowShow = val
+                this.judgeShowDesktopLyric()
+            })
         },
         render(h) {
             return (
@@ -53,6 +76,8 @@
                             :
                             <icon type="add" class={this.s.icon} disabled={true}></icon>
                     }
+                    <span class={{[this.s.icon]: true, [this.s.active]: this.backgroundWindowShow}}
+                          onClick={this.toggleDesktopLyric}>词</span>
                     <icon type="share"
                           class={this.s.icon}
                           onClick={this.showShareWindow}
@@ -79,6 +104,15 @@
         border-top: 1px solid #EBEBEB;
         padding: 0 12px;
         user-select: none;
+        .icon {
+            color: #555;
+            margin-right: 10px;
+            cursor: pointer;
+            -webkit-font-smoothing: antialiased;
+            &.active {
+                color: $color-primary;
+            }
+        }
         &.lyric {
             background: transparent;
             border: none;
@@ -88,11 +122,6 @@
             .cover {
                 transform: rotate(180deg);
             }
-        }
-        .icon {
-            color: #555;
-            margin-right: 10px;
-            cursor: pointer;
         }
     }
 </style>

@@ -32,4 +32,8 @@ export default function (mainWindow, backgroundWindow) {
     ipcMain.on('tray-control-showMainWindow', () => {
         mainWindow.show()
     })
+    // 切换桌面歌词
+    ipcMain.on('backgroundWindowStatusChange', (event, arg) => {
+        mainWindow.webContents.send('backgroundWindowStatusChange', arg)
+    })
 }
