@@ -159,9 +159,6 @@
             .info {
                 display: flex;
                 align-items: center;
-                & > span {
-                    line-height: 1;
-                }
                 .placeholder {
                     font-size: 13px;
                 }

@@ -76,8 +76,8 @@
                             :
                             <icon type="add" class={this.s.icon} disabled={true}></icon>
                     }
-                    <span class={{[this.s.icon]: true, [this.s.active]: this.backgroundWindowShow}}
-                          onClick={this.toggleDesktopLyric}>词</span>
+                    <icon type="ci" class={{[this.s.icon]: true, [this.s.active]: this.backgroundWindowShow}}
+                          onClick={this.toggleDesktopLyric}></icon>
                     <icon type="share"
                           class={this.s.icon}
                           onClick={this.showShareWindow}

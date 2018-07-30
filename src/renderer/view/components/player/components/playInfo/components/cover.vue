@@ -30,6 +30,7 @@
     .album {
         width: 35px;
         position: relative;
+        display: flex;
         img {
             width: 35px;
             height: 35px;
