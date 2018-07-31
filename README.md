@@ -9,6 +9,14 @@
 - 版本计划见[Projects](https://github.com/sunzongzheng/music/projects)
 
 # 更新日志
+- 2018-07-31:
+  - 歌手列表
+  - 桌面歌词（乞丐版）
+    - 入口在底部播放控制区右侧
+    - linux 暂不可用，经测试 ubuntu 18.04 上无法置顶与背景透明
+    - windows 鼠标移动至可拖拽图标 会失焦导致图标闪烁
+  - linux下一些样式修复
+  
 - 2018-07-22:
   - 大幅提升播放大列表性能
   - 搜索结果页播放歌曲也会将所有搜索结果放入播放列表[@issues#12](https://github.com/sunzongzheng/music/issues/12)[@issues#13](https://github.com/sunzongzheng/music/issues/13)
