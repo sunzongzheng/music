@@ -12,7 +12,7 @@
                        @compositionend="ime = false"
                 />
                 <div :class="{[s.holder]:true,[s.empty]:empty}">
-                    <Icon type="sousuo"></Icon>
+                    <Icon type="sousuo" :class="s.searchIcon"></Icon>
                     <span v-show="empty && !ime">搜索</span>
                 </div>
                 <Icon type="close-2" :class="s.clean" v-show="!empty" @click.native="key = ''"></Icon>

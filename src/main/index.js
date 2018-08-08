@@ -3,6 +3,7 @@ import initTray from './tray'
 import initUpdater from './updater'
 import initWindow from './window'
 import initIpcEvent from './ipcEvent'
+import initMenu from './menu'
 import musicApi from './musicApi'
 import axios from 'axios'
 
@@ -22,6 +23,7 @@ function createWindow() {
     backgroundWindow = windows.backgroundWindow
     global.mainWindow = windows.mainWindow
     global.backgroundWindow = windows.backgroundWindow
+    initMenu()
     initIpcEvent(mainWindow, backgroundWindow)
     // mainWindow.webContents.openDevTools({detach: true})
     mainWindow.on('closed', () => {
