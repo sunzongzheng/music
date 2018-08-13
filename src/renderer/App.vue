@@ -75,6 +75,10 @@
         padding: 0;
     }
 
+    p {
+        margin: 0;
+    }
+
     * {
         box-sizing: border-box;
     }
@@ -86,7 +90,7 @@
     }
 
     ::-webkit-scrollbar {
-        width: 4px;
+        width: 8px;
         height: 8px;
     }
 

@@ -47,6 +47,7 @@
             .title {
                 font-size: 12px;
                 color: #8F8F8F;
+                margin: 12px 0;
             }
             ul {
                 list-style: none;

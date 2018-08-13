@@ -158,9 +158,13 @@
                     if (this.offline) {
 
                     } else {
-                        const {failedList} = await Vue.$http.post(`/playlist/${this.albumId}/batch`, {
-                            ids: this.album.songs.map(item => item.id),
-                            vendor: this.vendor
+                        const {failedList} = await Vue.$http.post(`/playlist/${this.albumId}/batch2`, {
+                            collects: this.album.songs.map(item => {
+                                return {
+                                    id: item.id,
+                                    vendor: item.vendor
+                                }
+                            })
                         })
                         this.album.songs = this.album.songs.map(song => {
                             const cur = failedList.filter(item => song.id === item.id)[0]
@@ -190,6 +194,7 @@
         .help {
             color: $color-sub;
             font-size: 12px;
+            margin-top: 8px;
             a {
                 color: $color-primary;
                 cursor: pointer;

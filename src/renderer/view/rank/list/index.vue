@@ -26,6 +26,9 @@
     .app {
         padding: 0 16px;
         overflow: hidden;
+        & > p {
+            margin: 16px 0;
+        }
         .main {
             display: flex;
             flex-wrap: wrap;

@@ -6,18 +6,21 @@
                 <el-col :span="spanList[1]">歌手</el-col>
                 <el-col :span="spanList[2]">专辑</el-col>
                 <el-col :span="spanList[3]" v-if="showVendor">来源</el-col>
+                <el-col :span="spanList[4]" v-if="spanList[4]">{{slotAppendTitle}}</el-col>
             </el-row>
-            <el-row v-for="item in data"
+            <el-row v-for="(item,index) in data"
                     :class="{ [s.row] : true, [s.disabled] : item.cp }"
                     :key="item.songId"
+                    @click.native="$emit('rowClick', item)"
             >
                 <el-col :span="spanList[0]">
                     <div :class="s.nameItem">
                         <div :class="s.songName" :title="item.name">{{item.name}}</div>
-                        <div :class="s.songControl">
+                        <div :class="s.songControl" v-if="showOperate">
+                            <slot name="songControlPrepend" :row="item" :$index="index"></slot>
                             <Icon type="item-play" @click="doPlay(item)" v-if="!item.cp"></Icon>
                             <add-to-playlist :info="item"></add-to-playlist>
-                            <slot name="songControlAppend" :row="item"></slot>
+                            <slot name="songControlAppend" :row="item" :$index="index"></slot>
                         </div>
                     </div>
                 </el-col>
@@ -38,6 +41,9 @@
                 </el-col>
                 <el-col :span="spanList[3]" v-if="showVendor">
                     {{item.vendor | source}}
+                </el-col>
+                <el-col :span="spanList[4]" v-if="spanList[4]">
+                    <slot name="append" :row="item"></slot>
                 </el-col>
             </el-row>
         </template>
@@ -63,11 +69,17 @@
             showVendor: {
                 type: Boolean,
                 default: true
-            }
+            },
+            showOperate: {
+                type: Boolean,
+                default: true
+            },
+            spanWidth: Array,
+            slotAppendTitle: String
         },
         computed: {
             spanList() {
-                return this.showVendor ? [8, 7, 5, 4] : [10, 8, 6]
+                return this.spanWidth ? this.spanWidth : (this.showVendor ? [8, 7, 5, 4] : [10, 8, 6])
             }
         },
         methods: {
