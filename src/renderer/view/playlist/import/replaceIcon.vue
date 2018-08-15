@@ -48,7 +48,7 @@
                 this.loading = true
                 let data = await this.$musicApi.searchSong(this.info.name)
                 if (data.status) {
-                    this.result = data.data.filter(item => item.id).map(item => {
+                    this.result = data.data.filter(item => item.id && !item.cp).map(item => {
                         return {
                             ...item,
                             commentId: item.id,
