@@ -24,13 +24,13 @@
                 <p @click="goDetail(artist.singer_id)" :title="artist.singer_name">{{artist.singer_name}}</p>
             </div>
         </div>
-        <el-pagination
-                layout="prev, pager, next"
-                :total="total"
-                style="text-align: center;"
-                :current-page.sync="page"
-                @current-change="pageChange"
-                :page-size="80"
+        <el-pagination v-if="!loading"
+                       layout="prev, pager, next"
+                       :total="total"
+                       style="text-align: center;"
+                       :current-page.sync="page"
+                       @current-change="pageChange"
+                       :page-size="80"
         ></el-pagination>
     </div>
 </template>
@@ -143,7 +143,7 @@
             margin-right: -16px;
             margin-top: 24px;
             .artist {
-                width: 135px;
+                width: 134px;
                 margin-right: 16px;
                 margin-bottom: 24px;
                 font-size: 12px;
