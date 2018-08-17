@@ -15,7 +15,8 @@ function createWindow() {
         frame: false,
         webPreferences: {
             backgroundThrottling: false
-        }
+        },
+        icon: __static + '/images/logo_256.png'
     })
     mainWindow.loadURL(winURL)
     // mainWindow.webContents.openDevTools({detach: true})
