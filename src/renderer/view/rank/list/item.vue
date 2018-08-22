@@ -6,10 +6,10 @@
                 <Icon type="play1" :class="s.play" @click="playList"></Icon>
             </div>
             <div :class="s.img">
-                <img :src="info.list[0] | defaultAlbum"/>
+                <img :src="list[0] | defaultAlbum"/>
             </div>
             <ul :class="s.songs" @click="go2RankList">
-                <li v-for="(song,index) in info.list.splice(0,3)" :class="s.song">
+                <li v-for="(song,index) in list" :class="s.song">
                     <span>{{index + 1}}</span>
                     <span>{{song.name}}</span>-
                     <span>
@@ -27,29 +27,20 @@
 
     export default {
         props: {
-            id: {
-                type: Number,
-                required: true
+            info: {
+                default: null
             }
         },
-        data() {
-            return {
-                info: null
+        computed: {
+            list() {
+                return this.info.list.slice(0,3)
             }
         },
         methods: {
-            async getInfo() {
-                try {
-                    const {data} = await this.$musicApi.getTopList(this.id.toString())
-                    this.info = Object.freeze(data)
-                } catch (e) {
-                    console.warn(e)
-                }
-            },
             // 播放排行榜
             playList() {
                 this.$store.dispatch('play/play', {
-                    info: this.info.list[0],
+                    info: this.list[0],
                     playlist: this.info.list
                 })
             },
@@ -58,9 +49,6 @@
                 eventBus.rankInfo = this.info
                 this.$router.push({name: 'rank.detail'})
             }
-        },
-        created() {
-            this.getInfo()
         }
     }
 </script>
