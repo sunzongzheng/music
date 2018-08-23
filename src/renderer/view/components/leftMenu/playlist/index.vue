@@ -76,6 +76,7 @@
 <style lang="scss" module="s">
     .playlist {
         width: 100%;
+        margin-top: 12px;
         .titleArea {
             display: flex;
             align-items: center;
@@ -90,22 +91,14 @@
         }
         .list {
             margin-top: 8px;
-            padding-left: 12px;
             font-size: 13px;
             color: #333;
-            list-style: none;
+            list-style: circle;
             input {
                 height: 20px;
                 padding: 0 4px;
                 &:focus {
                     border: none;
-                }
-            }
-            li {
-                padding: 4px 8px;
-                cursor: pointer;
-                &:hover {
-                    background-color: rgba(222, 222, 222, 0.49);
                 }
             }
         }
