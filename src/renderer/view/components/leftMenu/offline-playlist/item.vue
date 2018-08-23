@@ -1,9 +1,8 @@
 <template>
-    <li :class="s.li" ref="item">
-        <router-link :to="{name:'playlist',params:{id:info.id},query:{offline:true}}" :key="info.name" v-if="!modify"
-                     @contextmenu.native="contextMenuVisible = true">
+    <router-link tag="li" :to="{name:'playlist',params:{id:info.id},query:{offline:true}}" :class="s.li" ref="item">
+        <span v-if="!modify" @contextmenu.native="contextMenuVisible = true">
             {{info.name}}
-        </router-link>
+        </span>
         <input v-model="modifyName" ref="input" @blur="_rename" v-else/>
         <context-menu :class="s.menu"
                       :target="$refs.item"
@@ -14,7 +13,7 @@
                 <li @click="_del">删除</li>
             </ul>
         </context-menu>
-    </li>
+    </router-link>
 </template>
 <script>
     import {mapMutations, mapState} from 'vuex'
@@ -75,6 +74,25 @@
 <style lang="scss" module="s">
     .li {
         user-select: none;
+        position: relative;
+        padding-left: 22px !important;
+        &::before {
+            content: ' ';
+            background: $color-disabled;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            position: absolute;
+            left: 11px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+        &:global(.active) {
+            &::before{
+                background: white;
+            }
+        }
         a {
             font-size: 13px;
             color: #333;

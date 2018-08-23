@@ -4,14 +4,14 @@
         <v-avatar></v-avatar>
         <div :class="s.main">
             <p :class="s.title">音乐馆</p>
-            <ul>
+            <ul :class="s.list">
                 <router-link tag="li" to="/rank">
                     <Icon type="paihang"></Icon>
-                    排行
+                    <span>排行</span>
                 </router-link>
                 <router-link tag="li" to="/artist">
                     <Icon type="renren"></Icon>
-                    歌手
+                    <span>歌手</span>
                 </router-link>
             </ul>
             <play-list></play-list>
@@ -49,18 +49,28 @@
                 color: #8F8F8F;
                 margin: 12px 0;
             }
-            ul {
+            .list {
                 list-style: none;
-                margin-bottom: 12px;
             }
-            li {
-                padding: 4px 8px;
+            :global(li) {
+                padding: 6px 8px;
                 cursor: pointer;
                 font-size: 13px;
                 color: #333;
+                display: flex;
+                align-items: center;
+                border-radius: 2px;
                 &:hover {
                     background-color: rgba(222, 222, 222, 0.49);
                 }
+                span {
+                    line-height: 1;
+                    margin-left: 4px;
+                }
+            }
+            :global(li.active) {
+                background: linear-gradient(to right,#30d07f, #2fcc7d);
+                color: white;
             }
         }
     }

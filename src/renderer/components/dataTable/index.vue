@@ -8,7 +8,7 @@
                 <el-col :span="spanList[3]" v-if="showVendor">来源</el-col>
                 <el-col :span="spanList[4]" v-if="spanList[4]">{{slotAppendTitle}}</el-col>
             </el-row>
-            <el-row v-for="(item,index) in data"
+            <el-row v-for="(item,index) in list"
                     :class="{ [s.row] : true, [s.disabled] : item.cp }"
                     :key="item.songId"
                     @click.native="$emit('rowClick', item)"
@@ -46,6 +46,13 @@
                     <slot name="append" :row="item"></slot>
                 </el-col>
             </el-row>
+            <el-pagination v-if="!loading && data.length > limit"
+                           layout="prev, pager, next"
+                           :total="data.length"
+                           style="text-align: center; margin-top: 8px;"
+                           :current-page.sync="page"
+                           :page-size="limit"
+            ></el-pagination>
         </template>
         <div :class="s.nodata" v-else>
             <Icon type="wushuju" :class="s.icon"></Icon>
@@ -77,9 +84,20 @@
             spanWidth: Array,
             slotAppendTitle: String
         },
+        data() {
+            return {
+                page: 1,
+                limit: 20
+            }
+        },
         computed: {
             spanList() {
                 return this.spanWidth ? this.spanWidth : (this.showVendor ? [8, 7, 5, 4] : [10, 8, 6])
+            },
+            list() {
+                const start = (this.page - 1) * this.limit
+
+                return this.data.slice(start, start + this.limit)
             }
         },
         methods: {
