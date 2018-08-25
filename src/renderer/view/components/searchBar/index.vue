@@ -3,7 +3,7 @@
         <div :class="s.left">
             <Icon type="left" :class="s.icon" @click="$router.go(-1)"></Icon>
             <Icon type="left" :class="[s.icon,s.right_arrow]" @click="$router.go(1)"></Icon>
-            <Icon type="shuaxin" :class="s.icon"></Icon>
+            <Icon type="shuaxin" :class="s.icon" @click="refresh"></Icon>
             <div :class="s.inputArea">
                 <input :class="s.input"
                        v-model="key"
@@ -62,6 +62,9 @@
                     console.warn(data)
                     this.$message.warning(data.msg)
                 }
+            },
+            refresh() {
+                eventBus.$emit('refresh')
             }
         }
     }
