@@ -37,7 +37,11 @@
                     </template>
                 </el-col>
                 <el-col :span="spanList[2]">
-                    {{item.album.name}}
+                    <router-link :class="s.link"
+                                 :to="{ name: 'album.detail', params: { id: item.album.id }, query: { vendor: item.vendor } }"
+                    >
+                        {{item.album.name}}
+                    </router-link>
                 </el-col>
                 <el-col :span="spanList[3]" v-if="showVendor">
                     {{item.vendor | source}}
