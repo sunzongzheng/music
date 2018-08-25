@@ -85,6 +85,21 @@ const router = new Router({
         {
             path: '/share',
             component: require('@/view/share.vue')
+        },
+        {
+            path: '/album',
+            name: 'album',
+            component: require('@/view/album/index.vue'),
+            redirect: {
+                name: 'album.detail'
+            },
+            children: [
+                {
+                    path: ':id/detail',
+                    name: 'album.detail',
+                    component: require('@/view/album/detail/index.vue'),
+                }
+            ]
         }
     ]
 })

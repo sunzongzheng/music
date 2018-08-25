@@ -26,7 +26,7 @@ Vue.filter('defaultAlbum', info => {
         return require('../assets/defaultAlbum.png')
     }
 })
-Vue.filter('date', (val, format) => {
+Vue.filter('date', (val, format = 'YYYY-MM-DD') => {
     return moment(val).format(format)
 })
 Vue.filter('dateDiff', (val, format) => {
