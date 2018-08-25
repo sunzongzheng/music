@@ -111,7 +111,6 @@
             },
             name() {
                 const arr = (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.albumId)
-                console.log(this.albumId)
                 return arr.length ? arr[0].name : ''
             },
         },

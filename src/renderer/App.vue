@@ -4,7 +4,7 @@
         <div :class="s.right">
             <search-bar></search-bar>
             <div :class="s.main" ref="main">
-                <router-view></router-view>
+                <router-view v-if="!refresh"></router-view>
             </div>
         </div>
         <player></player>
@@ -21,6 +21,7 @@
     import lyrics from './view/components/lyrics/index.vue'
     import playList from './view/components/current_playlist/index.vue'
     import downloadProgress from './view/components/progress/index.vue'
+    import eventBus from './eventBus/searchResult'
 
     export default {
         components: {
@@ -30,6 +31,11 @@
             lyrics,
             playList,
             downloadProgress
+        },
+        data() {
+            return {
+                refresh: false
+            }
         },
         methods: {
             // 登录成功回调
@@ -56,6 +62,12 @@
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
+            eventBus.$on('refresh', () => {
+                this.refresh = true
+                this.$nextTick(() => {
+                    this.refresh = false
+                })
+            })
         }
     }
 </script>
