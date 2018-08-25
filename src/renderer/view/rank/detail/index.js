@@ -3,6 +3,11 @@ import eventBus from '../eventBus'
 
 export default {
     name: 'rankDetail',
+    data() {
+        return {
+            loading: false
+        }
+    },
     computed: {
         info() {
             return eventBus.rankInfo
@@ -24,6 +29,33 @@ export default {
                 rs.push(this.s.disabled)
             }
             return rs.join(' ')
+        },
+        async getDetail() {
+            this.loading = true
+            try {
+                const data = await this.$http.get('/music/netease/rank', {
+                    params: {
+                        ids: [this.info.id]
+                    }
+                })
+                if (data[0]) {
+                    this.info.list = data[0].list.map(item => {
+                        item.vendor = 'netease'
+                        item.songId = item.commentId = item.id
+                        return item
+                    })
+                } else {
+                    this.$message.warning('无法获取详情')
+                }
+            } catch (e) {
+                console.warn(e)
+            }
+            this.loading = false
+        }
+    },
+    created() {
+        if (this.info.list.length <= 3) {
+            this.getDetail()
         }
     },
     beforeRouteEnter(to, from, next) {
