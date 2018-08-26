@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import VueContextMenu from '@xunlei/vue-context-menu'
 import './assets/theme.scss'
 import directive from 'element-ui/packages/popover/src/directive'
 import App from './App'
@@ -16,7 +15,6 @@ import config from '../../config/index'
 require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
 Vue.use(ElementUI)
-Vue.use(VueContextMenu)
 Vue.directive('popover', directive)
 
 // http instance
@@ -36,11 +34,12 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(
     response => response.data,
     e => {
+        console.warn(e)
         if (e.response) {
             const data = e.response.data
-            if(e.response.status === 401) {
+            if (e.response.status === 401) {
                 localStorage.removeItem('token')
-            }else if (data.msg) {
+            } else if (data.msg) {
                 Vue.$message.warning(data.msg)
             }
         } else {

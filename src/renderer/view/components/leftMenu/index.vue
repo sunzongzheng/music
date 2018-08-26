@@ -3,31 +3,26 @@
         <view-control></view-control>
         <v-avatar></v-avatar>
         <div :class="s.main">
-            <p :class="s.title">音乐馆</p>
-            <ul :class="s.list">
-                <router-link tag="li" to="/rank">
-                    <Icon type="paihang"></Icon>
-                    <span>排行</span>
-                </router-link>
-                <router-link tag="li" to="/artist">
-                    <Icon type="renren"></Icon>
-                    <span>歌手</span>
-                </router-link>
-            </ul>
+            <menu-section title="音乐馆">
+                <icon-item route="/rank" icon="paihang" title="排行"></icon-item>
+                <icon-item route="/artist" icon="renren" title="歌手"></icon-item>
+            </menu-section>
             <play-list></play-list>
             <offline-play-list></offline-play-list>
         </div>
     </div>
 </template>
 <script>
-  import viewControl from './viewControl.vue'
-  import vAvatar from './avatar.vue'
-  import playList from './playlist/index.vue'
-  import offlinePlayList from './offline-playlist/index.vue'
+    import viewControl from './viewControl.vue'
+    import vAvatar from './avatar.vue'
+    import playList from './playlist/index.vue'
+    import offlinePlayList from './offline-playlist/index.vue'
+    import menuSection from './components/menu-section.vue'
+    import iconItem from './components/icon-item.vue'
 
-  export default {
-    components: {vAvatar, viewControl, playList, offlinePlayList}
-  }
+    export default {
+        components: {vAvatar, viewControl, playList, offlinePlayList, menuSection, iconItem},
+    }
 </script>
 <style lang="scss" module="s">
     .app {
@@ -44,34 +39,6 @@
             height: calc(100% - 195px);
             overflow: auto;
             -webkit-app-region: no-drag;
-            .title {
-                font-size: 12px;
-                color: #8F8F8F;
-                margin: 12px 0;
-            }
-            .list {
-                list-style: none;
-            }
-            :global(li) {
-                padding: 6px 8px;
-                cursor: pointer;
-                font-size: 13px;
-                color: #333;
-                display: flex;
-                align-items: center;
-                border-radius: 2px;
-                &:hover {
-                    background-color: rgba(222, 222, 222, 0.49);
-                }
-                span {
-                    line-height: 1;
-                    margin-left: 4px;
-                }
-            }
-            :global(li.active) {
-                background: linear-gradient(to right,#30d07f, #2fcc7d);
-                color: white;
-            }
         }
     }
 </style>
