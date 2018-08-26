@@ -87,6 +87,10 @@
         padding: 0;
     }
 
+    ul {
+        list-style: none;
+    }
+
     p {
         margin: 0;
     }
