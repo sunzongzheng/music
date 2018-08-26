@@ -1,10 +1,24 @@
 .app {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     align-items: center;
     height: $searchBar-height;
     border-bottom: 1px solid #EBEBEB;
     -webkit-app-region: drag;
+    padding: 0 16px;
+}
+
+.icon {
+    font-size: 14px;
+    cursor: pointer;
+    color: $color-content;
+    &:hover {
+        color: $color-primary;
+    }
+    &.right_arrow {
+        transform: rotate(180deg);
+    }
 }
 
 .left {
@@ -12,18 +26,8 @@
     align-items: center;
     -webkit-app-region: no-drag;
     .icon {
-        font-size: 12px;
-        margin-left: 16px;
-        opacity: .4;
-        cursor: pointer;
-        &:hover {
-            color: $color-primary;
-        }
-        &.right_arrow {
-            transform: rotate(180deg);
-        }
+        margin-right: 16px;
     }
-
 }
 
 .inputArea {

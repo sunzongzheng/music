@@ -100,7 +100,11 @@ const router = new Router({
                     component: require('@/view/album/detail/index.vue'),
                 }
             ]
-        }
+        },
+        {
+            path: '/setting',
+            component: require('@/view/setting/index.vue')
+        },
     ]
 })
 router.beforeEach((to, from, next) => {

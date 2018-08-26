@@ -13,7 +13,6 @@
         <download-progress></download-progress>
     </div>
 </template>
-
 <script>
     import leftMenu from './view/components/leftMenu/index.vue'
     import searchBar from './view/components/searchBar/index.vue'
@@ -22,6 +21,7 @@
     import playList from './view/components/current_playlist/index.vue'
     import downloadProgress from './view/components/progress/index.vue'
     import eventBus from './eventBus/searchResult'
+    import updateAlert from './view/components/updateAlert.vue'
 
     export default {
         components: {
@@ -49,6 +49,16 @@
                 // 更新token
                 this.$store.commit('token/update', info.token)
             },
+            // 有更新
+            updateAlert() {
+                console.log('updateAlert')
+                const h = this.$createElement
+                this.$notify({
+                    title: '更新提示',
+                    message: h(updateAlert),
+                    duration: 0
+                })
+            }
         },
         watch: {
             '$route'() {
@@ -59,6 +69,7 @@
             // 初始化离线歌单
             Vue.$store.dispatch('offline-playlist/init')
             this.$ipc.on('loginSuccessed', this.loginSuccessed)
+            this.$ipc.on('update-alert', this.updateAlert)
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
@@ -68,6 +79,9 @@
                     this.refresh = false
                 })
             })
+            setTimeout(() => {
+                this.$updater.__judgeUpdater(localStorage.getItem('includeLinux'))
+            }, 5000)
         }
     }
 </script>
