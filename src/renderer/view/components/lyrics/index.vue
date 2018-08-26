@@ -141,6 +141,7 @@
             border-radius: 4px;
             width: 24px;
             height: 24px;
+            line-height: 24px;
             text-align: center;
             cursor: pointer;
             color: #b9b9b9;

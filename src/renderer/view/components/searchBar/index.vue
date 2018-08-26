@@ -18,6 +18,9 @@
                 <Icon type="close-2" :class="s.clean" v-show="!empty" @click.native="key = ''"></Icon>
             </div>
         </div>
+        <div :class="s.right">
+            <Icon type="shezhi" :class="s.icon" @click="$router.push('/setting')"></Icon>
+        </div>
     </div>
 </template>
 <script>
