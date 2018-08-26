@@ -30,6 +30,10 @@
     }
 }
 
+.right {
+    -webkit-app-region: no-drag;
+}
+
 .inputArea {
     position: relative;
     .input {
