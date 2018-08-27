@@ -9,8 +9,15 @@
 - 版本计划见[Projects](https://github.com/sunzongzheng/music/projects)
 
 # 更新日志
+- 2018-08-26:
+  - 排行榜 分榜合并 加速首屏
+  - 新增 专辑详情页
+  - 启用顶部刷新按钮
+  - 新增deb包，Linux下默认不开启自动更新，设置页内可开启
+  - 其他bugfix && 优化
+  
 - 2018-08-15:
-  - 更新musciApi 解决排行榜/导入歌单只有一首歌的问题
+  - 更新musicApi 解决排行榜/导入歌单只有一首歌的问题
   - 搜索歌曲支持多条件过滤
   - 导入歌曲支持快速换源
   - 解决 osx 不能复制粘贴的问题
@@ -60,8 +67,19 @@
 - [云歌单Api](https://github.com/sunzongzheng/player-be)
 - [Mac免签名自动更新](https://github.com/sunzongzheng/electron-updater)
 
-# Demo图
-![](demo/img1.png)
-![](demo/img2.png)
-![](demo/img3.png)
+# 预览图
+- 网易云排行榜
+![](screenshot/1.png)
+- QQ音乐歌手列表
+![](screenshot/2.png)
+- 快速导入歌单
+![](screenshot/3.png)
+- 全屏歌词
+![](screenshot/4.png)
+- 歌曲评论页
+![](screenshot/5.png)
+- Mac顶部状态栏歌词 + 桌面歌词
+![](screenshot/6.png)
+- 社交分享
+![](screenshot/7.png)
 
