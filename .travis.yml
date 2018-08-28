@@ -37,11 +37,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+    tags: true
 
-branches:
-  only:
-  - master
-  - dev
-  
 notifications:
   email: false
