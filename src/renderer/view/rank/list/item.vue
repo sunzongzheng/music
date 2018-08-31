@@ -33,7 +33,7 @@
         },
         computed: {
             list() {
-                return this.info.list.slice(0,3)
+                return this.info ? this.info.list.slice(0, 3) : []
             }
         },
         methods: {

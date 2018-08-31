@@ -1,3 +1,4 @@
 export default {
-    rankInfo: null
+    list: Array(22).fill(null),
+    renderCache: null
 }
