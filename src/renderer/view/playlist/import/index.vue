@@ -136,11 +136,11 @@
                             return {
                                 ...item,
                                 songId: item.id,
+                                commentId: item.id,
                                 vendor: this.vendor,
                                 status: -1
                             }
                         })
-                        console.log(this.album.songs)
                     } else {
                         this.$message.warning('无法识别歌单')
                     }

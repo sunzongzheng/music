@@ -5,13 +5,13 @@
                 <template v-if="userInfo && playlist.length">
                     <p :class="s.title">云歌单</p>
                     <ul :class="s.playlist">
-                        <li v-for="item in playlist" @click="collect(item.id)">{{item.name}}</li>
+                        <li v-for="item in playlist" @click="_collect(item.id)">{{item.name}}</li>
                     </ul>
                 </template>
                 <template v-if="offline_playlist.length">
                     <p :class="s.title">离线歌单</p>
                     <ul :class="s.playlist">
-                        <li v-for="item in offline_playlist" @click="collectOffline(item.id)">{{item.name}}</li>
+                        <li v-for="item in offline_playlist" @click="_collectOffline(item.id)">{{item.name}}</li>
                     </ul>
                 </template>
             </template>
@@ -21,8 +21,7 @@
     </div>
 </template>
 <script>
-    import {mapState} from 'vuex'
-    import uuid from 'uuid/v1'
+    import {mapState, mapActions} from 'vuex'
 
     export default {
         props: {
@@ -53,37 +52,26 @@
             ...mapState('play', ['play'])
         },
         methods: {
-            async collect(id) {
+            ...mapActions('playlist', ['collect']),
+            ...mapActions('offline-playlist', {
+                collectOffline: 'collect'
+            }),
+            async _collect(id) {
                 this.show = false
-                await this.$http.post(`/playlist/${id}`, {
-                    id: this.info.songId,
-                    vendor: this.info.vendor,
-                    commentId: this.info.commentId,
-                    name: this.info.name,
-                    album: this.info.album,
-                    artists: this.info.artists,
-                    cp: this.info.cp
-                })
-                this.$message({
-                    message: '添加成功',
-                    type: 'success'
+                this.collect({
+                    id,
+                    info: {
+                        ...this.info,
+                        id: this.info.songId
+                    }
                 })
             },
-            collectOffline(id) {
-                const storage_name = `offline_playlist_${id}_song`
-                const list = JSON.parse(localStorage.getItem(storage_name)) || []
-                if (list.filter(item => item.songId === this.info.songId && item.vendor === this.info.vendor).length) {
-                    this.show = false
-                    this.$message.warning('歌曲已存在！')
-                    return
-                }
-                list.push(this.info)
-                localStorage.setItem(storage_name, JSON.stringify(list))
-                this.show = false
-                this.$message({
-                    message: '添加成功',
-                    type: 'success'
+            _collectOffline(id) {
+                this.collectOffline({
+                    id,
+                    info: this.info
                 })
+                this.show = false
             }
         }
     }

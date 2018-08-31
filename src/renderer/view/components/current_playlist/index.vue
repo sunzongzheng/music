@@ -143,7 +143,11 @@
                     }
                     return true
                 })
-                this.strategy = equal ? 'cache' : 'complete'
+                const newStrategy = equal ? 'cache' : 'complete'
+                if(newStrategy === this.strategy && newStrategy === 'complete') {
+                    this.$forceUpdate()
+                }
+                this.strategy = newStrategy
             })
         }
     }

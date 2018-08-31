@@ -24,6 +24,10 @@ export default {
             return Vue.$http.post('/playlist', {
                 name
             })
+        },
+        async collect(store, {id, info}) {
+            await Vue.$http.post(`/playlist/${id}`, info)
+            Vue.$message.success('添加成功')
         }
     }
 }

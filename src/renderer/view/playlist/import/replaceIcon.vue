@@ -71,9 +71,11 @@
     .replace {
         margin-right: -1px;
         line-height: 1;
-        font-size: 14px;
+        font-size: 13px;
         padding: 1px;
         cursor: pointer;
+        position: relative;
+        top: 1px;
     }
 
     .title {

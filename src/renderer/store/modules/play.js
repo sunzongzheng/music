@@ -26,6 +26,10 @@ export default {
             info,
             playlist = null
         }) {
+            if(info.cp) {
+                Vue.$message.warning('歌曲无法试听')
+                return
+            }
             if (playlist) {
                 Vue.$store.commit('c_playlist/update', playlist)
             }

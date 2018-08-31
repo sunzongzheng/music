@@ -5,7 +5,8 @@ export default {
     namespaced: true,
     state: {
         show: false,
-        cycle: localStorage.cycle ? localStorage.cycle : 'list' // list: 列表循环; random: 随机; single: 单曲
+        cycle: localStorage.cycle ? localStorage.cycle : 'list', // list: 列表循环; random: 随机; single: 单曲,
+        nextPlay: null
     },
     mutations: {
         update(state, val) {
@@ -26,6 +27,20 @@ export default {
                     return true
                 }
             })
+        },
+        updateNextPlay(state, val) {
+            if (val) {
+                if (eventBus.playlist.filter(item => item.songId === val.songId && item.vendor === val.vendor).length) {
+                    Vue.$message.warning('播放列表已存在')
+                } else if (val.cp) {
+                    Vue.$message.warning('歌曲无法试听')
+                } else {
+                    eventBus.playlist = Object.freeze(eventBus.playlist.concat([val]))
+                    eventBus.emit('update', eventBus.playlist)
+                    Vue.$message.success('添加成功')
+                }
+            }
+            state.nextPlay = val
         }
     },
     actions: {
@@ -56,7 +71,14 @@ export default {
                 })
             }
         },
-        next({state}) {
+        next({state, commit}) {
+            if (state.nextPlay) {
+                Vue.$store.dispatch('play/play', {
+                    info: state.nextPlay
+                })
+                commit('updateNextPlay', null)
+                return
+            }
             if (eventBus.playlist.length) {
                 const cur = Vue.$store.state.play.info
                 let index = -1

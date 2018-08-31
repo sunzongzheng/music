@@ -39,6 +39,17 @@ export default {
     actions: {
         init({commit}) {
             commit('update', JSON.parse(localStorage.getItem('offline_playlist')))
+        },
+        collect(store, {id, info}) {
+            const storage_name = `offline_playlist_${id}_song`
+            const list = JSON.parse(localStorage.getItem(storage_name)) || []
+            if (list.filter(item => item.songId === info.songId && item.vendor === info.vendor).length) {
+                Vue.$message.warning('歌曲已存在！')
+                return
+            }
+            list.push(info)
+            localStorage.setItem(storage_name, JSON.stringify(list))
+            Vue.$message.success('添加成功')
         }
     }
 }

@@ -19,6 +19,7 @@
             <Icon slot="songControlAppend"
                   slot-scope="scope"
                   type="huishouzhan"
+                  clickable
                   @click="removeFromPlaylist(scope.$index)"
             ></Icon>
             <!-- 处理结果 !-->
@@ -52,21 +53,6 @@
             ...mapActions('play', ['play']),
             async removeFromPlaylist(index) {
                 this.album.songs.splice(index, 1)
-            },
-            doPlay(item) {
-                this.play({
-                    info: item
-                })
-
-            },
-            rowClassName({row, rowIndex}) {
-                const rs = [
-                    this.s.row
-                ]
-                if (row.cp) {
-                    rs.push(this.s.disabled)
-                }
-                return rs.join(' ')
             },
             // 替换歌曲
             replaceSong(item, index) {

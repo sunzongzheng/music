@@ -14,6 +14,7 @@
             <Icon slot="songControlAppend"
                   slot-scope="scope"
                   type="huishouzhan"
+                  clickable
                   @click="removeFromPlaylist(scope.row)"
             ></Icon>
         </DataTable>

@@ -119,7 +119,7 @@
                 }
             }
             .link {
-                color: $color-table-text;
+                color: $color-title;
                 transition: color .2s;
                 text-decoration: none;
                 &:hover {
