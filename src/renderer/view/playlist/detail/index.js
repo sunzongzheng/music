@@ -15,9 +15,8 @@ export default {
             const id = this.$route.params.id
             return isNaN(Number(id)) ? id : Number(id)
         },
-        name() {
-            const arr = (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.id)
-            return arr.length ? arr[0].name : ''
+        info() {
+            return (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.id)[0] || {}
         },
         offline() {
             return this.$route.query.offline

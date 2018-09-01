@@ -1,10 +1,3 @@
 <template>
-    <div :class="s.playlist">
-        <router-view></router-view>
-    </div>
+    <router-view></router-view>
 </template>
-<style lang="scss" module="s">
-    .playlist {
-        padding: 16px 16px 0;
-    }
-</style>

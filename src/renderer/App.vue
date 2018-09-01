@@ -85,7 +85,7 @@
         }
     }
 </script>
-<style>
+<style lang="scss">
     html,
     body {
         margin: 0;
@@ -126,6 +126,15 @@
 
     ::-webkit-scrollbar-thumb {
         background-color: #e0e0e0;
+    }
+
+    a {
+        color: $color-primary;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover {
+            color: #4cdc96;
+        }
     }
 </style>
 

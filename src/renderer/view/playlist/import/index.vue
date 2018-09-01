@@ -187,6 +187,7 @@
 </script>
 <style lang="scss" module="s">
     .import {
+        padding: 16px 20px 0;
         .main {
             margin-top: 24px;
         }
