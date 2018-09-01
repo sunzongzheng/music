@@ -26,7 +26,7 @@ const router = new Router({
                     component: require('@/view/rank/list/index.vue')
                 },
                 {
-                    path: 'detail',
+                    path: ':id/detail',
                     name: 'rank.detail',
                     component: require('@/view/rank/detail/index.vue')
                 }

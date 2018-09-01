@@ -5,12 +5,8 @@ export default {
     name: 'rankDetail',
     data() {
         return {
-            loading: false
-        }
-    },
-    computed: {
-        info() {
-            return eventBus.rankInfo
+            loading: false,
+            info: eventBus.list[this.$route.params.id]
         }
     },
     methods: {
@@ -59,7 +55,8 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next) {
-        if (eventBus.rankInfo) {
+        const id = to.params.id
+        if (eventBus.list[id]) {
             next()
         } else {
             Vue.$router.push({name: 'rank.list'})

@@ -239,7 +239,6 @@
     .dataTable {
         color: $color-content;
         font-size: 13px;
-        margin-bottom: 16px;
         .row {
             transition: all .2s;
             :global {

@@ -5,6 +5,6 @@
 </template>
 <style lang="scss" module="s">
     .playlist {
-        padding: 16px;
+        padding: 16px 16px 0;
     }
 </style>

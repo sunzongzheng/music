@@ -33,9 +33,9 @@
                         <p>网易云音乐排行榜</p>
                         <ul class={this.s.main}>
                             {
-                                eventBus.list.map(item => {
+                                eventBus.list.map((item, index) => {
                                     return (
-                                        <v-item info={item} class={this.s.item}></v-item>
+                                        <v-item info={item} id={index} class={this.s.item}></v-item>
                                     )
                                 })
                             }

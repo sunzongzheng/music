@@ -29,7 +29,8 @@
         props: {
             info: {
                 default: null
-            }
+            },
+            id: Number
         },
         computed: {
             list() {
@@ -46,8 +47,12 @@
             },
             // 跳转至排行榜详情
             go2RankList() {
-                eventBus.rankInfo = this.info
-                this.$router.push({name: 'rank.detail'})
+                this.$router.push({
+                    name: 'rank.detail',
+                    params: {
+                        id: this.id
+                    }
+                })
             }
         }
     }

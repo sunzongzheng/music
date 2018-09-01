@@ -23,15 +23,15 @@
                 ></v-image>
                 <p @click="goDetail(artist.singer_id)" :title="artist.singer_name">{{artist.singer_name}}</p>
             </div>
+            <el-pagination v-if="!loading"
+                           layout="prev, pager, next"
+                           :total="total"
+                           :class="s.pagination"
+                           :current-page.sync="page"
+                           @current-change="pageChange"
+                           :page-size="80"
+            ></el-pagination>
         </div>
-        <el-pagination v-if="!loading"
-                       layout="prev, pager, next"
-                       :total="total"
-                       style="text-align: center;"
-                       :current-page.sync="page"
-                       @current-change="pageChange"
-                       :page-size="80"
-        ></el-pagination>
     </div>
 </template>
 <script>
@@ -115,9 +115,13 @@
 </script>
 <style lang="scss" module="s">
     .artistList {
-        padding: 24px 18px 16px;
+        padding: 24px 18px 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         .tags {
             border-bottom: 1px solid $color-border4;
+            height: 130px;
             .tagCate {
                 display: flex;
                 flex-wrap: wrap;
@@ -142,6 +146,8 @@
             flex-wrap: wrap;
             margin-right: -16px;
             margin-top: 24px;
+            flex: 1;
+            overflow: auto;
             .artist {
                 width: 134px;
                 margin-right: 16px;
@@ -173,6 +179,11 @@
                         text-align: center;
                     }
                 }
+            }
+            .pagination {
+                text-align: center;
+                width: 100%;
+                margin-right: 16px;
             }
         }
     }
