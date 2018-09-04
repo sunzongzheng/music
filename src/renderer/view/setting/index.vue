@@ -8,8 +8,9 @@
                 <p :class="s.tip">当且仅当安装的是 AppImage 程序时 可用，deb 下请勿打开</p>
             </div>
         </menu-item>
+        <hot-key></hot-key>
         <menu-item title="版本">
-            <div style="display:flex;">
+            <div style="display:flex; align-items: center;">
                 <p :class="s.content">当前版本：V{{version}}</p>
                 <div style="margin-left: 24px;">
                     <el-button size="small"
@@ -27,11 +28,13 @@
 </template>
 <script>
     import menuItem from './components/menu-item.vue'
+    import hotKey from './components/hot-key.vue'
     import {remote} from 'electron'
 
     export default {
         components: {
-            menuItem
+            menuItem,
+            hotKey
         },
         data() {
             return {
@@ -77,6 +80,8 @@
 <style lang="scss" module="s">
     .setting {
         padding: 24px;
+        font-size: 13px;
+        color: $color-content;
         .title {
             font-size: 20px;
             color: $color-title;
@@ -88,12 +93,8 @@
             color: $color-sub;
             margin-top: 4px;
         }
-        .content {
-            font-size: 14px;
-            color: $color-content;
-        }
         .btn {
-            height: 21px;
+            height: 22px;
             padding: 0 24px;
             margin-left: 4px;
         }

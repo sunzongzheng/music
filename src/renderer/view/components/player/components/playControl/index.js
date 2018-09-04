@@ -19,17 +19,12 @@ export default {
     },
     methods: {
         ...mapMutations('c_playlist', ['cycleChange']),
-        ...mapActions('c_playlist', ['last', 'next']),
-        pauseChange() {
-            if (this.url) {
-                this.$store.commit('play/pauseChange')
-            }
-        }
+        ...mapMutations('play', ['pauseChange']),
+        ...mapActions('c_playlist', ['last', 'next'])
     },
     created() {
         this.$ipc.on('tray-control-last', this.last)
         this.$ipc.on('tray-control-next', () => {
-            console.log('next')
             this.next()
         })
         this.$ipc.on('tray-control-pause', this.pauseChange)

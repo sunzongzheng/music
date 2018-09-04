@@ -22,6 +22,7 @@
     import downloadProgress from './view/components/progress/index.vue'
     import eventBus from './eventBus/searchResult'
     import updateAlert from './view/components/updateAlert.vue'
+    import {mapState, mapActions, mapMutations} from 'vuex'
 
     export default {
         components: {
@@ -37,7 +38,13 @@
                 refresh: false
             }
         },
+        computed: {
+            ...mapState('hot-key', ['hotKey', 'enableGlobal']),
+            ...mapState('play', ['volume']),
+        },
         methods: {
+            ...mapActions('c_playlist', ['last', 'next']),
+            ...mapMutations('play', ['pauseChange', 'update']),
             // 登录成功回调
             loginSuccessed(event, info) {
                 console.log(info)
@@ -58,6 +65,29 @@
                     message: h(updateAlert),
                     duration: 0
                 })
+            },
+            // 快捷键控制
+            hotKeyControl(event, key) {
+                switch (key) {
+                    case 'playPause':
+                        this.pauseChange()
+                        break
+                    case 'last':
+                        this.last()
+                        break
+                    case 'next':
+                        this.next()
+                        break
+                    case 'volumeIncrease':
+                        this.update({
+                            volume: this.volume + 10 > 100 ? 100 : this.volume + 10
+                        })
+                        break
+                    case 'volumeDecrease':
+                        this.update({
+                            volume: this.volume - 10 < 0 ? 0 : this.volume - 10
+                        })
+                }
             }
         },
         watch: {
@@ -66,10 +96,14 @@
             }
         },
         created() {
-            // 初始化离线歌单
-            Vue.$store.dispatch('offline-playlist/init')
-            this.$ipc.on('loginSuccessed', this.loginSuccessed)
-            this.$ipc.on('update-alert', this.updateAlert)
+            Vue.$store.dispatch('offline-playlist/init') // 初始化离线歌单
+            this.$ipc.on('loginSuccessed', this.loginSuccessed) // 监听登录成功
+            this.$ipc.on('update-alert', this.updateAlert) // 监听版本更新
+            this.$ipc.send('register-hotKey', {
+                hotKey: this.hotKey,
+                enableGlobal: this.enableGlobal
+            })
+            this.$ipc.on('hotKey-control', this.hotKeyControl)
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }

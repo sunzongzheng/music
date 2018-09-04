@@ -22,8 +22,6 @@
         .title {
             width: 150px;
             flex-shrink: 0;
-            color: $color-content;
-            font-size: 14px;
         }
         .main {
             flex: 1;

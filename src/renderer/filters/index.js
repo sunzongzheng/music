@@ -32,3 +32,7 @@ Vue.filter('date', (val, format = 'YYYY-MM-DD') => {
 Vue.filter('dateDiff', (val, format) => {
     return moment(val).fromNow()
 })
+Vue.filter('keyboardChar', (val) => {
+    if (!val) return ''
+    return val.split('+').map(item => Vue.$store.getters['hot-key/registerKey2Char'][item]).join(' ')
+})

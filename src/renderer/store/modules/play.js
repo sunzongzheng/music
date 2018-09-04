@@ -18,7 +18,9 @@ export default {
             }
         },
         pauseChange(state) {
-            state.pause = !state.pause
+            if (state.url) {
+                state.pause = !state.pause
+            }
         }
     },
     actions: {
@@ -26,7 +28,7 @@ export default {
             info,
             playlist = null
         }) {
-            if(info.cp) {
+            if (info.cp) {
                 Vue.$message.warning('歌曲无法试听')
                 return
             }
