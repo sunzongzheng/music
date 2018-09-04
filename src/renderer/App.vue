@@ -44,7 +44,7 @@
         },
         methods: {
             ...mapActions('c_playlist', ['last', 'next']),
-            ...mapMutations('play', ['pauseChange', 'update']),
+            ...mapMutations('play', ['pauseChange', 'updateVolume']),
             // 登录成功回调
             loginSuccessed(event, info) {
                 console.log(info)
@@ -79,12 +79,12 @@
                         this.next()
                         break
                     case 'volumeIncrease':
-                        this.update({
+                        this.updateVolume({
                             volume: this.volume + 10 > 100 ? 100 : this.volume + 10
                         })
                         break
                     case 'volumeDecrease':
-                        this.update({
+                        this.updateVolume({
                             volume: this.volume - 10 < 0 ? 0 : this.volume - 10
                         })
                 }
@@ -103,6 +103,7 @@
                 hotKey: this.hotKey,
                 enableGlobal: this.enableGlobal
             })
+            this.$ipc.send('tray-control-volume', this.volume)
             this.$ipc.on('hotKey-control', this.hotKeyControl)
             if (localStorage.token) {
                 this.$store.dispatch('user/init')

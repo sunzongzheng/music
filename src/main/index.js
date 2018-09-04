@@ -1,5 +1,6 @@
-import {app, globalShortcut} from 'electron'
+import {app, globalShortcut, ipcMain} from 'electron'
 import initTray from './tray'
+import initTouchBar from './touchBar'
 import initUpdater from './updater'
 import initWindow from './window'
 import initIpcEvent from './ipcEvent'
@@ -16,6 +17,7 @@ global.clientApi = axios
 let mainWindow
 let backgroundWindow
 let appTray // 声明在外层 保证不会被垃圾回收 解决windows托盘图标会消失的问题
+let touchBar
 
 function createWindow() {
     const windows = initWindow()
@@ -24,13 +26,14 @@ function createWindow() {
     global.mainWindow = windows.mainWindow
     global.backgroundWindow = windows.backgroundWindow
     initMenu()
-    initIpcEvent(mainWindow, backgroundWindow)
     // mainWindow.webContents.openDevTools({detach: true})
     mainWindow.on('closed', () => {
         mainWindow = null
     })
     initUpdater()
     appTray = initTray(mainWindow, backgroundWindow)
+    touchBar = initTouchBar()
+    initIpcEvent(mainWindow, backgroundWindow, touchBar)
 }
 
 app.on('ready', createWindow)

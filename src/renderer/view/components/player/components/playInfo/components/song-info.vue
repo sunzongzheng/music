@@ -85,6 +85,7 @@
             },
             setPercentage() {
                 this.percentage = this.duration.total ? (this.duration.cur / this.duration.total) * 100 : 0
+                this.$ipc.send('tray-control-progress', this.percentage)
             },
             pregressChange(val) {
                 this.$refs.audio && (this.$refs.audio.currentTime = val * this.duration.total / 100)
@@ -94,8 +95,12 @@
             }
         },
         mounted() {
-            console.log(this.$refs.audio)
             this.$refs.audio.volume = this.volume / 100
+        },
+        created() {
+            this.$ipc.on('tray-control-progress', (event, val) => {
+                this.pregressChange(val)
+            })
         },
         render(h) {
             return (

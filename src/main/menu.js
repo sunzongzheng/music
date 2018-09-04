@@ -28,7 +28,6 @@ const template = [
 ]
 
 ipcMain.on('register-hotKey', (event, {hotKey, enableGlobal}) => {
-    console.log(hotKey, enableGlobal)
     globalShortcut.unregisterAll()
     const submenu = []
     hotKey.forEach(single => {

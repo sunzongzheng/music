@@ -1,8 +1,8 @@
-import {ipcMain} from 'electron'
+import {ipcMain, nativeImage} from 'electron'
 import login from './login'
 import share from './share'
 
-export default function (mainWindow, backgroundWindow) {
+export default function (mainWindow, backgroundWindow, touchBar) {
     ipcMain.on('login', (event) => {
         login.init(event, mainWindow)
     })
@@ -23,6 +23,10 @@ export default function (mainWindow, backgroundWindow) {
     })
     ipcMain.on('tray-control-pause-main', (event, arg) => {
         backgroundWindow.webContents.send('tray-control-pause-main', arg)
+        touchBar.items[2].icon = nativeImage.createFromPath(__dirname + `/../touchBar/assets/${arg ? 'play' : 'pause'}.png`).resize({
+            width: 18,
+            height: 18
+        })
     })
     // 下一曲
     ipcMain.on('tray-control-next', () => {
@@ -35,5 +39,13 @@ export default function (mainWindow, backgroundWindow) {
     // 切换桌面歌词
     ipcMain.on('backgroundWindowStatusChange', (event, arg) => {
         mainWindow.webContents.send('backgroundWindowStatusChange', arg)
+    })
+    // 音量
+    // ipcMain.on('tray-control-volume', (event, arg) => {
+    //     touchBar.items[4].value = parseInt(arg)
+    // })
+    // 歌曲进度
+    ipcMain.on('tray-control-progress', (event, arg) => {
+        touchBar.items[4].value = parseInt(arg) + 1
     })
 }

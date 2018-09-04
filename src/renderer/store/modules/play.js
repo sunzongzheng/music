@@ -21,6 +21,10 @@ export default {
             if (state.url) {
                 state.pause = !state.pause
             }
+        },
+        updateVolume(state, val) {
+            state.volume = val
+            Vue.$ipc.send('tray-control-volume', val)
         }
     },
     actions: {

@@ -10,16 +10,14 @@ export default {
                 return this.volume
             },
             set(val) {
-                this.$store.commit('play/update', {
-                    volume: val
-                })
+                this.updateVolume(val)
                 localStorage.volume = val
             }
         }
     },
     methods: {
         ...mapMutations('c_playlist', ['cycleChange']),
-        ...mapMutations('play', ['pauseChange']),
+        ...mapMutations('play', ['pauseChange', 'updateVolume']),
         ...mapActions('c_playlist', ['last', 'next'])
     },
     created() {
@@ -28,5 +26,8 @@ export default {
             this.next()
         })
         this.$ipc.on('tray-control-pause', this.pauseChange)
+        this.$ipc.on('tray-control-volume', (event, val) => {
+            this._volume = val
+        })
     }
 }
