@@ -23,7 +23,7 @@ export default function (mainWindow, backgroundWindow, touchBar) {
     })
     ipcMain.on('tray-control-pause-main', (event, arg) => {
         backgroundWindow.webContents.send('tray-control-pause-main', arg)
-        touchBar.items[2].icon = nativeImage.createFromPath(__dirname + `/../touchBar/assets/${arg ? 'play' : 'pause'}.png`).resize({
+        touchBar.items[2].icon = nativeImage.createFromPath(__static + `/touch-bar/${arg ? 'play' : 'pause'}.png`).resize({
             width: 18,
             height: 18
         })

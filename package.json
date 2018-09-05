@@ -1,8 +1,8 @@
 {
   "name": "player",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "author": "sunzongzheng <sunzongzhengwy@163.com>",
-  "description": "An electron-vue project",
+  "description": "A player",
   "license": "CC0-1.0",
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "build:win": "electron-builder --win --publish onTagOrDraft"
   },
   "build": {
-    "productName": "player",
+    "productName": "MusicLake",
     "appId": "org.sunzongzheng.player",
     "artifactName": "${name}-${version}-${os}.${ext}",
     "directories": {
@@ -31,6 +31,7 @@
       "build/icon.*"
     ],
     "dmg": {
+      "title": "MusicLake",
       "contents": [
         {
           "x": 410,
@@ -58,9 +59,12 @@
     },
     "linux": {
       "icon": "build/icons",
+      "executableName": "MusicLake",
+      "category": "Music",
       "target": [
         "AppImage",
-        "deb"
+        "deb",
+        "rpm"
       ]
     },
     "appImage": {

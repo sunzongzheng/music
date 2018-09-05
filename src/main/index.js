@@ -1,6 +1,6 @@
 import {app, globalShortcut, ipcMain} from 'electron'
 import initTray from './tray'
-import initTouchBar from './touchBar'
+import initTouchBar from './touch-bar'
 import initUpdater from './updater'
 import initWindow from './window'
 import initIpcEvent from './ipcEvent'

@@ -3,10 +3,11 @@ import {TouchBar, nativeImage} from 'electron'
 const {TouchBarSlider, TouchBarButton} = TouchBar
 
 export default function initTouchBar() {
+    if(process.platform !== 'darwin') return
     const mainWindow = global.mainWindow
     const touchBar = new TouchBar([
         new TouchBarButton({
-            icon: nativeImage.createFromPath(__dirname + '/assets/last.png').resize({
+            icon: nativeImage.createFromPath(__static + '/touch-bar/last.png').resize({
                 width: 18,
                 height: 18
             }),
@@ -15,7 +16,7 @@ export default function initTouchBar() {
             }
         }),
         new TouchBarButton({
-            icon: nativeImage.createFromPath(__dirname + `/assets/play.png`).resize({
+            icon: nativeImage.createFromPath(__static + '/touch-bar/play.png').resize({
                 width: 18,
                 height: 18
             }),
@@ -24,7 +25,7 @@ export default function initTouchBar() {
             }
         }),
         new TouchBarButton({
-            icon: nativeImage.createFromPath(__dirname + '/assets/next.png').resize({
+            icon: nativeImage.createFromPath(__static + '/touch-bar/next.png').resize({
                 width: 18,
                 height: 18
             }),
