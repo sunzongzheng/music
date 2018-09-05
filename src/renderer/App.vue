@@ -79,14 +79,10 @@
                         this.next()
                         break
                     case 'volumeIncrease':
-                        this.updateVolume({
-                            volume: this.volume + 10 > 100 ? 100 : this.volume + 10
-                        })
+                        this.updateVolume(this.volume + 10 > 100 ? 100 : this.volume + 10)
                         break
                     case 'volumeDecrease':
-                        this.updateVolume({
-                            volume: this.volume - 10 < 0 ? 0 : this.volume - 10
-                        })
+                        this.updateVolume(this.volume - 10 < 0 ? 0 : this.volume - 10)
                 }
             }
         },

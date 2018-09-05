@@ -9,6 +9,14 @@
 - 版本计划见[Projects](https://github.com/sunzongzheng/music/projects)
 
 # 更新日志
+- 2018-09-05
+  - 更换图标/包名
+    - 注意：由于更换包名，自动更新功能 重启后不会打开新版程序，重启后请自行找到新版程序并手动删除旧版程序
+  - 快捷键控制[@issues#12](https://github.com/sunzongzheng/music/issues/29)
+  - Mac下 touchaBar控制[@issues#12](https://github.com/sunzongzheng/music/issues/30)
+  - 排行榜加缓存
+  - 列表支持右键菜单 && 一大波样式调整
+  
 - 2018-08-26:
   - 排行榜 分榜合并 加速首屏
   - 新增 专辑详情页
