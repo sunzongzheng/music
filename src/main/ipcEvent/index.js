@@ -23,6 +23,7 @@ export default function (mainWindow, backgroundWindow, touchBar) {
     })
     ipcMain.on('tray-control-pause-main', (event, arg) => {
         backgroundWindow.webContents.send('tray-control-pause-main', arg)
+        if(process.platform !== 'darwin') return
         touchBar.items[2].icon = nativeImage.createFromPath(__static + `/touch-bar/${arg ? 'play' : 'pause'}.png`).resize({
             width: 18,
             height: 18
@@ -46,6 +47,7 @@ export default function (mainWindow, backgroundWindow, touchBar) {
     // })
     // 歌曲进度
     ipcMain.on('tray-control-progress', (event, arg) => {
+        if(process.platform !== 'darwin') return
         touchBar.items[4].value = parseInt(arg) + 1
     })
 }
