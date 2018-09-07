@@ -72,7 +72,7 @@
     }
   },
   "dependencies": {
-    "@suen/electron-updater": "^1.0.5",
+    "@suen/electron-updater": "git+https://github.com/sunzongzheng/electron-updater.git",
     "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
     "axios": "^0.16.1",
     "element-ui": "^2.4.1",
