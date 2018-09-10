@@ -1,8 +1,5 @@
-import {remote} from "electron"
 import Canvas from './canvas.class'
 import eventBus from './eventBus'
-
-const setTray = remote.getGlobal('setTray')
 
 export default class Control extends Canvas {
     imageList = []

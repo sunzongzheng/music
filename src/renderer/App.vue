@@ -40,6 +40,7 @@
         },
         computed: {
             ...mapState('hot-key', ['hotKey', 'enableGlobal']),
+            ...mapState('user', ['setting']),
             ...mapState('play', ['volume']),
         },
         methods: {
@@ -99,6 +100,7 @@
                 hotKey: this.hotKey,
                 enableGlobal: this.enableGlobal
             })
+            this.$ipc.send('toggle-tray', this.setting.macStatusBar)
             this.$ipc.send('tray-control-volume', this.volume)
             this.$ipc.on('hotKey-control', this.hotKeyControl)
             if (localStorage.token) {
@@ -111,7 +113,7 @@
                 })
             })
             setTimeout(() => {
-                this.$updater.__judgeUpdater(localStorage.getItem('includeLinux'))
+                this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
             }, 5000)
         }
     }

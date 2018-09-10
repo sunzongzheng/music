@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import {ipcRenderer} from 'electron'
 import App from './App.vue'
 import router from './router'
 import './components'
@@ -11,10 +12,10 @@ Vue.use(ElementUI)
 
 import initMacStatusbarLyric from './macStatusBarLyric'
 
-if(process.platform === 'darwin') {
-    initMacStatusbarLyric()
-}
 
+ipcRenderer.on('showMacStatusBar', (event, arg) => {
+    initMacStatusbarLyric()
+})
 new Vue({
     components: {App},
     router,

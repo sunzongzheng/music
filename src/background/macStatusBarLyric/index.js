@@ -9,7 +9,7 @@ import play_arrow from './assets/play_arrow.png'
 import skip_next from './assets/skip_next.png'
 import play_pause from './assets/pause.png'
 
-const setTray = remote.getGlobal('setTray')
+const Tray = remote.getGlobal('Tray')
 const lyric = new Lyric()
 const control = new Control([
     image_previous,
@@ -29,7 +29,7 @@ const updateTray = () => {
     console.log('updateTray')
     combine.ctx.drawImage(lyric.canvas, 0, 0)
     combine.ctx.drawImage(control.canvas, lyric.canvas.width, 0)
-    setTray(combine.canvas.toDataURL(), width / devicePixelRatio, height / devicePixelRatio)
+    Tray.setTray(combine.canvas.toDataURL(), width / devicePixelRatio, height / devicePixelRatio)
 }
 
 const changePause = () => {

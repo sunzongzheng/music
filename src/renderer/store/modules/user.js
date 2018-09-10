@@ -1,15 +1,23 @@
-import Vue from 'vue'
-
 export default {
     namespaced: true,
     state: {
-        info: null
+        info: null,
+        setting: localStorage.getItem('userSetting') ? JSON.parse(localStorage.getItem('userSetting')) : {
+            linuxAutoUpdate: false, // linux下自动更新
+            macStatusBar: true, // mac状态栏
+        }
     },
     mutations: {
         update(state, val) {
             state.info = val
             // 初始化歌单
             Vue.$store.dispatch('playlist/init')
+        },
+        updateSetting(state, val) {
+            for (let i in val) {
+                state.setting[i] = val[i]
+            }
+            localStorage.setItem('userSetting', JSON.stringify(state.setting))
         }
     },
     actions: {

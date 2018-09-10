@@ -1,5 +1,5 @@
-import {app, globalShortcut, ipcMain} from 'electron'
-import initTray from './tray'
+import {app, globalShortcut} from 'electron'
+import Tray from './tray'
 import initTouchBar from './touch-bar'
 import initUpdater from './updater'
 import initWindow from './window'
@@ -13,10 +13,10 @@ if (process.env.NODE_ENV !== 'development') {
 }
 global.musicApi = musicApi
 global.clientApi = axios
+global.Tray = Tray
 
 let mainWindow
 let backgroundWindow
-let appTray // 声明在外层 保证不会被垃圾回收 解决windows托盘图标会消失的问题
 let touchBar
 
 function createWindow() {
@@ -31,7 +31,6 @@ function createWindow() {
         mainWindow = null
     })
     initUpdater()
-    appTray = initTray(mainWindow, backgroundWindow)
     touchBar = initTouchBar()
     initIpcEvent(mainWindow, backgroundWindow, touchBar)
 }
