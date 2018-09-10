@@ -1,26 +1,28 @@
 <template>
-    <div :class="s.comments" v-loading="loading.info">
-        <top-info :info="info"></top-info>
-        <component v-loading="loading.comment"
-                   :is="`${vendor}Comments`"
-                   :class="s.component"
-        ></component>
+    <div :class="s.comments" v-loading="loading.info || loading.comment">
+        <div style="height: 100%" v-if="loading.info || loading.comment"></div>
+        <template v-else>
+            <top-info :info="info"></top-info>
+            <comment-list :vendor="vendor"
+                          :hotComments="hotComments"
+                          :comments="comments"
+            ></comment-list>
+            <el-pagination layout="prev, pager, next"
+                           :total="total"
+                           style="text-align: center; margin-top: 8px;"
+                           :current-page.sync="page"
+                           @current-change="pageChange"
+                           :page-size="limit"
+            ></el-pagination>
+        </template>
     </div>
 </template>
 <script>
     import topInfo from './topInfo.vue'
-    import neteaseComments from './vendor/netease/index.vue'
-    import qqComments from './vendor/qq/index.vue'
-    import xiamiComments from './vendor/xiami/index.vue'
-    import eventBus from './eventBus'
 
     export default {
-        name: 'comments',
         components: {
             topInfo,
-            neteaseComments,
-            qqComments,
-            xiamiComments
         },
         data() {
             return {
@@ -28,7 +30,12 @@
                 loading: {
                     info: false,
                     comment: false
-                }
+                },
+                comments: [],
+                hotComments: [],
+                total: 0,
+                page: 1,
+                limit: 20
             }
         },
         computed: {
@@ -45,9 +52,7 @@
                 this.loading.info = true
                 try {
                     const data = await Vue.$musicApi.getSongDetail(vendor, id)
-                    console.log(data)
                     if (data.status) {
-                        this.getComment(data.data.id)
                         for (let i in data.data) {
                             Vue.set(this.info, i, data.data[i])
                         }
@@ -59,30 +64,27 @@
                 this.loading.info = false
             },
             // 获取评论
-            async getComment(id) {
+            async getComment() {
                 this.loading.comment = true
                 try {
-                    const data = await Vue.$musicApi.getComment(this.vendor, id)
-                    console.log(data)
+                    const data = await Vue.$musicApi.getComment(this.vendor, this.id, this.page, this.limit)
                     if (data.status) {
-                        eventBus.comments = data.data.comments
-                        eventBus.hotComments = data.data.hotComments
-                        eventBus.total = data.data.total
+                        this.comments = data.data.comments
+                        this.hotComments = data.data.hotComments
+                        this.total = data.data.total
                     }
                 } catch (e) {
                 }
                 this.loading.comment = false
+            },
+            pageChange(page) {
+                this.page = page
+                this.getComment()
             }
         },
         created() {
             this.getInfo()
-        },
-        beforeRouteUpdate(to, from, next) {
-            eventBus.hotComments.length = 0
-            eventBus.comments.length = 0
-            eventBus.total = 0
-            this.getInfo(to.query.vendor, to.params.id)
-            next()
+            this.getComment()
         },
         beforeRouteEnter(to, from, next) {
             const allows = ['netease', 'qq', 'xiami']
@@ -94,8 +96,6 @@
 </script>
 <style lang="scss" module="s">
     .comments {
-        .component {
-            padding: 24px;
-        }
+        height: 100%;
     }
 </style>

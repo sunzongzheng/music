@@ -9,8 +9,13 @@ const router = new Router({
         {
             path: '/',
             redirect: {
-                name: 'rank'
+                name: 'discover'
             }
+        },
+        {
+            path: '/discover',
+            name: 'discover',
+            component: require('@/view/discover/index.vue')
         },
         {
             path: '/rank', // 排行列表
@@ -98,6 +103,36 @@ const router = new Router({
                     path: ':id/detail',
                     name: 'album.detail',
                     component: require('@/view/album/detail/index.vue'),
+                }
+            ]
+        },
+        {
+            path: '/musicPlaylist',
+            name: 'musicPlaylist',
+            component: require('@/view/musicPlaylist/index.vue'),
+            redirect: {
+                name: 'musicPlaylist.detail'
+            },
+            children: [
+                {
+                    path: ':id/detail',
+                    name: 'musicPlaylist.detail',
+                    component: require('@/view/musicPlaylist/detail/index.vue'),
+                }
+            ]
+        },
+        {
+            path: '/mv',
+            name: 'mv',
+            component: require('@/view/mv/index.vue'),
+            redirect: {
+                name: 'mv.detail'
+            },
+            children: [
+                {
+                    path: ':id/detail',
+                    name: 'mv.detail',
+                    component: require('@/view/mv/detail/index.vue'),
                 }
             ]
         },

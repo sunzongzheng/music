@@ -4,6 +4,7 @@
         <v-avatar></v-avatar>
         <div :class="s.main">
             <menu-section title="音乐馆">
+                <icon-item route="/discover" icon="jingxuan" title="精选"></icon-item>
                 <icon-item route="/rank" icon="paihang" title="排行"></icon-item>
                 <icon-item route="/artist" icon="renren" title="歌手"></icon-item>
             </menu-section>
