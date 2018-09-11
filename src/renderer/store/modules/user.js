@@ -23,6 +23,7 @@ export default {
     actions: {
         async init({commit}) {
             const data = await Vue.$http.get('/user')
+            Vue.$socket.connect() // 连接 socket
             commit('update', data)
         },
         logout({commit}) {

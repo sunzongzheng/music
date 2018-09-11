@@ -18,6 +18,7 @@
 <script>
     import menuItem from './menu-item.vue'
     import {remote} from 'electron'
+    import {mapState} from 'vuex'
 
     export default {
         components: {
@@ -28,6 +29,9 @@
                 version: remote.app.getVersion(),
                 loading: false
             }
+        },
+        computed: {
+            ...mapState('user', ['setting'])
         },
         methods: {
             // 检查更新

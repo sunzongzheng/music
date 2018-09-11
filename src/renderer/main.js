@@ -11,6 +11,7 @@ import './components'
 import {ipcRenderer, remote} from 'electron'
 import './filters'
 import config from '../../config/index'
+import socket from './util/socket'
 
 require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
@@ -67,6 +68,8 @@ Vue.$ipc = Vue.prototype.$ipc = ipcRenderer
 Vue.$updater = Vue.prototype.$updater = remote.getGlobal('updater')
 
 Vue.$message = ElementUI.Message
+
+Vue.$socket = Vue.prototype.$socket = socket
 
 /* eslint-disable no-new */
 new Vue({
