@@ -106,6 +106,7 @@
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
+            Vue.$socket.connect() // 连接 socket
             eventBus.$on('refresh', () => {
                 this.refresh = true
                 this.$nextTick(() => {
@@ -115,6 +116,9 @@
             setTimeout(() => {
                 this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
             }, 5000)
+        },
+        beforeDestroy() {
+            Vue.$socket.disconnect()
         }
     }
 </script>

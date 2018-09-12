@@ -11,7 +11,6 @@ export default {
         },
         clear() {
             localStorage.removeItem('token')
-            Vue.$socket.disconnect() // 断开 socket
         }
     }
 }
