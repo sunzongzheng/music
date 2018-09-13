@@ -25,6 +25,14 @@ export default {
         updateVolume(state, val) {
             state.volume = val
             Vue.$ipc.send('tray-control-volume', val)
+        },
+        clear(state) {
+            state.url = null
+            state.pause = true
+            state.info = null
+            Vue.$store.commit('lyrics/update', {
+                show: false
+            })
         }
     },
     actions: {

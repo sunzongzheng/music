@@ -1,6 +1,5 @@
 <script type="text/jsx">
     import {mapState} from 'vuex'
-    import eventBus from '@/eventBus/playlist'
     import cover from './components/cover.vue'
     import songInfo from './components/song-info.vue'
     import {remote} from 'electron'
@@ -17,6 +16,7 @@
         },
         computed: {
             ...mapState('play', ['info']),
+            ...mapState('c_playlist', ['playlist']),
             ...mapState('lyrics', ['show', 'lyrics', 'activeIndex'])
         },
         methods: {
@@ -40,7 +40,7 @@
                 }
             },
             toggleList() {
-                if (eventBus.playlist.length) {
+                if (this.playlist.length) {
                     this.$store.commit('c_playlist/toggle')
                 }
             },
@@ -85,7 +85,7 @@
                     <icon type="musiclist"
                           class={this.s.icon}
                           style="margin-top: 2px;"
-                          disabled={!eventBus.playlist.length}
+                          disabled={!this.playlist.length}
                           onClick={this.toggleList}
                     ></icon>
                 </div>

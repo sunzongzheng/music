@@ -96,16 +96,9 @@
             return {
                 page: 1,
                 limit: 20,
-                contextItem: null
             }
         },
         computed: {
-            ...mapState('user', ['info']),
-            ...mapState('play', {
-                playInfo: 'info'
-            }),
-            ...mapState('playlist', ['playlist']),
-            ...mapState('offline-playlist', ['offline_playlist']),
             spanList() {
                 return this.spanWidth ? this.spanWidth : (this.showVendor ? [9, 7, 5, 3] : [10, 8, 6])
             },
@@ -113,111 +106,10 @@
                 const start = (this.page - 1) * this.limit
 
                 return this.data.slice(start, start + this.limit)
-            },
-            // 右键菜单
-            menu() {
-                const menus = [
-                    {
-                        label: '播放',
-                        click: () => {
-                            console.log(this.contextItem)
-                            this.doPlay(this.contextItem)
-                        }
-                    },
-                    {
-                        label: '下一首播放',
-                        enabled: Boolean(this.playInfo),
-                        click: () => {
-                            this.updateNextPlay(this.contextItem)
-                        }
-                    },
-                    {
-                        type: 'separator'
-                    },
-                ]
-                const playlist = {
-                    label: '添加到',
-                    submenu: []
-                }
-                if ((this.info && this.playlist.length) || this.offline_playlist.length) {
-                    if (this.info && this.playlist.length) {
-                        playlist.submenu.push({
-                            label: '云歌单',
-                            enabled: false,
-                        })
-                        this.playlist.forEach(item => {
-                            playlist.submenu.push({
-                                label: item.name,
-                                click: () => {
-                                    this.collect({
-                                        id: item.id,
-                                        info: this.contextItem
-                                    })
-                                }
-                            })
-                        })
-                        playlist.submenu.push({
-                            type: 'separator'
-                        })
-                    }
-                    if (this.offline_playlist.length) {
-                        playlist.submenu.push({
-                            label: '离线歌单',
-                            enabled: false
-                        })
-                        this.offline_playlist.forEach(item => {
-                            playlist.submenu.push({
-                                label: item.name,
-                                click: () => {
-                                    this.collectOffline({
-                                        id: item.id,
-                                        info: this.contextItem
-                                    })
-                                }
-                            })
-                        })
-                    }
-                } else {
-                    playlist.submenu.push({
-                        label: '暂无歌单',
-                        enabled: false
-                    })
-                }
-                menus.push(playlist)
-                menus.push({
-                    label: '查看评论',
-                    click: () => {
-                        this.$router.push({
-                            name: 'song.comments',
-                            params: {
-                                id: this.contextItem.songId,
-                            },
-                            query: {
-                                vendor: this.contextItem.vendor
-                            }
-                        })
-                    }
-                })
-                menus.push({
-                    label: '下载',
-                    enabled: false
-                })
-                menus.push({
-                    label: '分享',
-                    click: () => {
-                        this.$ipc.send('share', this.contextItem)
-                    }
-                })
-                return remote.Menu.buildFromTemplate(menus)
             }
         },
         methods: {
             ...mapActions('play', ['play']),
-            ...mapActions('playlist', ['collect']),
-            ...mapActions('offline-playlist', {
-                collectOffline: 'collect'
-            }),
-            ...mapMutations('c_playlist', ['updateNextPlay']),
             doPlay(item) {
                 this.play({
                     info: item,
@@ -226,11 +118,10 @@
             },
             // 显示右键菜单
             showContextMenu(item) {
-                this.contextItem = {
+                this.$contextMenu.song({
                     ...item,
                     id: item.songId
-                }
-                this.menu.popup(remote.getCurrentWindow())
+                }, this.data)
             }
         }
     }

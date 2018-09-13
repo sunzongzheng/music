@@ -9,7 +9,7 @@
                     cur: 0,
                     total: 0
                 },
-                percentage: 0
+                percentage: 0,
             }
         },
         computed: {
@@ -28,7 +28,7 @@
                     }
                 })
             },
-            'info'() {
+            'info'(val) {
                 this.duration = {
                     cur: 0,
                     total: 0
@@ -39,15 +39,19 @@
                     this.$refs.audio.volume = val / 100
                 }
             },
-            'duration.total'() {
-                this.setPercentage()
-            },
-            'duration.cur'() {
-                this.setPercentage()
+            'duration': {
+                deep: true,
+                handler() {
+                    this.setPercentage()
+                }
             }
         },
         methods: {
             timeupdate() {
+                // 此处解决audio暂停是异步 清空播放状态后 timeupdate 仍会emit出来的问题
+                if (!this.url) {
+                    return
+                }
                 const audio = this.$refs.audio
                 this.duration = {
                     cur: audio.currentTime,
@@ -107,7 +111,7 @@
                 <div class={{[this.s.songsInfo]: true, [this.s.lyric]: this.show}}>
                     <div class={this.s.song}>
                         {
-                            this.url ?
+                            this.info ?
                                 <div class={this.s.info}>
                                     <span class={this.s.name}>{this.info.name}</span>
                                     <span>&nbsp;-&nbsp;</span>

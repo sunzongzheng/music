@@ -12,6 +12,7 @@ import {ipcRenderer, remote} from 'electron'
 import './filters'
 import config from '../../config/index'
 import socket from './util/socket'
+import contextMenu from './util/context-menu'
 
 require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
@@ -70,6 +71,8 @@ Vue.$updater = Vue.prototype.$updater = remote.getGlobal('updater')
 Vue.$message = ElementUI.Message
 
 Vue.$socket = Vue.prototype.$socket = socket
+
+Vue.$contextMenu = Vue.prototype.$contextMenu = contextMenu
 
 /* eslint-disable no-new */
 new Vue({

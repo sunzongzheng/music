@@ -46,17 +46,25 @@
                 return this.$route.params.id
             },
         },
+        watch: {
+            '$route'() {
+                this.total = 0
+                this.page = 1
+                this.getInfo()
+                this.getComment()
+            }
+        },
         methods: {
             // 获取歌曲信息
-            async getInfo(vendor = this.vendor, id = this.id) {
+            async getInfo() {
                 this.loading.info = true
                 try {
-                    const data = await Vue.$musicApi.getSongDetail(vendor, id)
+                    const data = await Vue.$musicApi.getSongDetail(this.vendor, this.id)
                     if (data.status) {
                         for (let i in data.data) {
                             Vue.set(this.info, i, data.data[i])
                         }
-                        Vue.set(this.info, 'vendor', vendor)
+                        Vue.set(this.info, 'vendor', this.vendor)
                     }
                 } catch (e) {
                     console.warn(e)
