@@ -7,6 +7,11 @@
         >
             <p style="font-size: 12px">{{info.description}}</p>
             <span :class="s.total">累计播放：{{info.playCount}}</span>
+            <template slot="btns">
+                <el-button @click="addToPlaylist" icon="el-icon-plus">
+                    添加到歌单
+                </el-button>
+            </template>
         </detail-header>
         <DataTable :data="info.list"
                    :class="s.table"

@@ -1,4 +1,4 @@
-import {mapActions} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 import eventBus from '../eventBus'
 
 export default {
@@ -8,6 +8,9 @@ export default {
             loading: false,
             info: eventBus.list[this.$route.params.id]
         }
+    },
+    computed: {
+        ...mapState('playlist', ['playlist'])
     },
     methods: {
         ...mapActions('play', ['play']),
@@ -47,6 +50,13 @@ export default {
                 console.warn(e)
             }
             this.loading = false
+        },
+        // 添加到歌单
+        addToPlaylist() {
+            this.$ipc.send('add-to-playlist', {
+                songs: this.info.list,
+                playlist: this.playlist
+            })
         }
     },
     created() {

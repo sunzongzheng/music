@@ -10,7 +10,13 @@
         >
             <div :class="s.info">
                 <p :class="s.title">播放列表</p>
-                <p :class="s.sub">共{{playlist.length}}首歌曲</p>
+                <div :class="s.bottom">
+                    <span :class="s.sub">共{{playlist.length}}首歌曲</span>
+                    <a @click="addToPlaylist" :class="s.addToPlaylist">
+                        <i class="el-icon-plus"></i>
+                        添加到歌单
+                    </a>
+                </div>
             </div>
             <div :class="s.songs">
                 <div v-for="(item,index) in playlist"
@@ -57,6 +63,9 @@
         },
         computed: {
             ...mapState('c_playlist', ['show', 'playlist']),
+            ...mapState('playlist', {
+                allPlaylist: 'playlist'
+            }),
             ...mapState('play', ['info']),
             ...mapState('lyrics', {
                 lyricShow: 'show'
@@ -86,6 +95,13 @@
                         }
                     ]
                 )
+            },
+            // 添加到歌单
+            addToPlaylist() {
+                this.$ipc.send('add-to-playlist', {
+                    songs: this.playlist,
+                    playlist: this.allPlaylist
+                })
             }
         }
     }
@@ -121,10 +137,20 @@
             .title {
                 font-size: 21px;
             }
-            .sub {
+            .bottom {
                 margin-top: 2px;
+                display: flex;
+                justify-content: space-between;
                 font-size: 12px;
-                color: $color-content;
+                .sub {
+                    color: $color-content;
+                }
+                .addToPlaylist {
+                    color: $color-content;
+                    &:hover {
+                        color: $color-primary;
+                    }
+                }
             }
         }
         .songs {

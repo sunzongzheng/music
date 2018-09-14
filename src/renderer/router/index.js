@@ -140,6 +140,10 @@ const router = new Router({
             path: '/setting',
             component: require('@/view/setting/index.vue')
         },
+        {
+            path: '/add-to-playlist',
+            component: require('@/view/add-to-playlist.vue')
+        },
     ]
 })
 router.beforeEach((to, from, next) => {

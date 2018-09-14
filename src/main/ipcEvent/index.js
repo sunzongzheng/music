@@ -1,6 +1,7 @@
 import {ipcMain, nativeImage} from 'electron'
 import login from './login'
 import share from './share'
+import addToPlaylist from './add-to-playlist'
 
 export default function (mainWindow, backgroundWindow, touchBar) {
     ipcMain.on('login', (event) => {
@@ -8,6 +9,9 @@ export default function (mainWindow, backgroundWindow, touchBar) {
     })
     ipcMain.on('share', (event, params) => {
         share.init(event, mainWindow, params)
+    })
+    ipcMain.on('add-to-playlist', (event, params) => {
+        addToPlaylist.init(event, mainWindow, params)
     })
     // 更新歌词
     ipcMain.on('tray-control-lyrics', (event, arg) => {
