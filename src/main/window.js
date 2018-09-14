@@ -2,9 +2,7 @@ import {BrowserWindow} from "electron"
 
 // 创建主进程
 function createWindow() {
-    const winURL = process.env.NODE_ENV === 'development'
-        ? `http://localhost:9080`
-        : `file://${__dirname}/index.html`
+    const winURL = IndexUrl || `file://${__dirname}/index.html`
     const mainWindow = new BrowserWindow({
         height: 650,
         useContentSize: true,
@@ -25,9 +23,7 @@ function createWindow() {
 
 // 创建子渲染进程
 function createBackgroundWindow(width, x, y) {
-    const winURL = process.env.NODE_ENV === 'development'
-        ? `http://localhost:9081/background.html`
-        : `file://${__dirname}/background.html`
+    const winURL = BackgroundUrl || `file://${__dirname}/background.html`
     const backgroundWindow = new BrowserWindow({
         height: 65,
         minimizable: false,

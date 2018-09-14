@@ -13,3 +13,4 @@ releases/
 package-lock.json
 yarn.lock
 yarn-error.log
+upx

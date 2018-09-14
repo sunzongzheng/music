@@ -9,7 +9,7 @@ const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
-
+process.env.NODE_ENV = 'development'
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')

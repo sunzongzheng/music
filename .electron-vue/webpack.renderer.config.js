@@ -140,7 +140,7 @@ let rendererConfig = {
         new webpack.NoEmitOnErrorsPlugin()
     ],
     output: {
-        filename: '[name].js',
+        filename: '[name].[hash].js',
         libraryTarget: 'commonjs2',
         path: path.join(__dirname, '../dist/electron')
     },
