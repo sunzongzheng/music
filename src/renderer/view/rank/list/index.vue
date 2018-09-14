@@ -49,7 +49,9 @@
             if (!eventBus.renderCache) {
                 await this.getData(3) // 先调一次 limit:3 用于首屏
                 this.$forceUpdate()
-                this.getData() // 获取全量数据
+                await this.getData() // 获取全量数据
+                eventBus.renderCache = null
+                this.$forceUpdate()
             }
         },
         render() {
