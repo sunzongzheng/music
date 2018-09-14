@@ -10,7 +10,10 @@ export default {
         }
     },
     computed: {
-        ...mapState('playlist', ['playlist'])
+        ...mapState('playlist', ['playlist']),
+        ...mapState('user', {
+            userInfo: 'info'
+        })
     },
     methods: {
         ...mapActions('play', ['play']),

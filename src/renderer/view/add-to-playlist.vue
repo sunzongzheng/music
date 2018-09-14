@@ -42,7 +42,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <p :class="s.total">共选择{{chosen.songs.length}}首歌曲</p>
+        <p :class="s.total">共选择：{{chosen.songs.length}}&nbsp;/&nbsp;{{songs.length}}</p>
     </div>
 </template>
 <script>

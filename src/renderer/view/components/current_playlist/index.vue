@@ -12,7 +12,7 @@
                 <p :class="s.title">播放列表</p>
                 <div :class="s.bottom">
                     <span :class="s.sub">共{{playlist.length}}首歌曲</span>
-                    <a @click="addToPlaylist" :class="s.addToPlaylist">
+                    <a @click="addToPlaylist" :class="s.addToPlaylist" v-if="userInfo">
                         <i class="el-icon-plus"></i>
                         添加到歌单
                     </a>
@@ -67,6 +67,9 @@
                 allPlaylist: 'playlist'
             }),
             ...mapState('play', ['info']),
+            ...mapState('user', {
+                userInfo: 'info'
+            }),
             ...mapState('lyrics', {
                 lyricShow: 'show'
             })
