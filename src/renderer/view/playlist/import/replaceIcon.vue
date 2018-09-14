@@ -11,7 +11,7 @@
                        :showOperate="false"
                        @rowClick="rowClick"
                        element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
-                       style="max-height: 300px; overflow: auto; width: 600px;"
+                       style="max-height: 300px; overflow: auto; width: 600px; padding: 0"
             ></DataTable>
             <span slot="reference" :class="s.replace" @click="show = true">换</span>
         </el-popover>

@@ -7,6 +7,7 @@
                    :spanWidth="spanWidth"
                    :showVendor="false"
                    slotAppendTitle="处理结果"
+                   style="padding: 0"
         >
             <!-- 换源 !-->
             <replace-icon slot="songControlPrepend"
@@ -73,6 +74,17 @@
                 color: #191919;
                 margin: 0;
                 line-height: 1;
+                padding-left: 12px;
+                position: relative;
+                &::before {
+                    content: ' ';
+                    background: $color-primary;
+                    width: 2px;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
             }
             a {
                 color: $color-sub;

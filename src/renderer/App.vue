@@ -106,7 +106,9 @@
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
-            Vue.$socket.connect() // 连接 socket
+            if (!['add-to-playlist', 'share'].includes(this.$route.name)) {
+                Vue.$socket.connect() // 连接 socket
+            }
             eventBus.$on('refresh', () => {
                 this.refresh = true
                 this.$nextTick(() => {

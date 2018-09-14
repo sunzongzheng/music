@@ -1,5 +1,5 @@
 <template>
-    <div :class="s.main">
+    <div :class="s.searchResult">
         <div :class="s.top">
             <a :class="s.title"><span>搜索</span><span :class="s.keyword">{{keywords}}</span></a>
             <el-checkbox v-model="filter.netease">网易云</el-checkbox>
@@ -10,6 +10,7 @@
         </div>
         <DataTable :data="result"
                    :loading="loading"
+                   style="padding: 0 12px"
                    element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
         ></DataTable>
     </div>
@@ -98,11 +99,11 @@
     }
 </script>
 <style lang="scss" module="s">
-    .main {
-        padding: 0 16px;
+    .searchResult {
         .top {
             display: flex;
             justify-content: space-between;
+            padding: 0 20px;
             margin: 24px 0;
             align-items: flex-end;
             .title {

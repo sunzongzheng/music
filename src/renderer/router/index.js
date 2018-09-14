@@ -88,6 +88,7 @@ const router = new Router({
             ]
         },
         {
+            name: 'share',
             path: '/share',
             component: require('@/view/share.vue')
         },
@@ -141,6 +142,7 @@ const router = new Router({
             component: require('@/view/setting/index.vue')
         },
         {
+            name: 'add-to-playlist',
             path: '/add-to-playlist',
             component: require('@/view/add-to-playlist.vue')
         },
