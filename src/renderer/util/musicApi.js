@@ -1,4 +1,6 @@
-import api from '@suen/music-api'
+import musicApiContructor from '@suen/music-api/dist/app.electron'
+import {remote} from "electron"
+const api = musicApiContructor(remote.getGlobal('nodeAdapter'))
 
 export default {
     ...api,

@@ -5,15 +5,15 @@ import initUpdater from './updater'
 import initWindow from './window'
 import initIpcEvent from './ipcEvent'
 import initMenu from './menu'
-import musicApi from './musicApi'
 import axios from 'axios'
+import nodeAdapter from 'flyio/src/adapter/node'
 
 if (process.env.NODE_ENV !== 'development') {
     global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-global.musicApi = musicApi
 global.clientApi = axios
 global.Tray = Tray
+global.nodeAdapter = nodeAdapter
 
 let mainWindow
 let backgroundWindow

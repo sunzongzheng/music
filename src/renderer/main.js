@@ -13,6 +13,7 @@ import './filters'
 import config from '../../config/index'
 import socket from './util/socket'
 import contextMenu from './util/context-menu'
+import musicApi from './util/musicApi'
 
 require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
@@ -56,7 +57,7 @@ Vue.$clientApi = remote.getGlobal('clientApi')
 Vue.$mainWindow = Vue.prototype.$mainWindow = remote.getGlobal('mainWindow')
 Vue.$backgroundWindow = Vue.prototype.$backgroundWindow = remote.getGlobal('backgroundWindow')
 
-Vue.$musicApi = Vue.prototype.$musicApi = remote.getGlobal('musicApi')
+Vue.$musicApi = Vue.prototype.$musicApi = musicApi
 
 Vue.$store = Vue.prototype.$store = store
 
