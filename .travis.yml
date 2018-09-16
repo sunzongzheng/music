@@ -28,7 +28,7 @@ before_script:
   - npm update @suen/electron-updater
 
 script:
-  - npm run build-file
+  - MUSICLAKEURL='$MUSICLAKE_URL' npm run build-file
   - npm run build:normal
   - if [ $TRAVIS_OS_NAME = osx ]; then npm run build:win; fi
 
