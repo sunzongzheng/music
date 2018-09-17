@@ -146,8 +146,8 @@
                            ref="audio"
                            preload="true"
                            onTimeupdate={() => this.timeupdate()}
-                           onEnded={() => this.$store.dispatch('c_playlist/next')}
-                           onError={() => this.$store.dispatch('c_playlist/next')}
+                           onEnded={() => this.$store.dispatch('c_playlist/next', true)}
+                           onError={() => this.$store.dispatch('c_playlist/next', true)}
                     ></audio>
                 </div>
             )
@@ -194,11 +194,12 @@
             :global {
                 .el-slider__runway {
                     margin: 6px 0;
-                    height: 2px;
+                    height: 6px;
                     user-select: none;
+                    background: linear-gradient(to bottom, #e4e7ed 0, #e4e7ed 2px, white 2px);
                     .el-slider__bar {
-                        height: 2px;
-                        background-color: #3AC17E;
+                        height: 6px;
+                        background: linear-gradient(to bottom, #3AC17E 0, #3AC17E 2px, white 2px)
                     }
                     .el-slider__button-wrapper {
                         height: 32px;

@@ -3,11 +3,11 @@
         <!-- 播放控制 !-->
         <div :class="s.playControl">
             <!-- 上一曲 !-->
-            <Icon type="last" @click.native="last"></Icon>
+            <Icon type="last" @click.native="last()"></Icon>
             <!-- 播放/暂停 !-->
             <Icon :type="pause?'play':'plus-pause'" :class="s.play" @click.native="pauseChange"></Icon>
             <!-- 下一曲 !-->
-            <Icon type="last" :class="s.next" @click.native="next"></Icon>
+            <Icon type="last" :class="s.next" @click.native="next()"></Icon>
         </div>
         <!-- 音量 !-->
         <el-popover ref="volume" placement="top" trigger="click" popper-class="volumeSlider">

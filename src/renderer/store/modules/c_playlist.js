@@ -49,7 +49,7 @@ export default {
         }
     },
     actions: {
-        last({state}) {
+        last({state}, auto = false) {
             if (state.playlist.length) {
                 const cur = Vue.$store.state.play.info
                 let index = -1
@@ -60,6 +60,11 @@ export default {
                     }
                 })
                 switch (state.cycle) {
+                    case 'single':
+                        // 自动切换 播放当前歌曲; 手动切换 跟随list模式
+                        if (auto) {
+                            break
+                        }
                     case 'list':
                         index = (index + state.playlist.length - 1) % state.playlist.length
                         break
@@ -76,7 +81,7 @@ export default {
                 })
             }
         },
-        next({state, commit}) {
+        next({state, commit}, auto = false) {
             if (state.nextPlay) {
                 Vue.$store.dispatch('play/play', {
                     info: state.nextPlay
@@ -93,6 +98,12 @@ export default {
                     }
                 })
                 switch (state.cycle) {
+                    case 'single':
+                        // 自动切换 播放当前歌曲; 手动切换 跟随list模式
+                        console.log(auto)
+                        if (auto) {
+                            break
+                        }
                     case 'list':
                         index = (index + state.playlist.length + 1) % state.playlist.length
                         break
