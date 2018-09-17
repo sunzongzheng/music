@@ -41,10 +41,12 @@
         computed: {
             ...mapState('hot-key', ['hotKey', 'enableGlobal']),
             ...mapState('user', ['setting']),
+            ...mapState('c_playlist', ['cycle']),
             ...mapState('play', ['volume']),
         },
         methods: {
             ...mapActions('c_playlist', ['last', 'next']),
+            ...mapMutations('c_playlist', ['cycleChange']),
             ...mapMutations('play', ['pauseChange', 'updateVolume']),
             // 登录成功回调
             loginSuccessed(event, info) {
@@ -84,6 +86,21 @@
                         break
                     case 'volumeDecrease':
                         this.updateVolume(this.volume - 10 < 0 ? 0 : this.volume - 10)
+                        break
+                    case 'playModeChange':
+                        this.cycleChange()
+                        const text = {
+                            list: '列表循环',
+                            random: '随机播放',
+                            single: '单曲循环'
+                        }[this.cycle]
+                        let notification = new Notification('播放模式切换', {
+                            body: text
+                        })
+                        setTimeout(() => {
+                            notification.close()
+                        }, 2000)
+                        break
                 }
             }
         },

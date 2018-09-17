@@ -13,6 +13,7 @@
                     :key="item.songId"
                     @click.native="$emit('rowClick', item)"
                     @contextmenu.native="showContextMenu(item)"
+                    @dblclick.native="doPlay(item)"
             >
                 <el-col :span="spanList[0]">
                     <div :class="s.nameItem">
@@ -159,6 +160,8 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
+                    cursor: pointer;
+                    user-select: none;
                 }
                 .songControl {
                     display: none;

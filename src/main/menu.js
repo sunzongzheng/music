@@ -1,4 +1,4 @@
-import {Menu, ipcMain, globalShortcut} from 'electron'
+import {Menu, ipcMain, globalShortcut, app} from 'electron'
 
 const template = [
     {
@@ -8,6 +8,14 @@ const template = [
                 label: '关于',
                 click() {
                     require('electron').shell.openExternal('https://github.com/sunzongzheng/music')
+                }
+            },
+            {
+                label: '退出音乐湖',
+                accelerator: 'CommandOrControl+Q',
+                click: () => {
+                    global.mainWindow = null
+                    app.exit()
                 }
             }
         ]

@@ -150,6 +150,12 @@ const defaultHotKey = [
         value: 'volumeDecrease',
         key: `${CommandOrControl}+Down`,
         global: `Alt+${CommandOrControl}+Down`
+    },
+    {
+        name: '播放模式切换',
+        value: 'playModeChange',
+        key: `${CommandOrControl}+/`,
+        global: `Alt+${CommandOrControl}+/`
     }
 ]
 export default {
