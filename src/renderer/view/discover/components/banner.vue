@@ -56,18 +56,17 @@
                     const obj = new URL(`https://music.163.com${url}`)
                     const data = await this.$musicApi.getSongDetail('netease', obj.searchParams.get('id'))
                     if (data.status) {
-                        console.log(data.data)
                         this.play({
                             info: {
                                 ...data.data,
                                 vendor: 'netease',
-                                commentId: data.data.id
+                                songId: data.data.id
                             }
                         })
                     } else {
                         this.$message.warning(data.msg)
                     }
-                } else if (url.startsWith('/topic')) {
+                } else {
                     remote.shell.openExternal(`https://music.163.com/#${url}`)
                 }
             },

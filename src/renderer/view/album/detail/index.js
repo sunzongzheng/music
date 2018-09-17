@@ -28,12 +28,10 @@ export default {
             try {
                 let data = await Vue.$musicApi.getAlbumDetail(this.vendor, this.id)
                 if (data.status) {
-                    console.log(data.data)
                     this.detail = data.data
                     this.detail.songs = data.data.songs.map(item => {
                         return {
                             ...item,
-                            commentId: item.id,
                             songId: item.id,
                             vendor: this.vendor
                         }

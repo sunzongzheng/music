@@ -7,24 +7,13 @@
         methods: {
             async getData(limit) {
                 try {
-                    const data = await this.$http.get('/music/netease/rank', {
-                        params: {
-                            ids: Array.from(new Array(22), (value, index) => {
-                                return index.toString()
-                            }),
-                            limit
-                        }
-                    })
-                    eventBus.list = data.map(single => {
-                        single.list = single.list.map(item => {
-                            item.vendor = 'netease'
-                            item.songId = item.commentId = item.id
-                            return item
-                        })
-                        return single
+                    eventBus.list = await eventBus.getRank({
+                        ids: Array.from(new Array(22), (value, index) => {
+                            return index.toString()
+                        }),
+                        limit
                     })
                 } catch (e) {
-                    console.warn(e)
                 }
             },
             getRenderData() {
@@ -60,7 +49,7 @@
                 return eventBus.renderCache
             } else { // 没有缓存
                 // 有数据就生成 vNode 并缓存
-                if(eventBus.list[0]) {
+                if (eventBus.list[0]) {
                     eventBus.renderCache = this.getRenderData()
                     return eventBus.renderCache
                 } else {

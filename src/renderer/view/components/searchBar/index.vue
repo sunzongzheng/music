@@ -54,7 +54,6 @@
                     eventBus.searchResult = data.data.filter(item => item.id).map(item => {
                         return {
                             ...item,
-                            commentId: item.id,
                             songId: item.id
                         }
                     })

@@ -51,7 +51,6 @@
                     this.result = data.data.filter(item => item.id && !item.cp).map(item => {
                         return {
                             ...item,
-                            commentId: item.id,
                             songId: item.id
                         }
                     })

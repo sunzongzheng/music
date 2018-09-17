@@ -29,12 +29,7 @@ export default {
         },
         async getSong(id = this.id) {
             if (this.offline) {
-                this.list = (JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || []).map(item => {
-                    return {
-                        ...item,
-                        songId: item.commentId || item.songId
-                    }
-                })
+                this.list = (JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || [])
                 this.updateSongsInfo()
                 return
             }
@@ -104,7 +99,7 @@ export default {
             })
             const vendors = ['netease', 'qq', 'xiami']
             for (let vendor of vendors) {
-                const ids = list[vendor].map(item => item.commentId)
+                const ids = list[vendor].map(item => item.songId)
                 if (ids.length) {
                     const data = await this.$musicApi.getBatchSongDetail(vendor, ids)
                     if (data.status) {
@@ -115,11 +110,11 @@ export default {
                 }
             }
             for (let item of this.list) {
-                const info = detail[item.vendor][item.commentId]
+                const info = detail[item.vendor][item.songId]
                 if (info) {
                     item.cp = info.cp
                     item.name = info.name
-                    item.commentId = info.id
+                    item.songId = info.id
                     item.album = info.album
                     item.artists = info.artists
                 } else {
@@ -131,7 +126,7 @@ export default {
                             console.log('歌曲ID变了：', item)
                             item.cp = singleInfo.data.cp
                             item.name = singleInfo.data.name
-                            item.commentId = singleInfo.data.id
+                            item.songId = singleInfo.data.id
                             item.album = singleInfo.data.album
                             item.artists = singleInfo.data.artists
                         } else {

@@ -35,17 +35,11 @@ export default {
         async getDetail() {
             this.loading = true
             try {
-                const data = await this.$http.get('/music/netease/rank', {
-                    params: {
-                        ids: [this.info.id]
-                    }
+                const data = await eventBus.getRank({
+                    ids: [this.info.id]
                 })
                 if (data[0]) {
-                    this.info.list = data[0].list.map(item => {
-                        item.vendor = 'netease'
-                        item.songId = item.commentId = item.id
-                        return item
-                    })
+                    this.info.list = data[0].list
                 } else {
                     this.$message.warning('无法获取详情')
                 }

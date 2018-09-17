@@ -136,7 +136,6 @@
                             return {
                                 ...item,
                                 songId: item.id,
-                                commentId: item.id,
                                 vendor: this.vendor,
                                 status: -1
                             }

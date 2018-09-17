@@ -53,7 +53,6 @@ export default {
             for (let item of data.data.list) {
                 item.vendor = 'netease'
                 item.songId = item.id
-                item.commentId = item.id
             }
         }
         return data

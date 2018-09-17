@@ -47,7 +47,7 @@
                     this.detail = data.data.detail
                     this.songs = data.data.songs.map(item => {
                         item.vendor = this.vendor
-                        item.commentId = item.id
+                        item.songId = item.id
                         return item
                     })
                 } else {
