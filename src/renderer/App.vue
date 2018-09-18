@@ -46,6 +46,9 @@
         },
         methods: {
             ...mapActions('c_playlist', ['last', 'next']),
+            ...mapActions('download', {
+                initDownload: 'init'
+            }),
             ...mapMutations('c_playlist', ['cycleChange']),
             ...mapMutations('play', ['pauseChange', 'updateVolume']),
             // 登录成功回调
@@ -132,6 +135,7 @@
                     this.refresh = false
                 })
             })
+            this.initDownload()
             setTimeout(() => {
                 this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
             }, 5000)

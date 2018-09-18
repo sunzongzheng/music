@@ -19,6 +19,7 @@
             </div>
         </div>
         <div :class="s.right">
+            <Icon type="download" :class="s.icon" @click="$router.push('/download')"></Icon>
             <Icon type="shezhi" :class="s.icon" @click="$router.push('/setting')"></Icon>
         </div>
     </div>

@@ -22,7 +22,7 @@
                             <slot name="songControlPrepend" :row="item" :$index="index"></slot>
                             <Icon type="item-play" @click="doPlay(item)" v-if="!item.cp" clickable></Icon>
                             <Icon type="like" disabled></Icon>
-                            <Icon type="download" disabled></Icon>
+                            <Icon type="download" clickable :disabled="item.cp || !item.dl" @click="download(item)"></Icon>
                             <slot name="songControlAppend" :row="item" :$index="index"></slot>
                             <Icon type="more" clickable @click="showContextMenu(item)"></Icon>
                         </div>
@@ -69,8 +69,7 @@
     </div>
 </template>
 <script>
-    import {mapState, mapActions, mapMutations} from 'vuex'
-    import {remote} from 'electron'
+    import {mapActions} from 'vuex'
 
     export default {
         props: {
@@ -111,6 +110,7 @@
         },
         methods: {
             ...mapActions('play', ['play']),
+            ...mapActions('download', ['download']),
             doPlay(item) {
                 this.play({
                     info: item,

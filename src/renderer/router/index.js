@@ -146,6 +146,11 @@ const router = new Router({
             path: '/add-to-playlist',
             component: require('@/view/add-to-playlist.vue')
         },
+        {
+            name: 'download',
+            path: '/download',
+            component: require('@/view/download.vue')
+        },
     ]
 })
 router.beforeEach((to, from, next) => {

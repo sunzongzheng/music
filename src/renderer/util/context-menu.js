@@ -97,7 +97,9 @@ export default {
         })
         menus.push({
             label: '下载',
-            enabled: false
+            click: () => {
+                Vue.$store.dispatch('download/download', contextItem)
+            }
         })
         menus.push({
             label: '分享',

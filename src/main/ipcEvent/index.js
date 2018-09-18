@@ -1,7 +1,10 @@
-import {ipcMain, nativeImage} from 'electron'
+import {ipcMain, nativeImage, app} from 'electron'
 import login from './login'
 import share from './share'
 import addToPlaylist from './add-to-playlist'
+
+const {download} = require('electron-dl')
+const downloads = {}
 
 export default function (mainWindow, backgroundWindow, touchBar) {
     ipcMain.on('login', (event) => {
@@ -60,5 +63,40 @@ export default function (mainWindow, backgroundWindow, touchBar) {
         } else {
             (global.Tray.tray && !global.Tray.tray.isDestroyed()) && global.Tray.destroy()
         }
+    })
+    ipcMain.on('download-btn', (e, args) => {
+        download(mainWindow, args.url, {
+            filename: args.filename,
+            directory: `${app.getPath('music')}/音乐湖`,
+            onProgress(progress) {
+                mainWindow.webContents.send('download-onProgress', {
+                    id: args.id,
+                    progress: progress * 100
+                })
+            },
+            onStarted(downloadItem) {
+                mainWindow.webContents.send('download-onStarted', {
+                    id: args.id,
+                    downloadItem
+                })
+                downloads[args.id] = downloadItem
+            }
+        })
+            .then(downloadItem => {
+                mainWindow.webContents.send('download-success', {
+                    id: args.id,
+                    downloadItem
+                })
+            })
+            .catch(e => {
+                console.warn(e)
+                mainWindow.webContents.send('download-error', {
+                    id: args.id,
+                    error: e
+                })
+            })
+    })
+    ipcMain.on('download-cancel', (e, id) => {
+        downloads[id].cancel && downloads[id].cancel()
     })
 }
