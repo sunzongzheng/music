@@ -22,7 +22,8 @@ export default {
             frame: true,
             fullscreen: false,
             maximizable: false,
-            minimizable: false
+            minimizable: false,
+            autoHideMenuBar: true
         })
         this.loginWindow.setMenu(null) // 去掉windows linux下的Menu
         this.initEvent()

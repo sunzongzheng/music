@@ -20,7 +20,6 @@ export default {
     createWindow() {
         this.window = new BrowserWindow({
             title: '添加到歌单',
-            // modal: true,
             parent: this.mainWindow,
             height: 450,
             resizable: true,
@@ -28,7 +27,8 @@ export default {
             frame: true,
             fullscreen: false,
             maximizable: false,
-            minimizable: false
+            minimizable: false,
+            autoHideMenuBar: true
         })
         this.window.setMenu(null) // 去掉windows linux下的Menu
     }
