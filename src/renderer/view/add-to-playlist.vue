@@ -112,10 +112,6 @@
                 this.playlist = playlist
                 console.log(playlist)
             })
-        },
-        beforeRouteEnter(to, from, next) {
-            document.title = '添加到歌单'
-            next()
         }
     }
 </script>

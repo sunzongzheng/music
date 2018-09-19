@@ -158,10 +158,25 @@ const defaultHotKey = [
         global: `Alt+${CommandOrControl}+/`
     }
 ]
+
+let hotKey = cloneDeep(defaultHotKey)
+if (localStorage.hotKey) {
+    const saved = JSON.parse(localStorage.hotKey)
+    const savedObject = {}
+    saved.forEach(item => {
+        savedObject[item.value] = item
+    })
+    hotKey = hotKey.map(item => {
+        if (savedObject[item.value]) {
+            return savedObject[item.value]
+        }
+        return item
+    })
+}
 export default {
     namespaced: true,
     state: {
-        hotKey: localStorage.hotKey ? JSON.parse(localStorage.hotKey) : cloneDeep(defaultHotKey),
+        hotKey,
         enableGlobal: Boolean(localStorage.enableGlobal) || false, // 是否全局可用
     },
     mutations: {

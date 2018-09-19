@@ -25,10 +25,6 @@
                     })
                 })
             })
-        },
-        beforeRouteEnter(to, from, next) {
-            document.title = '分享'
-            next()
         }
     }
 </script>

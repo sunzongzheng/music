@@ -140,6 +140,9 @@
                 this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
             }, 5000)
         },
+        mounted() {
+            document.body.querySelector('#page-loading').style.display = 'none'
+        },
         beforeDestroy() {
             Vue.$socket.disconnect()
         }
