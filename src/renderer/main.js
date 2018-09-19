@@ -71,6 +71,8 @@ Vue.$updater = Vue.prototype.$updater = remote.getGlobal('updater')
 
 Vue.$message = ElementUI.Message
 
+Vue.$notify = ElementUI.Notification
+
 Vue.$socket = Vue.prototype.$socket = socket
 
 Vue.$contextMenu = Vue.prototype.$contextMenu = contextMenu

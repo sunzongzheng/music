@@ -85,6 +85,11 @@ export default {
                     id,
                     progress: 0
                 })
+                Vue.$notify({
+                    message: '已加入下载列表',
+                    type: 'success',
+                    duration: 1000
+                })
             } else {
                 console.warn(data)
                 Vue.$message.warning(data.msg)
