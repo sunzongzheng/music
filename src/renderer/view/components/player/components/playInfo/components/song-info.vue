@@ -196,10 +196,12 @@
                     margin: 6px 0;
                     height: 6px;
                     user-select: none;
-                    background: linear-gradient(to bottom, #e4e7ed 0, #e4e7ed 2px, white 2px);
+                    background: linear-gradient(to bottom, #e4e7ed 0, #e4e7ed 2px, transparent 2px);
+                    border-radius: 0;
                     .el-slider__bar {
                         height: 6px;
-                        background: linear-gradient(to bottom, #3AC17E 0, #3AC17E 2px, white 2px)
+                        background: linear-gradient(to bottom, #3AC17E 0, #3AC17E 2px, transparent 2px);
+                        border-radius: 0;
                     }
                     .el-slider__button-wrapper {
                         height: 32px;
