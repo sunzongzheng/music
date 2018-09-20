@@ -12,7 +12,6 @@ env:
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 os:
-  - linux
   - osx
 
 cache:
@@ -23,14 +22,16 @@ cache:
   - $HOME/.npm/_prebuilds
 
 before_script:
-  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install -y rpm; fi
+  - brew install rpm
   - npm update @suen/music-api
   - npm update @suen/electron-updater
+  - wget http://collection.b0.upaiyun.com/softwares/upx/upx-darwin-amd64-v0.2.3 -O upx
+  - chmod 755 upx
 
 script:
   - MUSICLAKEURL='$MUSICLAKE_URL' npm run build-file
-  - npm run build:normal
-  - if [ $TRAVIS_OS_NAME = osx ]; then npm run build:win; fi
+  - ./upx --auth $UPX_AUTH sync -delete --strong ./dist/electron/
+  - npm run build:publish
 
 deploy:
   provider: releases

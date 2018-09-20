@@ -32,10 +32,16 @@ export default {
             })
         })
         this.socket.on('online users', users => {
-            console.log(users)
+            console.log('online users', users)
+        })
+        this.socket.on('someone join', user => {
+            console.log('someone join', user)
+        })
+        this.socket.on('someone leave', user => {
+            console.log('someone leave', user)
         })
         this.socket.on('broadcast', packet => {
-            console.log(packet)
+            console.log('broadcast', packet)
         })
     }
 }

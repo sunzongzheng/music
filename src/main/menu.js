@@ -5,6 +5,12 @@ const template = [
         label: 'Music',
         submenu: [
             {
+                label: '打开控制台',
+                click() {
+                    global.mainWindow.webContents.openDevTools({detach: true})
+                }
+            },
+            {
                 label: '关于',
                 click() {
                     require('electron').shell.openExternal('https://github.com/sunzongzheng/music')
