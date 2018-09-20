@@ -29,7 +29,7 @@ before_script:
   - chmod 755 upx
 
 script:
-  - MUSICLAKEURL='$MUSICLAKE_URL' npm run build-file
+  - MUSICLAKEURL=$MUSICLAKE_URL npm run build-file
   - ./upx --auth $UPX_AUTH sync -delete --strong ./dist/electron/
   - npm run build:publish
 
