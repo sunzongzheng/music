@@ -54,7 +54,7 @@
                     <slot name="append" :row="item"></slot>
                 </el-col>
             </el-row>
-            <el-pagination v-if="!loading && data.length > limit"
+            <el-pagination v-if="pagination && !loading && data.length > limit"
                            layout="prev, pager, next"
                            :total="data.length"
                            style="text-align: center; margin-top: 8px;"
@@ -90,7 +90,11 @@
                 default: true
             },
             spanWidth: Array,
-            slotAppendTitle: String
+            slotAppendTitle: String,
+            pagination: {
+                type: Boolean,
+                default: true
+            }
         },
         data() {
             return {
@@ -103,6 +107,7 @@
                 return this.spanWidth ? this.spanWidth : (this.showVendor ? [9, 7, 5, 3] : [10, 8, 6])
             },
             list() {
+                if(!this.pagination) return this.data
                 const start = (this.page - 1) * this.limit
 
                 return this.data.slice(start, start + this.limit)

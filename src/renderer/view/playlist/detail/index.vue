@@ -19,6 +19,7 @@
             </detail-header>
             <DataTable :data="list"
                        :class="s.table"
+                       :pagination="false"
             >
                 <Icon slot="songControlAppend"
                       slot-scope="scope"
