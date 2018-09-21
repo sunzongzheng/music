@@ -6,6 +6,7 @@
         <hot-key></hot-key>
         <statistics></statistics>
         <version></version>
+        <debug></debug>
     </div>
 </template>
 <script>
@@ -15,6 +16,7 @@
     import linuxAutoUpdate from './components/linuxAutoUpdate.vue'
     import version from './components/version.vue'
     import statistics from './components/statictics.vue'
+    import debug from './components/debug.vue'
 
     export default {
         components: {
@@ -23,7 +25,8 @@
             hotKey,
             linuxAutoUpdate,
             version,
-            statistics
+            statistics,
+            debug
         },
         computed: {
             platform() {
