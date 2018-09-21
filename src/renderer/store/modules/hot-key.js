@@ -156,6 +156,12 @@ const defaultHotKey = [
         value: 'playModeChange',
         key: `${CommandOrControl}+/`,
         global: `Alt+${CommandOrControl}+/`
+    },
+    {
+        name: '快速定位搜索框',
+        value: 'pointSearchBar',
+        key: `${CommandOrControl}+F`,
+        global: `Alt+${CommandOrControl}+F`
     }
 ]
 

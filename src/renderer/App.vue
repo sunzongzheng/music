@@ -104,6 +104,9 @@
                             notification.close()
                         }, 2000)
                         break
+                    case 'pointSearchBar':
+                        this.$mainWindow.show()
+                        eventBus.$emit('focus')
                 }
             }
         },

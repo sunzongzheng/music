@@ -10,6 +10,7 @@
                        @keyup.enter="search"
                        @compositionstart="ime = true"
                        @compositionend="ime = false"
+                       ref="input"
                 />
                 <div :class="{[s.holder]:true,[s.empty]:empty}">
                     <Icon type="sousuo" :class="s.searchIcon"></Icon>
@@ -68,7 +69,17 @@
             },
             refresh() {
                 eventBus.$emit('refresh')
+            },
+            focus() {
+                this.$refs.input && this.$refs.input.focus()
             }
+        },
+        created() {
+            eventBus.$on('focus', this.focus)
+        },
+        beforeRouteLeave(to, from ,next) {
+            eventBus.$off('focus', this.focus)
+            next()
         }
     }
 </script>
