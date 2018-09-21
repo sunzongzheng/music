@@ -1,4 +1,4 @@
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import Velocity from 'velocity-animate'
 
 export default {
@@ -12,7 +12,8 @@ export default {
         }
     },
     computed: {
-        ...mapState('lyrics', ['show', 'loading', 'lyrics', 'activeIndex']),
+        ...mapState('lyrics', ['show', 'loading', 'lyrics', 'activeIndex', 'showTranslate', 'translate']),
+        ...mapGetters('lyrics', ['hasTranslation']),
         ...mapState('play', ['info']),
         ...mapState('windowStatus', ['status']),
         style() {
@@ -33,7 +34,9 @@ export default {
     watch: {
         show(val) {
             if (val) {
-                this.handleLyric(false)
+                this.$nextTick(() => {
+                    this.handleLyric(false)
+                })
             }
         },
         lyrics() {
@@ -46,14 +49,26 @@ export default {
             })
             this.handleLyric()
         },
-        activeIndex() {
-            this.handleLyric()
+        activeIndex(val) {
+            if (val) {
+                this.handleLyric()
+            } else {
+                this.$nextTick(() => {
+                    this.handleLyric(false)
+                })
+            }
+        },
+        showTranslate() {
+            this.$nextTick(() => {
+                this.handleLyric(false)
+            })
         }
     },
     methods: {
         ...mapActions('lyrics', ['init']),
+        ...mapMutations('lyrics', ['update']),
         close() {
-            this.$store.commit('lyrics/update', {
+            this.update({
                 show: false
             })
         },
@@ -71,7 +86,7 @@ export default {
         op(val) {
             this.$store.commit('windowStatus/update', val)
         },
-        transfer(index) {
+        transfer(index = this.activeIndex) {
             if (this.lyrics.length < 1) {
                 this.$ipc.send('tray-control-lyrics', {
                     text: this.placeholder,
@@ -105,7 +120,7 @@ export default {
                     vendor: this.info.vendor
                 }
             })
-            this.$store.commit('lyrics/update', {
+            this.update({
                 show: false
             })
         },
@@ -136,6 +151,11 @@ export default {
                     })
                 }
             }
+        },
+        toggleTranslate() {
+            this.update({
+                showTranslate: !this.showTranslate
+            })
         }
     }
 }

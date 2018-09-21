@@ -21,6 +21,9 @@
             <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="lyrics.length" :style="mainStyle">
                 <li v-for="(item,index) in lyrics" :class="{[s.item]:true,[s.active]:activeIndex === index}">
                     {{item[1]}}
+                    <template v-if="showTranslate && translate[index] && translate[index][1]">
+                        <br/>{{translate[index][1]}}
+                    </template>
                 </li>
             </ul>
             <div :class="s.main"
@@ -34,7 +37,15 @@
                    @click="init"
                 >点此尝试重新加载</p>
             </div>
-            <span :class="s.commentIcon" @click="go2Comments">评</span>
+            <div :class="s.float">
+                <div :class="{ [s.icon]:true, [s.showTranslate]: showTranslate }"
+                     v-if="hasTranslation"
+                     @click="toggleTranslate"
+                >
+                    译
+                </div>
+                <div :class="s.icon" @click="go2Comments">评</div>
+            </div>
         </div>
     </transition>
 </template>
@@ -132,21 +143,29 @@
                 }
             }
         }
-        .commentIcon {
+        .float {
             position: absolute;
             right: 75px;
             bottom: 75px;
             z-index: 7;
-            background-color: rgba(255, 255, 255, 0.4);
-            border-radius: 4px;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            cursor: pointer;
-            color: #b9b9b9;
-            &:hover {
-                opacity: .65;
+            display: flex;
+            .icon {
+                background-color: rgba(255, 255, 255, 0.4);
+                border-radius: 4px;
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
+                text-align: center;
+                cursor: pointer;
+                color: #b9b9b9;
+                margin-left: 12px;
+                &:hover {
+                    opacity: .65;
+                }
+                &.showTranslate {
+                    color: $color-primary;
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
             }
         }
         .slideLeft_enter_active, .slideLeft_leave_active {
