@@ -1,6 +1,13 @@
 <template>
     <router-view></router-view>
 </template>
+<script>
+    export default {
+        mounted() {
+            document.body.querySelector('#page-loading').style.display = 'none'
+        },
+    }
+</script>
 <style>
     html,
     body {

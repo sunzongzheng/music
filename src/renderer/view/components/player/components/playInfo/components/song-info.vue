@@ -163,6 +163,7 @@
         color: gray;
         margin-left: 10px;
         margin-right: 20px;
+        margin-top: 4px;
         .song {
             position: relative;
             .info {
