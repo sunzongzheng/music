@@ -1,5 +1,5 @@
 <script type="text/jsx">
-    import {mapState} from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
     import moment from 'moment'
 
     export default {
@@ -14,6 +14,7 @@
         },
         computed: {
             ...mapState('play', ['pause', 'info', 'volume', 'url']),
+            ...mapState('c_playlist', ['playlist']),
             ...mapState('lyrics', ['show', 'lyrics', 'activeIndex'])
         },
         watch: {
@@ -47,6 +48,7 @@
             }
         },
         methods: {
+            ...mapMutations('play', ['update']),
             timeupdate() {
                 // 此处解决audio暂停是异步 清空播放状态后 timeupdate 仍会emit出来的问题
                 if (!this.url) {
@@ -57,7 +59,11 @@
                     cur: audio.currentTime,
                     total: audio.duration || 0
                 }
-                // 计算歌词index
+                this.calcIndex()
+            },
+            // 计算歌词index
+            calcIndex() {
+                const audio = this.$refs.audio
                 const cur = Math.floor(audio.currentTime * 1000)
                 const lyric = this.lyrics
                 let answer = 0
@@ -96,15 +102,50 @@
             },
             minute(val) {
                 return moment(val * 1000).format('mm:ss')
+            },
+            canPlay() {
+                this.duration.total = this.$refs.audio.duration
             }
         },
         mounted() {
             this.$refs.audio.volume = this.volume / 100
         },
-        created() {
+        async created() {
             this.$ipc.on('tray-control-progress', (event, val) => {
                 this.pregressChange(val)
             })
+            window.onbeforeunload = (e) => {
+                localStorage.setItem('last-play-song', JSON.stringify({
+                    song: this.info,
+                    playlist: this.playlist,
+                    progress: this.duration.cur
+                }))
+            }
+            let last = localStorage.getItem('last-play-song')
+            if (last) {
+                last = JSON.parse(last)
+                this.update({
+                    info: last.song
+                })
+                this.$store.commit('c_playlist/update', last.playlist || [])
+                this.$nextTick(() => {
+                    this.$refs.audio.currentTime = last.progress
+                })
+                let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId)
+                if (data.status) {
+                    let url = data.data.url
+                    if (url) {
+                        url = url.startsWith('http') ? url : ('http://' + url)
+                    }
+                    this.update({
+                        url
+                    })
+                    await Vue.$store.dispatch('lyrics/init')
+                    this.calcIndex()
+                } else {
+                    console.warn(data)
+                }
+            }
         },
         render(h) {
             return (
@@ -146,6 +187,7 @@
                            ref="audio"
                            preload="true"
                            onTimeupdate={() => this.timeupdate()}
+                           onCanplay={this.canPlay}
                            onEnded={() => this.$store.dispatch('c_playlist/next', true)}
                            onError={() => this.$store.dispatch('c_playlist/next', true)}
                     ></audio>
