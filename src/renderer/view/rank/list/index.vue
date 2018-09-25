@@ -1,62 +1,73 @@
-<script title="text/jsx">
+<template>
+    <div :class="s.app" v-loading="loading">
+        <p>
+            {{text}}音乐排行榜
+            <Icon type="qiehuan1" :class="s.icon" @click="changeVendor"></Icon>
+        </p>
+        <ul :class="s.main">
+            <v-item v-for="item in list"
+                    :key="item.id"
+                    :info="item"
+                    :vendor="vendor"
+                    :class="s.item"
+            ></v-item>
+        </ul>
+    </div>
+</template>
+<script>
     import vItem from './item.vue'
     import eventBus from '../eventBus'
 
     export default {
+        name: 'rank',
         components: {vItem},
+        data() {
+            return {
+                list: [],
+                vendor: localStorage.getItem('rank-vendor') || 'netease',
+                loading: false
+            }
+        },
+        computed: {
+            text() {
+                return {
+                    netease: '网易云',
+                    qq: 'QQ'
+                }[this.vendor]
+            }
+        },
         methods: {
             async getData(limit) {
+                this.list = []
+                this.loading = true
                 try {
-                    eventBus.list = await eventBus.getRank({
-                        ids: Array.from(new Array(22), (value, index) => {
-                            return index.toString()
-                        }),
-                        limit
-                    })
+                    const data = await eventBus.getRank(
+                        this.vendor,
+                        this.vendor === 'netease' ? {
+                            ids: Array.from(new Array(22), (value, index) => {
+                                return index.toString()
+                            }),
+                            limit
+                        } : {
+                            limit
+                        }
+                    )
+                    this.list = data.filter(item => this.vendor !== 'qq' || item.id !== 201)
                 } catch (e) {
                 }
+                this.loading = false
             },
-            getRenderData() {
-                return (
-                    <div class={this.s.app}>
-                        <p>网易云音乐排行榜</p>
-                        <ul class={this.s.main}>
-                            {
-                                eventBus.list.map((item, index) => {
-                                    return (
-                                        <v-item info={item} id={index} class={this.s.item}></v-item>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                )
+            changeVendor() {
+                const meta = ['netease', 'qq']
+                const index = (meta.indexOf(this.vendor) + 1) % 2
+                this.vendor = meta[index]
+                localStorage.setItem('rank-vendor', this.vendor)
+                this.getData(3)
             }
         },
         async created() {
-            // 没有缓存则 初始化
-            if (!eventBus.renderCache) {
-                await this.getData(3) // 先调一次 limit:3 用于首屏
-                this.$forceUpdate()
-                await this.getData() // 获取全量数据
-                eventBus.renderCache = null
-                this.$forceUpdate()
-            }
-        },
-        render() {
-            // 有缓存 直接返回缓存
-            if (eventBus.renderCache) {
-                return eventBus.renderCache
-            } else { // 没有缓存
-                // 有数据就生成 vNode 并缓存
-                if (eventBus.list[0]) {
-                    eventBus.renderCache = this.getRenderData()
-                    return eventBus.renderCache
-                } else {
-                    // 没有数据就直接返 vNode
-                    return this.getRenderData()
-                }
-            }
+            this.getData(3) // 先调一次 limit:3 用于首屏
+            // this.getData() // 获取全量数据
         }
     }
 </script>
@@ -64,8 +75,18 @@
     .app {
         padding: 0 16px;
         overflow: hidden;
+        min-height: 400px;
         & > p {
             margin: 16px 0;
+            .icon {
+                color: $color-sub;
+                cursor: pointer;
+                font-size: 12px;
+                margin-bottom: 2px;
+                &:hover {
+                    color: $color-primary;
+                }
+            }
         }
         .main {
             display: flex;

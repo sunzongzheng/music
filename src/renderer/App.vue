@@ -4,7 +4,9 @@
         <div :class="s.right">
             <search-bar></search-bar>
             <div :class="s.main" ref="main">
-                <router-view v-if="!refresh"></router-view>
+                <keep-alive :include="cacheList">
+                    <router-view v-if="!refresh"></router-view>
+                </keep-alive>
             </div>
         </div>
         <player></player>
@@ -35,7 +37,10 @@
         },
         data() {
             return {
-                refresh: false
+                refresh: false,
+                cacheList: [
+                    'rank'
+                ]
             }
         },
         computed: {

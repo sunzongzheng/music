@@ -1,11 +1,11 @@
 <template>
-    <div :class="s.app">
+    <div :class="s.app" v-loading="loading">
         <detail-header :title="info.name"
                        :cover="info.cover | image('netease', 160)"
                        play-text="立即播放"
                        @play="doPlay(info.list[0])"
         >
-            <p style="font-size: 12px">{{info.description}}</p>
+            <p style="font-size: 12px;max-height: 70px;overflow: hidden;" v-html="info.description"></p>
             <span :class="s.total">累计播放：{{info.playCount}}</span>
             <template slot="btns" v-if="userInfo">
                 <el-button @click="addToPlaylist" icon="el-icon-plus">

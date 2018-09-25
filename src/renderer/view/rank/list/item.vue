@@ -3,7 +3,10 @@
         <template v-if="info">
             <div :class="s.cover">
                 {{info.name}}
-                <Icon type="play1" :class="s.play" @click="playList"></Icon>
+                <div :class="s.play">
+                    <play-loading v-if="loading"></play-loading>
+                    <Icon type="play1" @click="playList" :class="s.icon" v-else></Icon>
+                </div>
             </div>
             <div :class="s.img">
                 <img :src="list[0] | defaultAlbum"/>
@@ -23,6 +26,7 @@
     </li>
 </template>
 <script>
+    import playLoading from './play-loading.vue'
     import eventBus from '../eventBus'
 
     export default {
@@ -30,7 +34,15 @@
             info: {
                 default: null
             },
-            id: Number
+            vendor: String
+        },
+        components: {
+            playLoading
+        },
+        data() {
+            return {
+                loading: false
+            }
         },
         computed: {
             list() {
@@ -39,18 +51,34 @@
         },
         methods: {
             // 播放排行榜
-            playList() {
-                this.$store.dispatch('play/play', {
-                    info: this.list[0],
-                    playlist: this.info.list
-                })
+            async playList() {
+                this.loading = true
+                try {
+                    const data = await eventBus.getRank(this.vendor, {
+                        ids: [this.info.id]
+                    })
+                    if (data[0]) {
+                        this.$store.dispatch('play/play', {
+                            info: this.list[0],
+                            playlist: data[0].list
+                        })
+                    } else {
+                        this.$message.warning('无法获取榜单详情')
+                    }
+                } catch (e) {
+                    console.warn(e)
+                }
+                this.loading = false
             },
             // 跳转至排行榜详情
             go2RankList() {
                 this.$router.push({
                     name: 'rank.detail',
                     params: {
-                        id: this.id
+                        id: this.info.id
+                    },
+                    query: {
+                        vendor: this.vendor
                     }
                 })
             }
@@ -82,29 +110,33 @@
             .play {
                 display: none;
                 position: absolute;
-                cursor: pointer;
                 left: 0;
                 top: 0;
                 right: 0;
                 bottom: 0;
                 margin: auto;
-                color: white;
-                font-size: 40px;
-                padding: 8px;
-                padding-left: 12px;
-                border-radius: 50%;
-                background-color: #29c777;
-                transition: all .2s;
-                &:hover {
+                align-items: center;
+                justify-content: center;
+                .icon {
+                    cursor: pointer;
+                    color: white;
+                    font-size: 40px;
+                    padding: 8px;
+                    padding-left: 12px;
+                    border-radius: 50%;
+                    background-color: #29c777;
                     transition: all .2s;
-                    background-color: #26A866;
+                    &:hover {
+                        transition: all .2s;
+                        background-color: #26A866;
+                    }
                 }
             }
             &:hover {
                 transition: all .2s;
                 background-color: rgba(0, 0, 0, 0.2);
                 .play {
-                    display: block;
+                    display: flex;
                 }
                 & + .img > img {
                     transform: scale(1.2, 1.2);

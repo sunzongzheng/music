@@ -6,14 +6,22 @@ export default {
     data() {
         return {
             loading: false,
-            info: eventBus.list[this.$route.params.id]
+            info: {
+                list: []
+            }
         }
     },
     computed: {
         ...mapState('playlist', ['playlist']),
         ...mapState('user', {
             userInfo: 'info'
-        })
+        }),
+        id() {
+            return this.$route.params.id
+        },
+        vendor() {
+            return this.$route.query.vendor
+        }
     },
     methods: {
         ...mapActions('play', ['play']),
@@ -35,11 +43,11 @@ export default {
         async getDetail() {
             this.loading = true
             try {
-                const data = await eventBus.getRank({
-                    ids: [this.info.id]
+                const data = await eventBus.getRank(this.vendor, {
+                    ids: [this.id]
                 })
                 if (data[0]) {
-                    this.info.list = data[0].list
+                    this.info = data[0]
                 } else {
                     this.$message.warning('无法获取详情')
                 }
@@ -57,16 +65,6 @@ export default {
         }
     },
     created() {
-        if (this.info.list.length <= 3) {
-            this.getDetail()
-        }
-    },
-    beforeRouteEnter(to, from, next) {
-        const id = to.params.id
-        if (eventBus.list[id]) {
-            next()
-        } else {
-            Vue.$router.push({name: 'rank.list'})
-        }
+        this.getDetail()
     }
 }
