@@ -15,7 +15,7 @@
 </template>
 <script>
     import viewControl from './viewControl.vue'
-    import vAvatar from './avatar.vue'
+    import vAvatar from './avatar/index.vue'
     import playList from './playlist/index.vue'
     import offlinePlayList from './offline-playlist/index.vue'
     import menuSection from './components/menu-section.vue'
