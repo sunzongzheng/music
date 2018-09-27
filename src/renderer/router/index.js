@@ -151,6 +151,11 @@ const router = new Router({
             path: '/download',
             component: require('@/view/download.vue')
         },
+        {
+            name: 'chat',
+            path: '/chat',
+            component: require('@/view/chat/index.vue')
+        },
     ]
 })
 router.beforeEach((to, from, next) => {
