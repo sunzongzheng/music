@@ -1,4 +1,3 @@
-import config from "../../../config"
 import io from "socket.io-client"
 
 export default {
@@ -7,7 +6,7 @@ export default {
         if(this.socket) {
             this.disconnect()
         }
-        this.socket = io(config.api, {
+        this.socket = io('https://socket.zzsun.cc', {
             transportOptions: {
                 polling: {
                     extraHeaders: {
