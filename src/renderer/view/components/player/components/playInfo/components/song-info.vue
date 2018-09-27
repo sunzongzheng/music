@@ -124,26 +124,28 @@
             let last = localStorage.getItem('last-play-song')
             if (last) {
                 last = JSON.parse(last)
-                this.update({
-                    info: last.song
-                })
-                this.$store.commit('c_playlist/update', last.playlist || [])
-                this.$nextTick(() => {
-                    this.$refs.audio.currentTime = last.progress
-                })
-                let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId)
-                if (data.status) {
-                    let url = data.data.url
-                    if (url) {
-                        url = url.startsWith('http') ? url : ('http://' + url)
-                    }
+                if(last.song) {
                     this.update({
-                        url
+                        info: last.song
                     })
-                    await Vue.$store.dispatch('lyrics/init')
-                    this.calcIndex()
-                } else {
-                    console.warn(data)
+                    this.$store.commit('c_playlist/update', last.playlist || [])
+                    this.$nextTick(() => {
+                        this.$refs.audio.currentTime = last.progress
+                    })
+                    let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId)
+                    if (data.status) {
+                        let url = data.data.url
+                        if (url) {
+                            url = url.startsWith('http') ? url : ('http://' + url)
+                        }
+                        this.update({
+                            url
+                        })
+                        await Vue.$store.dispatch('lyrics/init')
+                        this.calcIndex()
+                    } else {
+                        console.warn(data)
+                    }
                 }
             }
         },
