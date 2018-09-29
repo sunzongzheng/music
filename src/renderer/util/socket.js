@@ -21,6 +21,11 @@ export default {
     disconnect() {
         this.socket.close()
     },
+    logout() {
+        setTimeout(() => {
+            this.connect()
+        }, 500)
+    },
     initEvent() {
         const store = Vue.$store
         this.socket.on('error', (error) => {

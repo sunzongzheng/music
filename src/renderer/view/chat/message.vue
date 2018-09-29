@@ -2,6 +2,7 @@
     <div :class="s.messageItem">
         <p v-if="info.type === 'system'" :class="s.system">{{info.message}}</p>
         <template v-else>
+            <p v-if="showTime" :class="s.time">{{info.datetime}}</p>
             <img :src="info.userInfo.avatar" :class="s.avatar"/>
             <div :class="s.main">
                 <div :class="s.top">
@@ -19,22 +20,43 @@
 </template>
 <script>
     import shareItem from './share-item.vue'
+    import moment from 'moment'
 
     export default {
         props: {
             info: {
                 type: Object,
                 required: true
+            },
+            index: Number,
+            last: {
+                type: Object | null,
+                required: true
             }
         },
         components: {
             shareItem
+        },
+        computed: {
+            showTime() {
+                if (this.info.type === 'system') {
+                    return false
+                }
+                if (this.index === 0) {
+                    return true
+                }
+                if (moment(this.info.datetime).diff(moment(this.last.datetime), 'm') < 2) {
+                    return false
+                }
+                return true
+            }
         }
     }
 </script>
 <style lang="scss" module="s">
     .messageItem {
         display: flex;
+        flex-wrap: wrap;
         margin-bottom: 18px;
         .system {
             font-size: 12px;
@@ -42,6 +64,12 @@
             text-align: center;
             width: 100%;
             margin-bottom: -12px;
+        }
+        .time {
+            width: 100%;
+            font-size: 11px;
+            color: $color-disabled;
+            text-align: center;
         }
         .avatar {
             @include size(26px);

@@ -20,7 +20,11 @@
             </div>
         </div>
         <div :class="s.right">
-            <Icon type="chat" :class="s.icon" @click="$router.push('/chat')"></Icon>
+            <Icon type="chat"
+                  :class="{ [s.icon]: true, [s.animation]: hasUnreadMsg }"
+                  @click="$router.push('/chat')"
+                  v-if="info"
+            ></Icon>
             <Icon type="download" :class="s.icon" @click="$router.push('/download')"></Icon>
             <Icon type="shezhi" :class="s.icon" @click="$router.push('/setting')"></Icon>
         </div>
@@ -28,6 +32,7 @@
 </template>
 <script>
     import eventBus from '@/eventBus/searchResult'
+    import {mapState, mapGetters} from 'vuex'
 
     export default {
         data() {
@@ -37,6 +42,8 @@
             }
         },
         computed: {
+            ...mapState('user', ['info']),
+            ...mapGetters('socket', ['hasUnreadMsg']),
             empty() {
                 return this.key.length < 1
             }
@@ -78,7 +85,7 @@
         created() {
             eventBus.$on('focus', this.focus)
         },
-        beforeRouteLeave(to, from ,next) {
+        beforeRouteLeave(to, from, next) {
             eventBus.$off('focus', this.focus)
             next()
         }

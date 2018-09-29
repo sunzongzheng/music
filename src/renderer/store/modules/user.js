@@ -10,8 +10,20 @@ export default {
     mutations: {
         update(state, val) {
             state.info = val
-            // 初始化歌单
-            Vue.$store.dispatch('playlist/init')
+            if (val) {
+                // 初始化
+                Vue.$store.dispatch('playlist/init')
+                Vue.$store.dispatch('socket/initChatHistory')
+            } else {
+                Vue.$store.commit('playlist/update', [])
+                Vue.$store.commit('socket/update', {
+                    chatHistory: []
+                })
+                Vue.$socket.logout()
+                if(Vue.$router.history.current.name === 'chat') {
+                    Vue.$router.push('/')
+                }
+            }
         },
         updateSetting(state, val) {
             for (let i in val) {

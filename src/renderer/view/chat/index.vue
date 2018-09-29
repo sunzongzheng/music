@@ -5,6 +5,8 @@
                 <message v-for="(item,index) in chatHistory"
                          :key="index"
                          :info="item"
+                         :index="index"
+                         :last="index === 0 ? null : chatHistory[index - 1]"
                 ></message>
             </div>
             <div :class="s.inputArea">
@@ -54,16 +56,14 @@
             },
             scrollBottom() {
                 this.$nextTick(() => {
-                    setTimeout(() => {
-                        this.$refs.history.scrollTop = this.$refs.history.offsetHeight
-                    }, 200)
+                    this.$refs.history.scrollTop = this.$refs.history.scrollHeight
                 })
             }
         },
         mounted() {
-            this.scrollBottom()
             this.$nextTick(() => {
                 this.$refs.input.focus()
+                this.scrollBottom()
             })
         },
         created() {
@@ -71,6 +71,13 @@
         },
         beforeDestroy() {
             eventBus.$off('scrollBottom', this.scrollBottom)
+        },
+        beforeRouteEnter(to, from, next) {
+            if (!Vue.$store.state.user.info) {
+                next('/')
+            } else {
+                next()
+            }
         }
     }
 </script>
@@ -93,6 +100,7 @@
             .inputArea {
                 height: 40px;
                 padding-bottom: 4px;
+                position: relative;
                 .input {
                     :global {
                         .el-input__inner {

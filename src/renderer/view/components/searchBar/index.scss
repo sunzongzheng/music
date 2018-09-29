@@ -19,6 +19,17 @@
     &.right_arrow {
         transform: rotate(180deg);
     }
+    &.animation {
+        animation: flash 1s alternate infinite;
+        @keyframes flash {
+            from {
+                color: $color-content;
+            }
+            to {
+                color: $color-warn;
+            }
+        }
+    }
 }
 
 .left {
