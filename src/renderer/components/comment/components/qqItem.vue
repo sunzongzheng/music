@@ -3,19 +3,26 @@
         <img :src="info.avatarurl" :class="s.avatar"/>
         <div :class="s.right">
             <a :class="s.name">{{info.nick}}</a>
-            <span :class="s.content">{{info.rootcommentcontent}}</span>
+            <p :class="s.content" v-html="comment"></p>
         </div>
     </li>
 </template>
 <script>
-  export default {
-    props: {
-      info: {
-        type: Object,
-        required: true
-      }
+    export default {
+        props: {
+            info: {
+                type: Object,
+                required: true
+            }
+        },
+        computed: {
+            comment() {
+                return this.info.rootcommentcontent
+                    .replace(/\\n/g, '<br/>')
+                    .replace(/\[em\](.*?)\[\/em\]/g, '<img src="//y.gtimg.cn/mediastyle/global/emoji/img/$1.png"/>')
+            }
+        }
     }
-  }
 </script>
 <style lang="scss" module="s">
     .item {
@@ -39,6 +46,11 @@
             .content {
                 color: $color-content;
                 font-size: 14px;
+            }
+            img {
+                position: relative;
+                vertical-align: middle;
+                top: -4px;
             }
         }
     }
