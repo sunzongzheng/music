@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
     import message from './message.vue'
     import eventBus from '../../eventBus/chat'
 
@@ -50,6 +50,7 @@
             ...mapState('socket', ['onlineUsers', 'chatHistory'])
         },
         methods: {
+            ...mapMutations('socket', ['update']),
             submit() {
                 if (!this.input.length) {
                     return
@@ -71,6 +72,9 @@
         },
         created() {
             eventBus.$on('scrollBottom', this.scrollBottom)
+            this.update({
+                readIndex: this.chatHistory.length
+            })
         },
         beforeDestroy() {
             eventBus.$off('scrollBottom', this.scrollBottom)

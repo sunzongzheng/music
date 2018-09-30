@@ -1,5 +1,6 @@
 import moment from 'moment'
 import eventBus from '../../eventBus/chat'
+import alertResource from '../../assets/alert.mp3'
 
 export default {
     namespaced: true,
@@ -17,6 +18,13 @@ export default {
         },
         addChatHistory(state, val) {
             state.chatHistory.push(val)
+            if (val.type === 'system') {
+                state.readIndex++
+            } else if (Vue.$store.state.user.setting.messageAlert) {
+                const alert = document.createElement('audio')
+                alert.src = alertResource
+                alert.autoplay = true
+            }
             if (Vue.$router.history.current.name === 'chat') {
                 state.readIndex = state.chatHistory.length
                 eventBus.$emit('scrollBottom')

@@ -5,6 +5,7 @@ export default {
         setting: localStorage.getItem('userSetting') ? JSON.parse(localStorage.getItem('userSetting')) : {
             linuxAutoUpdate: false, // linux下自动更新
             macStatusBar: true, // mac状态栏
+            messageAlert: false, // 消息提示音
         }
     },
     mutations: {
@@ -20,7 +21,7 @@ export default {
                     chatHistory: []
                 })
                 Vue.$socket.logout()
-                if(Vue.$router.history.current.name === 'chat') {
+                if (Vue.$router.history.current.name === 'chat') {
                     Vue.$router.push('/')
                 }
             }

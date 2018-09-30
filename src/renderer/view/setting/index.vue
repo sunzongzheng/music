@@ -4,6 +4,7 @@
         <linux-auto-update v-if="platform === 'linux'"></linux-auto-update>
         <top-menu v-if="platform === 'darwin'"></top-menu>
         <hot-key></hot-key>
+        <message-alert></message-alert>
         <statistics></statistics>
         <version></version>
         <debug></debug>
@@ -17,6 +18,7 @@
     import version from './components/version.vue'
     import statistics from './components/statictics.vue'
     import debug from './components/debug.vue'
+    import messageAlert from './components/message-alert.vue'
 
     export default {
         components: {
@@ -26,7 +28,8 @@
             linuxAutoUpdate,
             version,
             statistics,
-            debug
+            debug,
+            messageAlert
         },
         computed: {
             platform() {
