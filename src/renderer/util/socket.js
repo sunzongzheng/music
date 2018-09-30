@@ -1,5 +1,6 @@
 import io from "socket.io-client"
 import eventBus from '../eventBus/chat'
+import config from '../../../config'
 
 export default {
     socket: null,
@@ -7,11 +8,24 @@ export default {
         if (this.socket) {
             this.disconnect()
         }
-        this.socket = io('https://socket.zzsun.cc', {
+        let platform
+        switch (process.platform) {
+            case 'darwin':
+                platform = 'osx'
+                break
+            case 'win32':
+                platform = 'windows'
+                break
+            default:
+                platform = 'linux'
+                break
+        }
+        this.socket = io(config.socket, {
             transportOptions: {
                 polling: {
                     extraHeaders: {
-                        accesstoken: localStorage.token || ''
+                        accesstoken: localStorage.token || '',
+                        platform
                     }
                 }
             }

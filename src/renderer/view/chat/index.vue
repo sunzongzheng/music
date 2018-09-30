@@ -22,8 +22,11 @@
             <p>在线成员（{{onlineUsers.length}}）</p>
             <ul>
                 <li v-for="item in onlineUsers">
-                    <img :src="item.avatar"/>
-                    <span>{{item.nickname}}</span>
+                    <div :class="s.info">
+                        <img :src="item.avatar"/>
+                        <span :title="item.nickname">{{item.nickname}}</span>
+                    </div>
+                    <Icon :class="s.platform" v-if="item.platform" :type="item.platform"></Icon>
                 </li>
             </ul>
         </div>
@@ -112,7 +115,7 @@
             }
         }
         .onlineUsers {
-            width: 145px;
+            width: 160px;
             height: 100%;
             padding: 4px 12px;
             background: #f5f5f5;
@@ -125,14 +128,25 @@
                     display: flex;
                     align-items: center;
                     margin-top: 12px;
-                    img {
-                        @include size(20px);
-                        border-radius: 50%;
+                    justify-content: space-between;
+                    .info {
+                        display: flex;
+                        align-items: center;
+                        @include text-ellipsis;
+                        img {
+                            @include size(20px);
+                            border-radius: 50%;
+                        }
+                        span {
+                            margin-left: 4px;
+                            font-size: 12px;
+                            color: $color-sub;
+                            @include text-ellipsis;
+                        }
                     }
-                    span {
-                        margin-left: 4px;
-                        font-size: 12px;
-                        color: $color-sub;
+                    .platform {
+                        color: $color-disabled;
+                        flex-shrink: 0;
                     }
                 }
             }
