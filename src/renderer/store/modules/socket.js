@@ -18,39 +18,50 @@ export default {
         },
         addChatHistory(state, val) {
             state.chatHistory.push(val)
+        },
+        setReadIndex(state, val) {
+            state.readIndex = val
+        },
+    },
+    actions: {
+        async initChatHistory({ state, commit }) {
+            try {
+                const data = await Vue.$http.get('/chat-history', {
+                    params: {
+                        start_dt: moment().subtract(1, 'month').format('YYYY-MM-DD 00:00:00'),
+                    },
+                })
+                const chatHistory = data.concat(state.chatHistory)
+                commit('update', {
+                    chatHistory,
+                    readIndex: chatHistory.length,
+                })
+            } catch (e) {
+            }
+        },
+        isSelf(store, user) {
+            const userInfo = Vue.$store.state.user.info
+            if (!userInfo) return true
+            return user.nickname === userInfo.nickname && user.avatar === userInfo.avatar
+        },
+        addChatHistory({ state, commit, dispatch }, val) {
+            commit('addChatHistory', val)
             if (val.type === 'system') {
-                state.readIndex++
-            } else if (Vue.$store.state.user.setting.messageAlert) {
+                commit('setReadIndex', state.readIndex + 1)
+            } else if (Vue.$store.state.user.setting.messageAlert && !(dispatch('isSelf', val.userInfo))) {
                 const alert = document.createElement('audio')
                 alert.src = alertResource
                 alert.autoplay = true
             }
             if (Vue.$router.history.current.name === 'chat') {
-                state.readIndex = state.chatHistory.length
+                commit('setReadIndex', state.chatHistory.length)
                 eventBus.$emit('scrollBottom')
             }
-        }
-    },
-    actions: {
-        async initChatHistory({state, commit}) {
-            try {
-                const data = await Vue.$http.get('/chat-history', {
-                    params: {
-                        start_dt: moment().subtract(1, 'month').format('YYYY-MM-DD 00:00:00')
-                    }
-                })
-                const chatHistory = data.concat(state.chatHistory)
-                commit('update', {
-                    chatHistory,
-                    readIndex: chatHistory.length
-                })
-            } catch (e) {
-            }
-        }
+        },
     },
     getters: {
         hasUnreadMsg(state) {
             return state.readIndex < state.chatHistory.length
-        }
-    }
+        },
+    },
 }

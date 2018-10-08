@@ -46,9 +46,7 @@ export default {
             console.warn(error)
         })
         const isSelf = (user) => {
-            const userInfo = store.state.user.info
-            if (!userInfo) return true
-            return user.nickname === userInfo.nickname && user.avatar === userInfo.avatar
+            return store.dispatch('socket/isSelf', user)
         }
         // 在线总人数
         this.socket.on('online total', total => {
@@ -67,26 +65,26 @@ export default {
         // 有人上线
         this.socket.on('someone join', user => {
             console.log('someone join', user)
-            if (!isSelf(user)) {
-                store.commit('socket/addChatHistory', {
-                    type: 'system',
-                    message: `${user.nickname}上线了`
-                })
-            }
+            // if (!isSelf(user)) {
+            //     store.commit('socket/addChatHistory', {
+            //         type: 'system',
+            //         message: `${user.nickname}上线了`
+            //     })
+            // }
         })
         // 有人下线
         this.socket.on('someone leave', user => {
             console.log('someone leave', user)
-            store.commit('socket/addChatHistory', {
-                type: 'system',
-                message: `${user.nickname}下线了`
-            })
+            // store.commit('socket/addChatHistory', {
+            //     type: 'system',
+            //     message: `${user.nickname}下线了`
+            // })
         })
         this.socket.on('broadcast', packet => {
             console.log('broadcast', JSON.stringify(packet))
             const canParseTypes = ['broadcast', 'share']
             if (canParseTypes.includes(packet.type)) {
-                store.commit('socket/addChatHistory', packet)
+                store.dispatch('socket/addChatHistory', packet)
                 if (isSelf(packet.userInfo)) {
                     eventBus.$emit('scrollBottom')
                 }
