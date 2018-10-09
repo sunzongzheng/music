@@ -17,12 +17,19 @@
             >
                 <el-col :span="spanList[0]">
                     <div :class="s.nameItem">
-                        <div :class="s.songName" :title="item.name">{{item.name}}</div>
+                        <div style="display: flex; align-items: center;">
+                            <div :class="s.songName" :title="item.name">{{item.name}}</div>
+                            <quality v-if="item.quality && (item.quality['320'] || item.quality['999'])"
+                                     :sq="item.quality['999']"
+                                     :class="s.quality"
+                            ></quality>
+                        </div>
                         <div :class="s.songControl" v-if="showOperate">
                             <slot name="songControlPrepend" :row="item" :$index="index"></slot>
                             <Icon type="item-play" @click="doPlay(item)" v-if="!item.cp" clickable></Icon>
                             <Icon type="like" disabled></Icon>
-                            <Icon type="download" clickable :disabled="item.cp || !item.dl" @click="download(item)"></Icon>
+                            <Icon type="download" clickable :disabled="item.cp || !item.dl"
+                                  @click="download(item)"></Icon>
                             <slot name="songControlAppend" :row="item" :$index="index"></slot>
                             <Icon type="more" clickable @click="showContextMenu(item)"></Icon>
                         </div>
@@ -69,32 +76,32 @@
     </div>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import { mapActions } from 'vuex'
 
     export default {
         props: {
             data: {
                 type: Array,
-                required: true
+                required: true,
             },
             loading: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             showVendor: {
                 type: Boolean,
-                default: true
+                default: true,
             },
             showOperate: {
                 type: Boolean,
-                default: true
+                default: true,
             },
             spanWidth: Array,
             slotAppendTitle: String,
             pagination: {
                 type: Boolean,
-                default: true
-            }
+                default: true,
+            },
         },
         data() {
             return {
@@ -107,11 +114,11 @@
                 return this.spanWidth ? this.spanWidth : (this.showVendor ? [9, 7, 5, 3] : [10, 8, 6])
             },
             list() {
-                if(!this.pagination) return this.data
+                if (!this.pagination) return this.data
                 const start = (this.page - 1) * this.limit
 
                 return this.data.slice(start, start + this.limit)
-            }
+            },
         },
         methods: {
             ...mapActions('play', ['play']),
@@ -119,17 +126,17 @@
             doPlay(item) {
                 this.play({
                     info: item,
-                    playlist: this.data
+                    playlist: this.data,
                 })
             },
             // 显示右键菜单
             showContextMenu(item) {
                 this.$contextMenu.song({
                     ...item,
-                    id: item.songId
+                    id: item.songId,
                 }, this.data)
-            }
-        }
+            },
+        },
     }
 </script>
 <style lang="scss" module="s">
@@ -160,6 +167,7 @@
             .nameItem {
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
                 width: 100%;
                 .songName {
                     overflow: hidden;
@@ -167,6 +175,9 @@
                     white-space: nowrap;
                     cursor: pointer;
                     user-select: none;
+                }
+                .quality {
+                    margin-left: 6px;
                 }
                 .songControl {
                     display: none;

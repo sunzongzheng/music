@@ -5,7 +5,8 @@ const components = {
     'AddToPlaylist': require('./addToPlaylist/index.vue'),
     'DataTable': require('./dataTable/index.vue'),
     'DetailHeader': require('./detailHeader.vue'),
-    'commentList': require('./comment/index.vue')
+    'commentList': require('./comment/index.vue'),
+    'quality': require('./quality.vue')
 }
 
 Object.keys(components).forEach((key) => {

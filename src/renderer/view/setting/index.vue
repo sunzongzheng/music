@@ -1,6 +1,7 @@
 <template>
     <div :class="s.setting">
         <p :class="s.title">设置</p>
+        <quality></quality>
         <linux-auto-update v-if="platform === 'linux'"></linux-auto-update>
         <top-menu v-if="platform === 'darwin'"></top-menu>
         <hot-key></hot-key>
@@ -19,6 +20,7 @@
     import statistics from './components/statictics.vue'
     import debug from './components/debug.vue'
     import messageAlert from './components/message-alert.vue'
+    import quality from './components/quality.vue'
 
     export default {
         components: {
@@ -29,7 +31,8 @@
             version,
             statistics,
             debug,
-            messageAlert
+            messageAlert,
+            quality
         },
         computed: {
             platform() {

@@ -1,5 +1,5 @@
 <script type="text/jsx">
-    import {mapState, mapMutations} from 'vuex'
+    import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
     import moment from 'moment'
 
     export default {
@@ -7,15 +7,45 @@
             return {
                 duration: {
                     cur: 0,
-                    total: 0
+                    total: 0,
                 },
                 percentage: 0,
+                qualities: [
+                    {
+                        name: '标准品质',
+                        checked: true,
+                        disabled: false,
+                        br: 128000,
+                    },
+                    {
+                        name: '较高品质',
+                        checked: false,
+                        disabled: true,
+                        br: 192000,
+                    },
+                    {
+                        name: '极高品质',
+                        checked: false,
+                        disabled: true,
+                        br: 320000,
+                    },
+                    {
+                        name: '无损品质',
+                        checked: false,
+                        disabled: true,
+                        br: 999000,
+                    },
+                ],
             }
         },
         computed: {
-            ...mapState('play', ['pause', 'info', 'volume', 'url']),
+            ...mapState('play', ['pause', 'info', 'volume', 'url', 'quality']),
             ...mapState('c_playlist', ['playlist']),
-            ...mapState('lyrics', ['show', 'lyrics', 'activeIndex'])
+            ...mapState('lyrics', ['show', 'lyrics', 'activeIndex']),
+            ...mapGetters('play', ['hasHigherQuality']),
+            qualityText() {
+                return this.qualities.filter(item => item.checked)[0].name
+            },
         },
         watch: {
             'pause'(val) {
@@ -32,7 +62,38 @@
             'info'(val) {
                 this.duration = {
                     cur: 0,
-                    total: 0
+                    total: 0,
+                }
+            },
+            url(val) {
+                if (val) {
+                    this.qualities = this.qualities.map((item, i) => {
+                        if (item.br === this.quality) {
+                            item.checked = true
+                        } else {
+                            item.checked = false
+                        }
+                        const quality = this.info.quality
+                        if (quality) {
+                            switch (i) {
+                                case 1:
+                                    item.disabled = !quality['192']
+                                    break
+                                case 2:
+                                    item.disabled = !quality['320']
+                                    break
+                                case 3:
+                                    item.disabled = !quality['999']
+                                    break
+                            }
+                        } else {
+                            item.disabled = true
+                        }
+                        if (i === 0) {
+                            item.disabled = false
+                        }
+                        return item
+                    })
                 }
             },
             'volume'(val) {
@@ -44,11 +105,12 @@
                 deep: true,
                 handler() {
                     this.setPercentage()
-                }
-            }
+                },
+            },
         },
         methods: {
             ...mapMutations('play', ['update']),
+            ...mapActions('play', ['setQuality']),
             timeupdate() {
                 // 此处解决audio暂停是异步 清空播放状态后 timeupdate 仍会emit出来的问题
                 if (!this.url) {
@@ -57,7 +119,7 @@
                 const audio = this.$refs.audio
                 this.duration = {
                     cur: audio.currentTime,
-                    total: audio.duration || 0
+                    total: audio.duration || 0,
                 }
                 this.calcIndex()
             },
@@ -89,7 +151,7 @@
                 })
                 if (answer !== this.activeIndex) {
                     this.$store.commit('lyrics/update', {
-                        activeIndex: answer
+                        activeIndex: answer,
                     })
                 }
             },
@@ -105,7 +167,35 @@
             },
             canPlay() {
                 this.duration.total = this.$refs.audio.duration
-            }
+            },
+            async changeQuality(index) {
+                if (this.qualities[index].disabled || this.qualities[index].checked) return
+                const data = await Vue.$musicApi.getSongUrl(this.info.vendor, this.info.songId, this.qualities[index].br)
+                if (data.status) {
+                    // 先记录当前播放位置和播放状态
+                    const currentTime = this.$refs.audio.currentTime
+                    const pause = this.pause
+                    // 然后暂停并替换url
+                    this.update({
+                        pause: true,
+                        url: data.data.url,
+                        quality: this.qualities[index].br,
+                    })
+                    this.$nextTick(() => {
+                        // 恢复播放位置
+                        this.$refs.audio.currentTime = currentTime
+                        // 切换前是播放中的话 恢复播放
+                        if(!pause) {
+                            this.update({
+                                pause: false,
+                            })
+                        }
+                    })
+                } else {
+                    console.log(data)
+                    Vue.$message.warning(data.msg)
+                }
+            },
         },
         mounted() {
             this.$refs.audio.volume = this.volume / 100
@@ -118,28 +208,30 @@
                 localStorage.setItem('last-play-song', JSON.stringify({
                     song: this.info,
                     playlist: this.playlist,
-                    progress: this.duration.cur
+                    progress: this.duration.cur,
+                    quality: this.quality
                 }))
             }
             let last = localStorage.getItem('last-play-song')
             if (last) {
                 last = JSON.parse(last)
-                if(last.song) {
+                if (last.song) {
                     this.update({
-                        info: last.song
+                        info: last.song,
+                        quality: last.quality
                     })
                     this.$store.commit('c_playlist/update', last.playlist || [])
                     this.$nextTick(() => {
                         this.$refs.audio.currentTime = last.progress
                     })
-                    let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId)
+                    let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId, last.quality)
                     if (data.status) {
                         let url = data.data.url
                         if (url) {
                             url = url.startsWith('http') ? url : ('http://' + url)
                         }
                         this.update({
-                            url
+                            url,
                         })
                         await Vue.$store.dispatch('lyrics/init')
                         this.calcIndex()
@@ -151,7 +243,7 @@
         },
         render(h) {
             return (
-                <div class={{[this.s.songsInfo]: true, [this.s.lyric]: this.show}}>
+                <div class={{ [this.s.songsInfo]: true, [this.s.lyric]: this.show }}>
                     <div class={this.s.song}>
                         {
                             this.info ?
@@ -173,9 +265,43 @@
                                     <span class={this.s.placeholder}>听你想听的音乐</span>
                                 </div>
                         }
-                        <span class={this.s.duration}>
-                            {this.minute(this.duration.cur)}&nbsp;/&nbsp;{this.minute(this.duration.total)}
-                        </span>
+                        <div class={this.s.right}>
+                            <el-popover placement="top"
+                                        width="80"
+                                        trigger="click"
+                                        popper-class={this.s.qualityPopover}
+                            >
+                                <ul>
+                                    {
+                                        this.qualities.map((item, index) => {
+                                            return (
+                                                <li class={{ [this.s.disabled]: item.disabled }}
+                                                    onClick={() => this.changeQuality(index)}
+                                                >
+                                                    {
+                                                        item.checked ? (
+                                                            <icon type="right"
+                                                                  class={this.s.checked}>&radic;</icon>) : null
+                                                    }
+                                                    <span>{item.name}</span>
+                                                    {
+                                                        item.br >= 320000 ? (
+                                                            <quality class={this.s.quality}
+                                                                     sq={item.br === 999000}
+                                                            ></quality>
+                                                        ) : null
+                                                    }
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                                <div class={this.s.quality} slot="reference">{this.qualityText}</div>
+                            </el-popover>
+                            <span class={this.s.duration}>
+                                {this.minute(this.duration.cur)}&nbsp;/&nbsp;{this.minute(this.duration.total)}
+                            </span>
+                        </div>
                     </div>
                     <el-slider onInput={val => {
                         this.percentage = val
@@ -195,7 +321,7 @@
                     ></audio>
                 </div>
             )
-        }
+        },
     }
 </script>
 <style lang="scss" module="s">
@@ -229,10 +355,27 @@
                     @include text-ellipsis;
                 }
             }
-            .duration {
+            .right {
                 position: absolute;
                 right: 0;
                 bottom: 0;
+                display: flex;
+                align-items: center;
+                .quality {
+                    color: $color-content;
+                    padding: 1px 2px;
+                    border: 1px solid $color-content;
+                    font-size: 10px;
+                    line-height: 1;
+                    cursor: pointer;
+                    opacity: .4;
+                    transition: opacity .2s;
+                    margin-right: 16px;
+                    &:hover {
+                        color: $color-title;
+                        border-color: $color-title;
+                    }
+                }
             }
         }
         .progress {
@@ -271,8 +414,54 @@
         }
         &.lyric {
             color: white;
-            & > .song .name {
-                color: white;
+            & > .song {
+                .name,
+                .quality {
+                    color: white;
+                }
+                .quality {
+                    border-color: white;
+                    &:hover {
+                        color: white;
+                        border-color: white;
+                    }
+                }
+            }
+        }
+        &:hover {
+            .song .right .quality {
+                opacity: 1;
+                transition: opacity .2s;
+            }
+        }
+    }
+
+    .qualityPopover {
+        padding: 0;
+        ul {
+            li {
+                font-size: 14px;
+                padding: 8px 0 8px 40px;
+                cursor: pointer;
+                position: relative;
+                .checked {
+                    position: absolute;
+                    left: 16px;
+                    font-size: 16px;
+                    top: 9px;
+                }
+                &:hover {
+                    background: #f9f9f9;
+                }
+                &.disabled {
+                    cursor: not-allowed;
+                    opacity: .5;
+                }
+                .quality {
+                    position: absolute;
+                    right: 24px;
+                    top: 10px;
+                }
             }
         }
     }

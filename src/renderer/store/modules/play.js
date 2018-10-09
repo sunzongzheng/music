@@ -6,7 +6,8 @@ export default {
         url: null,
         pause: true,
         volume: isNaN(localStorage.volume) ? 100 : parseInt(localStorage.volume),
-        info: null
+        info: null,
+        quality: 128000,
     },
     mutations: {
         update(state, val) {
@@ -28,14 +29,14 @@ export default {
             state.pause = true
             state.info = null
             Vue.$store.commit('lyrics/update', {
-                show: false
+                show: false,
             })
-        }
+        },
     },
     actions: {
-        async play({commit}, {
+        async play({ commit }, {
             info,
-            playlist = null
+            playlist = null,
         }) {
             if (info.cp) {
                 Vue.$message.warning('歌曲无法试听')
@@ -46,25 +47,45 @@ export default {
             }
             commit('update', {
                 info,
-                pause: true
+                pause: true,
             })
             console.log(info)
             // 首先检查ip
             try {
-                const {data} = await Vue.$clientApi('http://txt.go.sohu.com/ip/soip')
+                const { data } = await Vue.$clientApi('http://txt.go.sohu.com/ip/soip')
                 const match = data.match(/sohu_IP_Loc_V="(.*?)"/)
                 if (match && match[1].substr(0, 2) !== 'CN') {
                     console.log(match)
                     Vue.$message({
                         message: '当前ip来自海外,请检查是否使用了vpn,部分音乐可能无法播放',
                         duration: 5000,
-                        type: 'warning'
+                        type: 'warning',
                     })
                 }
             } catch (e) {
                 console.warn(e)
             }
-            let data = await Vue.$musicApi.getSongUrl(info.vendor, info.songId)
+            let quality = 128000
+            if (info.quality) {
+                const priority = Vue.$store.state.user.setting.quality / 1000
+                if (info.quality[priority]) {
+                    quality = Vue.$store.state.user.setting.quality
+                } else {
+                    // 降级
+                    const qualities = [320, 192]
+                    for (let item of qualities) {
+                        if (info.quality[item]) {
+                            quality = item * 1000
+                            break
+                        }
+                    }
+                }
+            }
+            let data = await Vue.$musicApi.getSongUrl(
+                info.vendor,
+                info.songId,
+                quality,
+            )
             if (data.status) {
                 Vue.$store.dispatch('lyrics/init')
                 let url = data.data.url
@@ -73,12 +94,18 @@ export default {
                 }
                 commit('update', {
                     url,
-                    pause: false
+                    pause: false,
+                    quality,
                 })
             } else {
                 console.log(data)
                 Vue.$message.warning(data.msg)
             }
-        }
-    }
+        },
+    },
+    getters: {
+        hasHigherQuality(state) {
+            return state.info && state.info.quality && (state.info.quality['192'] || state.info.quality['320'] || state.info.quality['999'])
+        },
+    },
 }

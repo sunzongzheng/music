@@ -124,7 +124,7 @@ const defaultHotKey = [
     {
         name: '播放暂停',
         value: 'playPause',
-        key: 'Space', // 'space'
+        key: 'Alt+Space',
         global: `Alt+${CommandOrControl}+Space`
     },
     {
