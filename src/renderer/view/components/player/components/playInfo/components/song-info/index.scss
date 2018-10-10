@@ -1,0 +1,140 @@
+.songsInfo {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 35px - 108px);
+    font-size: 12px;
+    color: gray;
+    margin-left: 10px;
+    margin-right: 20px;
+    margin-top: 4px;
+    .song {
+        position: relative;
+        .info {
+            display: flex;
+            align-items: center;
+            .placeholder {
+                font-size: 13px;
+            }
+            .name {
+                color: #333;
+                font-size: 13px;
+                max-width: 150px;
+                @include text-ellipsis;
+            }
+            .singer {
+                display: inline-block;
+                max-width: 300px;
+                vertical-align: top;
+                @include text-ellipsis;
+            }
+        }
+        .right {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            .quality {
+                color: $color-content;
+                padding: 1px 2px;
+                border: 1px solid $color-content;
+                font-size: 10px;
+                line-height: 1;
+                cursor: pointer;
+                opacity: .4;
+                transition: opacity .2s;
+                margin-right: 16px;
+                &:hover {
+                    color: $color-title;
+                    border-color: $color-title;
+                }
+            }
+        }
+    }
+    .progress {
+        :global {
+            .el-slider__runway {
+                margin: 6px 0;
+                height: 6px;
+                user-select: none;
+                background: linear-gradient(to bottom, #e4e7ed 0, #e4e7ed 2px, transparent 2px);
+                border-radius: 0;
+                .el-slider__bar {
+                    height: 6px;
+                    background: linear-gradient(to bottom, #3AC17E 0, #3AC17E 2px, transparent 2px);
+                    border-radius: 0;
+                }
+                .el-slider__button-wrapper {
+                    height: 32px;
+                    width: 32px;
+                    outline: none;
+                }
+                .el-slider__button {
+                    display: none;
+                    width: 8px;
+                    height: 8px;
+                    border: 2px solid #3AC17E;
+                    background-color: #3AC17E;
+                    outline: none;
+                }
+                &:hover {
+                    .el-slider__button {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+    }
+    &.lyric {
+        color: white;
+        & > .song {
+            .name,
+            .quality {
+                color: white;
+            }
+            .quality {
+                border-color: white;
+                &:hover {
+                    color: white;
+                    border-color: white;
+                }
+            }
+        }
+    }
+    &:hover {
+        .song .right .quality {
+            opacity: 1;
+            transition: opacity .2s;
+        }
+    }
+}
+
+.qualityPopover {
+    padding: 0;
+    ul {
+        li {
+            font-size: 14px;
+            padding: 8px 0 8px 40px;
+            cursor: pointer;
+            position: relative;
+            .checked {
+                position: absolute;
+                left: 16px;
+                font-size: 16px;
+                top: 9px;
+            }
+            &:hover {
+                background: #f9f9f9;
+            }
+            &.disabled {
+                cursor: not-allowed;
+                opacity: .5;
+            }
+            .quality {
+                position: absolute;
+                right: 24px;
+                top: 10px;
+            }
+        }
+    }
+}

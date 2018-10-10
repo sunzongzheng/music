@@ -1,7 +1,7 @@
 <script type="text/jsx">
     import {mapState} from 'vuex'
     import cover from './components/cover.vue'
-    import songInfo from './components/song-info.vue'
+    import songInfo from './components/song-info/index.vue'
     import {remote} from 'electron'
 
     export default {
