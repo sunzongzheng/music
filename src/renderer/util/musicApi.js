@@ -1,6 +1,7 @@
 import musicApiContructor from '@suen/music-api/dist/app.electron'
-const nodeAdapter = require('./node-adaptor')
-const api = musicApiContructor(nodeAdapter)
+import { remote } from 'electron'
+
+const api = musicApiContructor(remote.getGlobal('nodeAdapter'))
 
 export default {
     ...api,
@@ -26,14 +27,14 @@ export default {
                             result.push({
                                 ...cur,
                                 songId: cur.id,
-                                vendor: j
+                                vendor: j,
                             })
                         }
                     }
                 }
                 return {
                     status: true,
-                    data: result
+                    data: result,
                 }
             } else {
                 return data
@@ -43,7 +44,7 @@ export default {
             return {
                 status: false,
                 msg: e.msg || '搜索失败，请重试',
-                log: e
+                log: e,
             }
         }
     },
@@ -56,5 +57,5 @@ export default {
             }
         }
         return data
-    }
+    },
 }
