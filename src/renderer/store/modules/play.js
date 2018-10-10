@@ -66,8 +66,8 @@ export default {
                 console.warn(e)
             }
             let quality = 128000
-            if (info.quality) {
-                const priority = Vue.$store.state.user.setting.quality / 1000
+            const priority = Vue.$store.state.user.setting.quality / 1000
+            if (priority > 128 && info.quality) {
                 if (info.quality[priority]) {
                     quality = Vue.$store.state.user.setting.quality
                 } else {
