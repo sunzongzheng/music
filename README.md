@@ -8,11 +8,11 @@
 - [更新日志](https://github.com/sunzongzheng/music/blob/master/CHANGELOG.md)
 - [下载页](https://github.com/sunzongzheng/music/releases) 
 - [版本计划](https://github.com/sunzongzheng/music/projects)
-
-> 目前大家提的功能需求已全部解决！
-> 如果此程序能满足你70%的日用需求，剩下的30%欢迎以[issues](https://github.com/sunzongzheng/music/issues)的形式告诉我
+- 交流群：[telegram](https://t.me/joinchat/JSPZKxJmhbE8OkzaYc7BaA)、[QQ](https://jq.qq.com/?_wv=1027&k=5xPZe7V)
 
 ## Feature
+> 目前大家提的功能需求已全部解决！
+> 如果此程序能满足你70%的日用需求，剩下的30%欢迎以[issues](https://github.com/sunzongzheng/music/issues)的形式告诉我
 - 搜索 / 精选 / 榜单 / 歌手详情 / 专辑详情 / 歌曲评论 / 网易云MV
 - 支持QQ、微博 授权登录，云歌单
 - 支持一键导入网易云、QQ音乐、虾米歌单
