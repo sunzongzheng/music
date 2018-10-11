@@ -24,7 +24,7 @@
     import downloadProgress from './view/components/progress/index.vue'
     import eventBus from './eventBus/searchResult'
     import updateAlert from './view/components/updateAlert.vue'
-    import {mapState, mapActions, mapMutations} from 'vuex'
+    import { mapState, mapActions, mapMutations } from 'vuex'
 
     export default {
         components: {
@@ -33,14 +33,14 @@
             player,
             lyrics,
             playList,
-            downloadProgress
+            downloadProgress,
         },
         data() {
             return {
                 refresh: false,
                 cacheList: [
-                    'rank'
-                ]
+                    'rank',
+                ],
             }
         },
         computed: {
@@ -52,8 +52,12 @@
         methods: {
             ...mapActions('c_playlist', ['last', 'next']),
             ...mapActions('download', {
-                initDownload: 'init'
+                initDownload: 'init',
             }),
+            ...mapActions('menu', {
+                initMenu: 'init',
+            }),
+            ...mapActions('hot-key', ['initGlobalShortcut']),
             ...mapMutations('c_playlist', ['cycleChange']),
             ...mapMutations('play', ['pauseChange', 'updateVolume']),
             // 登录成功回调
@@ -62,7 +66,7 @@
                 // 更新userInfo
                 this.$store.commit('user/update', {
                     nickname: info.nickname,
-                    avatar: info.avatar
+                    avatar: info.avatar,
                 })
                 // 更新token
                 this.$store.commit('token/update', info.token)
@@ -74,63 +78,21 @@
                 this.$notify({
                     title: '更新提示',
                     message: h(updateAlert),
-                    duration: 0
+                    duration: 0,
                 })
             },
-            // 快捷键控制
-            hotKeyControl(event, key) {
-                switch (key) {
-                    case 'playPause':
-                        this.pauseChange()
-                        break
-                    case 'last':
-                        this.last()
-                        break
-                    case 'next':
-                        this.next()
-                        break
-                    case 'volumeIncrease':
-                        this.updateVolume(this.volume + 10 > 100 ? 100 : this.volume + 10)
-                        break
-                    case 'volumeDecrease':
-                        this.updateVolume(this.volume - 10 < 0 ? 0 : this.volume - 10)
-                        break
-                    case 'playModeChange':
-                        this.cycleChange()
-                        const text = {
-                            list: '列表循环',
-                            random: '随机播放',
-                            single: '单曲循环'
-                        }[this.cycle]
-                        let notification = new Notification('播放模式切换', {
-                            body: text
-                        })
-                        setTimeout(() => {
-                            notification.close()
-                        }, 2000)
-                        break
-                    case 'pointSearchBar':
-                        this.$mainWindow.show()
-                        eventBus.$emit('focus')
-                }
-            }
         },
         watch: {
             '$route'() {
                 this.$refs.main.scrollTop = 0
-            }
+            },
         },
         created() {
             Vue.$store.dispatch('offline-playlist/init') // 初始化离线歌单
             this.$ipc.on('loginSuccessed', this.loginSuccessed) // 监听登录成功
             this.$ipc.on('update-alert', this.updateAlert) // 监听版本更新
-            this.$ipc.send('register-hotKey', {
-                hotKey: this.hotKey,
-                enableGlobal: this.enableGlobal
-            })
             this.$ipc.send('toggle-tray', this.setting.macStatusBar)
             this.$ipc.send('tray-control-volume', this.volume)
-            this.$ipc.on('hotKey-control', this.hotKeyControl)
             if (localStorage.token) {
                 this.$store.dispatch('user/init')
             }
@@ -143,6 +105,8 @@
                     this.refresh = false
                 })
             })
+            this.initMenu()
+            this.initGlobalShortcut()
             this.initDownload()
             setTimeout(() => {
                 this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
@@ -153,7 +117,7 @@
         },
         beforeDestroy() {
             Vue.$socket.disconnect()
-        }
+        },
     }
 </script>
 <style lang="scss">

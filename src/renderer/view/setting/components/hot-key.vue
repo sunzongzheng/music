@@ -34,19 +34,19 @@
                 >
                     启用全局快捷键（在后台也能响应）
                 </el-checkbox>
-                <el-button size="small" :class="s.recoverBtn" @click="resetHotKey">恢复默认</el-button>
+                <el-button size="small" :class="s.recoverBtn" @click="reset">恢复默认</el-button>
             </div>
         </div>
     </menu-item>
 </template>
 <script>
     import menuItem from './menu-item.vue'
-    import {cloneDeep} from 'lodash'
-    import {mapState, mapMutations, mapGetters} from 'vuex'
+    import { cloneDeep } from 'lodash'
+    import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
     export default {
         components: {
-            menuItem
+            menuItem,
         },
         data() {
             return {
@@ -57,17 +57,18 @@
         computed: {
             ...mapState('hot-key', {
                 enableGlobal: 'enableGlobal',
-                savedHotKey: 'hotKey'
+                savedHotKey: 'hotKey',
             }),
-            ...mapGetters('hot-key', ['availableKeyCode', 'keyCode2RegisterKey'])
+            ...mapGetters('hot-key', ['availableKeyCode', 'keyCode2RegisterKey']),
         },
         watch: {
             'savedHotKey'(val) {
                 this.hotKey = cloneDeep(val)
-            }
+            },
         },
         methods: {
-            ...mapMutations('hot-key', ['updateHotKey', 'updateEnableGlobal', 'resetHotKey']),
+            ...mapMutations('hot-key', ['updateHotKey', 'updateEnableGlobal', 'reset']),
+            ...mapActions('hot-key', ['reset']),
             keyup(index, type, event) {
                 console.log(event.keyCode)
                 event.preventDefault()
@@ -114,10 +115,10 @@
                 this.updateHotKey({
                     index,
                     type,
-                    val: this.hotKey[index][type]
+                    val: this.hotKey[index][type],
                 })
-            }
-        }
+            },
+        },
     }
 </script>
 <style lang="scss" module="s">

@@ -24,6 +24,12 @@ export default {
             state.volume = val
             Vue.$ipc.send('tray-control-volume', val)
         },
+        volumeIncrease(state) {
+            state.volume = state.volume + 10 > 100 ? 100 : state.volume + 10
+        },
+        volumeDecrease(state) {
+            state.volume = state.volume - 10 < 0 ? 0 : state.volume - 10
+        },
         clear(state) {
             state.url = null
             state.pause = true
