@@ -205,7 +205,7 @@ export default {
     namespaced: true,
     state: {
         hotKey,
-        enableGlobal: Boolean(JSON.parse(localStorage.enableGlobal)) || false, // 是否全局可用
+        enableGlobal: Boolean(JSON.parse(localStorage.enableGlobal || false)), // 是否全局可用
     },
     mutations: {
         updateHotKey(state, { index, type, val }) {
