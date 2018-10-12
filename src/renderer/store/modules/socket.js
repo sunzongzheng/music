@@ -28,7 +28,7 @@ export default {
             try {
                 const data = await Vue.$http.get('/chat-history', {
                     params: {
-                        start_dt: moment().subtract(1, 'month').format('YYYY-MM-DD 00:00:00'),
+                        start_dt: moment().subtract(3, 'day').format('YYYY-MM-DD 00:00:00'),
                     },
                 })
                 const chatHistory = data.concat(state.chatHistory)
