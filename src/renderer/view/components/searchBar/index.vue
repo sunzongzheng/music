@@ -84,7 +84,7 @@
                 eventBus.$emit('refresh')
             },
             focus() {
-                this.$refs.input && this.$refs.input.focus()
+                this.$refs.input && this.$refs.input.select()
             }
         },
         created() {
