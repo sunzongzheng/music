@@ -55,5 +55,28 @@ export default {
             Vue.$store.commit('token/clear')
             Vue.$message.success('退出成功')
         },
+        // 检查更新
+        async checkUpdate({ state }) {
+            try {
+                if (state.setting.linuxAutoUpdate) {
+                    await Vue.$updater.checkForUpdatesAndNotify()
+                } else {
+                    const needUpdate = await Vue.$updater.checkUpdate()
+                    if (needUpdate) {
+                        // osx 或 windows 使用默认的更新
+                        if (process.platform === 'darwin' || process.platform === 'win32') {
+                            Vue.$updater.updateAvailableCallback()
+                        } else {
+                            Vue.$mainWindow.webContents.send('update-alert')
+                        }
+                    } else {
+                        Vue.$message.success('您目前已经是最新版本')
+                    }
+                }
+            } catch (e) {
+                console.warn(e)
+                Vue.$message.warning('检查更新失败')
+            }
+        },
     },
 }

@@ -5,7 +5,7 @@
             <div style="margin-left: 24px;">
                 <el-button size="small"
                            :class="s.btn"
-                           @click="checkUpdate"
+                           @click="_checkUpdate"
                            :loading="loading"
                 >
                     检查更新
@@ -18,7 +18,7 @@
 <script>
     import menuItem from './menu-item.vue'
     import {remote} from 'electron'
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 
     export default {
         components: {
@@ -31,22 +31,14 @@
             }
         },
         computed: {
-            ...mapState('user', ['setting'])
+            ...mapState('user', ['setting']),
         },
         methods: {
+            ...mapActions('user', ['checkUpdate']),
             // 检查更新
-            async checkUpdate() {
+            async _checkUpdate() {
                 this.loading = true
-                try {
-                    const rs = await this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
-                    if (rs) {
-                        this.$updater.updateAvailableCallback()
-                    } else {
-                        this.$message.success('您目前已经是最新版本')
-                    }
-                } catch (e) {
-                    console.warn(e)
-                }
+                await this.checkUpdate()
                 this.loading = false
             },
             // 意见反馈
