@@ -8,7 +8,7 @@ import router from './router'
 import store from './store'
 import './assets/iconfont'
 import './components'
-import {ipcRenderer, remote} from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import './filters'
 import config from '../../config/index'
 import socket from './util/socket'
@@ -23,15 +23,15 @@ Vue.directive('popover', directive)
 // http instance
 const instance = axios.create({
     baseURL: config.api,
-    timeout: 30000
+    timeout: 30000,
 })
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(function(config) {
     const token = localStorage.token
     if (token) {
         config.headers.accesstoken = token
     }
     return config
-}, function (error) {
+}, function(error) {
     return Promise.reject(error)
 })
 instance.interceptors.response.use(
@@ -77,12 +77,28 @@ Vue.$notify = ElementUI.Notification
 
 Vue.$socket = Vue.prototype.$socket = socket
 
+let platform
+switch (process.platform) {
+    case 'darwin':
+        platform = 'osx'
+        break
+    case 'win32':
+        platform = 'windows'
+        break
+    default:
+        platform = 'linux'
+}
+
+Vue.$config = Vue.prototype.$config = {
+    platform
+}
+
 Vue.$contextMenu = Vue.prototype.$contextMenu = contextMenu
 
 /* eslint-disable no-new */
 new Vue({
-    components: {App},
+    components: { App },
     router,
     store,
-    template: '<App/>'
+    template: '<App/>',
 }).$mount('#app')

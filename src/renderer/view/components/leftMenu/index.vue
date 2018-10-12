@@ -1,6 +1,6 @@
 <template>
     <div :class="s.app">
-        <view-control></view-control>
+        <view-control v-if="$config.platform === 'osx'"></view-control>
         <v-avatar></v-avatar>
         <div :class="s.main">
             <menu-section title="音乐馆">

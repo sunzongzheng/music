@@ -42,9 +42,11 @@
 }
 
 .right {
+    display: flex;
+    align-items: center;
     -webkit-app-region: no-drag;
     .icon {
-        margin-left: 12px;
+        margin-left: 16px;
     }
 }
 

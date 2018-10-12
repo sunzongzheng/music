@@ -27,14 +27,19 @@
             ></Icon>
             <Icon type="download" :class="s.icon" @click="$router.push('/download')"></Icon>
             <Icon type="shezhi" :class="s.icon" @click="$router.push('/setting')"></Icon>
+            <view-control v-if="$config.platform !== 'osx'"></view-control>
         </div>
     </div>
 </template>
 <script>
     import eventBus from '@/eventBus/searchResult'
     import {mapState, mapGetters} from 'vuex'
+    import viewControl from './viewControl.vue'
 
     export default {
+        components: {
+            viewControl
+        },
         data() {
             return {
                 key: '',
