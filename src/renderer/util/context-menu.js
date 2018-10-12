@@ -22,13 +22,6 @@ export default {
                 }
             },
             {
-                label: '下一首播放',
-                enabled: Boolean(state.play.info),
-                click: () => {
-                    commit('c_playlist/updateNextPlay', contextItem)
-                }
-            },
-            {
                 type: 'separator'
             },
         ]

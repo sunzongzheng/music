@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { shuffle } from 'lodash'
 
 export default {
     namespaced: true,
@@ -6,11 +7,15 @@ export default {
         playlist: [],
         show: false,
         cycle: localStorage.cycle ? localStorage.cycle : 'list', // list: 列表循环; random: 随机; single: 单曲,
-        nextPlay: null
+        shuffleList: [], // 打乱后的数组 用于随机
     },
     mutations: {
         update(state, val) {
             state.playlist = val.filter(item => !item.cp).map(item => Object.freeze(item))
+            // 更换列表时如果当前是随机模式 则立即生成
+            if (state.cycle === 'random') {
+                state.shuffleList = shuffle(state.playlist)
+            }
         },
         toggle(state) {
             state.show = !state.show
@@ -20,6 +25,12 @@ export default {
             arr.every((item, index) => {
                 if (item === state.cycle) {
                     state.cycle = arr[(index + 1) % 3]
+                    // 每次切到随机 都会重新生成
+                    if (state.cycle === 'random') {
+                        state.shuffleList = shuffle(state.playlist)
+                    } else {
+                        state.shuffleList = []
+                    }
                     localStorage.cycle = state.cycle
                     return false
                 } else {
@@ -27,38 +38,29 @@ export default {
                 }
             })
         },
-        updateNextPlay(state, val) {
-            if (val) {
-                if (state.playlist.filter(item => item.songId === val.songId && item.vendor === val.vendor).length) {
-                    Vue.$message.warning('播放列表已存在')
-                } else if (val.cp) {
-                    Vue.$message.warning('歌曲无法试听')
-                } else {
-                    state.playlist = state.playlist.concat([val]).map(item => Object.freeze(item))
-                    Vue.$message.success('添加成功')
+        remove(state, index) {
+            // 如果当前为随机模式 也从随机列表中删除
+            if (state.cycle === 'random') {
+                const info = state.playlist[index]
+                for (let i in state.shuffleList) {
+                    const item = state.shuffleList[i]
+                    if (item.songId === info.songId && item.vendor === info.vendor) {
+                        state.shuffleList.splice(i, 1)
+                        break
+                    }
                 }
             }
-            state.nextPlay = val
-        },
-        remove(state, index) {
             state.playlist.splice(index, 1)
         },
         clear(state) {
-            state.playlist = []
+            state.playlist = state.shuffleList = []
             Vue.$store.commit('play/clear')
-        }
+        },
     },
     actions: {
-        last({state}, auto = false) {
+        last({ state, commit, getters }, auto = false) {
             if (state.playlist.length) {
-                const cur = Vue.$store.state.play.info
-                let index = -1
-                state.playlist.forEach((item, i) => {
-                    if (item.id === cur.id && item.vendor === cur.vendor) {
-                        console.log(i)
-                        index = i
-                    }
-                })
+                let index = getters.playingIndex
                 switch (state.cycle) {
                     case 'single':
                         // 自动切换 播放当前歌曲; 手动切换 跟随list模式
@@ -69,38 +71,29 @@ export default {
                         index = (index + state.playlist.length - 1) % state.playlist.length
                         break
                     case 'random':
-                        const copy = index // 副本
-                        index = parseInt(Math.random() * (state.playlist.length - 1), 10) + 1
-                        if (index === copy) { // 如果随机以后和原本一样，再随机一次
-                            index = parseInt(Math.random() * (state.playlist.length - 1), 10) + 1
-                        }
-                        break
+                        index = (getters.playingShuffleIndex + state.shuffleList.length - 1) % state.shuffleList.length
+                        Vue.$store.dispatch('play/play', {
+                            info: state.shuffleList[index],
+                        })
+                        return
                 }
                 Vue.$store.dispatch('play/play', {
-                    info: state.playlist[index]
+                    info: state.playlist[index],
                 })
             }
         },
-        next({state, commit}, auto = false) {
+        next({ state, commit, getters }, auto = false) {
             if (state.nextPlay) {
                 Vue.$store.dispatch('play/play', {
-                    info: state.nextPlay
+                    info: state.nextPlay,
                 })
-                commit('updateNextPlay', null)
                 return
             }
             if (state.playlist.length) {
-                const cur = Vue.$store.state.play.info
-                let index = -1
-                state.playlist.forEach((item, i) => {
-                    if (item.id === cur.id && item.vendor === cur.vendor) {
-                        index = i
-                    }
-                })
+                let index = getters.playingIndex
                 switch (state.cycle) {
                     case 'single':
                         // 自动切换 播放当前歌曲; 手动切换 跟随list模式
-                        console.log(auto)
                         if (auto) {
                             break
                         }
@@ -108,14 +101,18 @@ export default {
                         index = (index + state.playlist.length + 1) % state.playlist.length
                         break
                     case 'random':
-                        index = parseInt(Math.random() * (state.playlist.length - 1), 10) + 1
+                        index = (getters.playingShuffleIndex + 1) % state.shuffleList.length
+                        Vue.$store.dispatch('play/play', {
+                            info: state.shuffleList[index],
+                        })
+                        return
                 }
                 Vue.$store.dispatch('play/play', {
-                    info: state.playlist[index]
+                    info: state.playlist[index],
                 })
             }
         },
-        remove({state, commit, dispatch}, index) {
+        remove({ state, commit, dispatch }, index) {
             const playInfo = Vue.$store.state.play.info
             const removeInfo = state.playlist[index]
             if (removeInfo.songId === playInfo.songId && removeInfo.vendor === playInfo.vendor) {
@@ -129,5 +126,27 @@ export default {
                 commit('remove', index)
             }
         },
-    }
+    },
+    getters: {
+        playingIndex(state) {
+            const cur = Vue.$store.state.play.info
+            for (let i = 0; i < state.playlist.length; i++) {
+                const item = state.playlist[i]
+                if (item.id === cur.id && item.vendor === cur.vendor) {
+                    return i
+                }
+            }
+            return -1
+        },
+        playingShuffleIndex(state) {
+            const cur = Vue.$store.state.play.info
+            for (let i = 0; i < state.shuffleList.length; i++) {
+                const item = state.shuffleList[i]
+                if (item.id === cur.id && item.vendor === cur.vendor) {
+                    return i
+                }
+            }
+            return -1
+        },
+    },
 }
