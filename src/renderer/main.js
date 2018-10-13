@@ -42,6 +42,7 @@ instance.interceptors.response.use(
             const data = e.response.data
             if (e.response.status === 401) {
                 localStorage.removeItem('token')
+                Vue.$store.dispatch('user/logout', false)
             } else if (e.response.status === 502) {
                 Vue.$message.warning('服务端可能正在发版本~请稍后重试')
             } else if (data.msg) {

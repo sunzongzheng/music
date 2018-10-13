@@ -1,11 +1,11 @@
-import {mapState, mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'playlist',
     data() {
         return {
             list: [],
-            loading: false
+            loading: false,
         }
     },
     computed: {
@@ -58,8 +58,8 @@ export default {
             }
             await this.$http.delete(`playlist/${this.id}`, {
                 params: {
-                    id: item.id
-                }
+                    id: item.id,
+                },
             })
             this.getSong()
         },
@@ -70,12 +70,12 @@ export default {
             })
             this.play({
                 info: item,
-                playlist: list
+                playlist: list,
             })
         },
-        rowClassName({row, rowIndex}) {
+        rowClassName({ row, rowIndex }) {
             const rs = [
-                this.s.row
+                this.s.row,
             ]
             if (row.cp) {
                 rs.push(this.s.disabled)
@@ -84,63 +84,23 @@ export default {
         },
         // 更新歌曲信息
         async updateSongsInfo() {
-            const list = {
-                netease: [],
-                qq: [],
-                xiami: []
-            }
-            const detail = {
-                netease: {},
-                qq: {},
-                xiami: {}
-            }
-            this.list.forEach(item => {
-                list[item.vendor].push(item)
-            })
-            const vendors = ['netease', 'qq', 'xiami']
-            for (let vendor of vendors) {
-                const ids = list[vendor].map(item => item.songId)
-                if (ids.length) {
-                    const data = await this.$musicApi.getBatchSongDetail(vendor, ids)
-                    if (data.status) {
-                        data.data.forEach(item => {
-                            detail[vendor][item.id] = item
-                        })
-                    }
+            const data = await this.$musicApi.getAnyVendorSongDetail(this.list.map(item => {
+                return {
+                    id: item.songId,
+                    vendor: item.vendor,
                 }
-            }
-            for (let item of this.list) {
-                const info = detail[item.vendor][item.songId]
-                if (info) {
-                    item.cp = info.cp
-                    item.name = info.name
-                    item.songId = info.id
-                    item.album = info.album
-                    item.artists = info.artists
+            }))
+            this.list = data.map((item, index) => {
+                if (!item) {
+                    return this.list[index]
                 } else {
-                    // 音乐平台删歌以后这首歌就不能听了
-                    // 如果是QQ音乐 有可能改了ID 调用单个获取信息接口验证
-                    if (item.vendor === 'qq') {
-                        const singleInfo = await this.$musicApi.getSongDetail(item.vendor, item.songId)
-                        if (singleInfo.status) {
-                            console.log('歌曲ID变了：', item)
-                            item.cp = singleInfo.data.cp
-                            item.name = singleInfo.data.name
-                            item.songId = singleInfo.data.id
-                            item.album = singleInfo.data.album
-                            item.artists = singleInfo.data.artists
-                        } else {
-                            console.log('歌曲被删：', item)
-                            item.cp = true
-                        }
-                    } else {
-                        console.log('歌曲被删：', item)
-                        item.cp = true
-                    }
+                    item.songId = this.list[index].songId
+                    item.id = this.list[index].id
+                    item.vendor = this.list[index].vendor
+                    return item
                 }
-                return item
-            }
-        }
+            })
+        },
     },
     created() {
         this.getSong()
@@ -148,5 +108,5 @@ export default {
     beforeRouteUpdate(to, from, next) {
         next()
         this.getSong(to.params.id)
-    }
+    },
 }

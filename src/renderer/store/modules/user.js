@@ -50,10 +50,10 @@ export default {
             const data = await Vue.$http.get('/user')
             commit('update', data)
         },
-        logout({ commit }) {
+        logout({ commit }, msg = true) {
             commit('update', null)
             Vue.$store.commit('token/clear')
-            Vue.$message.success('退出成功')
+            msg && Vue.$message.success('退出成功')
         },
         // 检查更新
         async checkUpdate({ state }) {
