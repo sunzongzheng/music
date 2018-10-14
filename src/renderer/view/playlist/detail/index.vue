@@ -17,7 +17,16 @@
                     </el-button>
                 </template>
             </detail-header>
-            <DataTable :data="list"
+            <div :class="s.top">
+                <p :class="s.total">共&nbsp;<span>{{list.length}}</span>&nbsp;首歌曲</p>
+                <el-input placeholder="搜索歌曲名/歌手/专辑"
+                          prefix-icon="el-icon-search"
+                          v-model="keyword"
+                          :class="s.input"
+                          size="mini"
+                ></el-input>
+            </div>
+            <DataTable :data="filterList"
                        :class="s.table"
                        :pagination="false"
             >
@@ -39,7 +48,10 @@
                     一键导入歌曲
                 </router-link>
             </p>
-            <p v-else>快去<router-link to="/rank">排行榜</router-link>看看吧</p>
+            <p v-else>快去
+                <router-link to="/rank">排行榜</router-link>
+                看看吧
+            </p>
         </div>
     </div>
 </template>
@@ -52,8 +64,25 @@
             margin-top: 4px;
             font-size: 13px;
         }
+        .top {
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 30px;
+            align-items: center;
+            border-bottom: 1px solid $color-border4;
+            padding: 12px 0;
+            .total {
+                font-size: 14px;
+                color: $color-content;
+                span {
+                    color: $color-primary;
+                }
+            }
+            .input {
+                width: 200px;
+            }
+        }
         .table {
-            margin-top: 20px;
             padding: 0 20px;
         }
         .noData {
