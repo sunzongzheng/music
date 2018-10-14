@@ -17,7 +17,7 @@
             >
                 <el-col :span="spanList[0]">
                     <div :class="s.nameItem">
-                        <div style="display: flex; align-items: center;">
+                        <div :class="s.nameMain">
                             <div :class="s.songName" :title="item.name">{{item.name}}</div>
                             <quality v-if="item.quality && (item.quality['320'] || item.quality['999'])"
                                      :sq="item.quality['999']"
@@ -169,20 +169,29 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
-                .songName {
+                .nameMain {
+                    display: flex;
+                    align-items: center;
                     overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    cursor: pointer;
-                    user-select: none;
+                    flex: 1;
+                    .songName {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        cursor: pointer;
+                        user-select: none;
+                    }
+                    .quality {
+                        margin-left: 6px;
+                    }
                 }
-                .quality {
-                    margin-left: 6px;
-                }
+
                 .songControl {
                     display: none;
                     align-items: center;
                     color: $color-content;
+                    flex-shrink: 0;
+
                     svg {
                         margin-left: 9px;
                         font-size: 14px;
