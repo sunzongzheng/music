@@ -11,6 +11,7 @@
         <DataTable :data="result"
                    :loading="loading"
                    style="padding: 0 12px"
+                   :pagination="false"
                    element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
         ></DataTable>
     </div>
