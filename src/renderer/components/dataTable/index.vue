@@ -1,6 +1,15 @@
 <template>
     <div :class="s.dataTable" v-loading="loading">
         <template v-if="!loading && data.length">
+            <div :class="s.top" v-if="canSearch">
+                <p :class="s.total">共&nbsp;<span>{{list.length}}</span>&nbsp;首歌曲</p>
+                <el-input placeholder="搜索歌曲名/歌手/专辑"
+                          prefix-icon="el-icon-search"
+                          v-model="keyword"
+                          :class="s.input"
+                          size="mini"
+                ></el-input>
+            </div>
             <el-row :class="[s.row, s.thead]">
                 <el-col :span="spanList[0]">歌曲</el-col>
                 <el-col :span="spanList[1]">歌手</el-col>
@@ -8,7 +17,7 @@
                 <el-col :span="spanList[3]" v-if="showVendor">来源</el-col>
                 <el-col :span="spanList[4]" v-if="spanList[4]">{{slotAppendTitle}}</el-col>
             </el-row>
-            <el-row v-for="(item,index) in list"
+            <el-row v-for="(item,index) in filterList"
                     :class="{ [s.row] : true, [s.disabled] : item.cp }"
                     :key="item.songId"
                     @click.native="$emit('rowClick', item)"
@@ -102,11 +111,16 @@
                 type: Boolean,
                 default: true,
             },
+            canSearch: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
                 page: 1,
                 limit: 20,
+                keyword: '',
             }
         },
         computed: {
@@ -118,6 +132,13 @@
                 const start = (this.page - 1) * this.limit
 
                 return this.data.slice(start, start + this.limit)
+            },
+            filterList() {
+                return this.list.filter(song => {
+                    return song.name.includes(this.keyword) ||
+                        song.artists.reduce((a, b) => a + b.name, '').includes(this.keyword) ||
+                        song.album.name.includes(this.keyword)
+                })
             },
         },
         methods: {
@@ -144,6 +165,23 @@
         color: $color-content;
         font-size: 13px;
         padding: 0 20px;
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid $color-border4;
+            padding: 24px 10px 12px;
+            .total {
+                font-size: 14px;
+                color: $color-content;
+                span {
+                    color: $color-primary;
+                }
+            }
+            .input {
+                width: 200px;
+            }
+        }
         .row {
             transition: all .2s;
             :global {

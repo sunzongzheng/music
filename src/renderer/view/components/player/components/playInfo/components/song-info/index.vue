@@ -43,7 +43,7 @@
         ></el-slider>
         <audio :src="url"
                ref="audio"
-               preload="true"
+               preload="auto"
                @timeupdate="timeupdate"
                @canplay="canPlay"
                @ended="next(true)"

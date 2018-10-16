@@ -6,7 +6,6 @@ export default {
         return {
             list: [],
             loading: false,
-            keyword: '',
         }
     },
     computed: {
@@ -21,14 +20,7 @@ export default {
         },
         offline() {
             return this.$route.query.offline
-        },
-        filterList() {
-            return this.list.filter(song => {
-                return song.name.includes(this.keyword) ||
-                    song.artists.reduce((a, b) => a + b.name, '').includes(this.keyword) ||
-                    song.album.name.includes(this.keyword)
-            })
-        },
+        }
     },
     methods: {
         ...mapActions('play', ['play']),
