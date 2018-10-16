@@ -1,26 +1,52 @@
-import {ipcRenderer, remote} from 'electron'
+import { ipcRenderer, remote } from 'electron'
 
 import Lyric from './lyrics.class'
 import Control from './control.class'
 import Canvas from './canvas.class'
 import eventBus from './eventBus'
 import image_previous from './assets/skip_previous.png'
+import trayLastWhite from './assets/tray-last-white.png'
 import play_arrow from './assets/play_arrow.png'
+import trayPlayWhite from './assets/tray-play-white.png'
 import skip_next from './assets/skip_next.png'
+import trayNextWhite from './assets/tray-next-white.png'
 import play_pause from './assets/pause.png'
+import trayPauseWhite from './assets/tray-pause-white.png'
 
+const images = {
+    last: {
+        normal: image_previous,
+        white: trayLastWhite,
+    },
+    play: {
+        normal: play_arrow,
+        white: trayPlayWhite,
+    },
+    pause: {
+        normal: play_pause,
+        white: trayPauseWhite,
+    },
+    next: {
+        normal: skip_next,
+        white: trayNextWhite,
+    },
+}
+const { systemPreferences } = remote
 const Tray = remote.getGlobal('Tray')
 const lyric = new Lyric()
+
+const getImg = type => systemPreferences.isDarkMode() ? images[type].white : images[type].normal
+
 const control = new Control([
-    image_previous,
-    play_arrow,
-    skip_next
+    getImg('last'),
+    getImg('play'),
+    getImg('next'),
 ])
 
 const width = lyric.canvas.width + control.canvas.width
 const height = lyric.canvas.height
 const devicePixelRatio = lyric.devicePixelRatio
-const combine = new Canvas({width, height})
+const combine = new Canvas({ width, height })
 
 let pause = true
 
@@ -34,7 +60,7 @@ const updateTray = () => {
 
 const changePause = () => {
     console.log('changePause')
-    control.updateImage(1, pause ? play_arrow : play_pause)
+    control.updateImage(1, pause ? getImg('play') : getImg('pause'))
     control.draw()
 }
 
@@ -48,7 +74,7 @@ export default async function initMacStatusbarLyric() {
         lyric.updateLyric(arg)
     })
 
-    ipcRenderer.on('tray-click', (event, {position}) => {
+    ipcRenderer.on('tray-click', (event, { position }) => {
         const x = position.x - lyric.canvas.width / devicePixelRatio
         if (x > 0) {
             switch (parseInt(x / control.singleWidth)) {
