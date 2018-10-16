@@ -56,6 +56,12 @@
       "target": "nsis",
       "icon": "build/icons/icon.ico"
     },
+      "nsis": {
+          "allowToChangeInstallationDirectory": true,
+          "oneClick": false,
+          "menuCategory": true,
+          "allowElevation": false
+      },
     "linux": {
       "icon": "build/icons",
       "executableName": "MusicLake",
