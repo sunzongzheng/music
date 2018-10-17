@@ -25,6 +25,9 @@ function createWindow() {
     backgroundWindow = windows.backgroundWindow
     global.mainWindow = windows.mainWindow
     global.backgroundWindow = windows.backgroundWindow
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show()
+    })
     initMenu()
     // mainWindow.webContents.openDevTools({detach: true})
     mainWindow.on('closed', () => {

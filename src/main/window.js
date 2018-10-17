@@ -11,6 +11,8 @@ function createWindow() {
         maximizable: false,
         width: 980,
         frame: false,
+        show: false,
+        backgroundColor: '#f6f6f6',
         webPreferences: {
             backgroundThrottling: false
         },
@@ -22,7 +24,7 @@ function createWindow() {
 }
 
 // 创建子渲染进程
-function createBackgroundWindow(width, x, y) {
+function createBackgroundWindow(parent, width, x, y) {
     const winURL = BackgroundUrl || `file://${__dirname}/background.html`
     const backgroundWindow = new BrowserWindow({
         height: 65,
@@ -34,6 +36,7 @@ function createBackgroundWindow(width, x, y) {
         frame: false,
         x,
         y,
+        parent,
         transparent: true,
         alwaysOnTop: true,
         show: false,
@@ -53,6 +56,6 @@ export default function () {
     const rectangle = mainWindow.getBounds()
     return {
         mainWindow,
-        backgroundWindow: createBackgroundWindow(rectangle.width, rectangle.x, rectangle.y + rectangle.height + 16)
+        backgroundWindow: createBackgroundWindow(mainWindow, rectangle.width, rectangle.x, rectangle.y + rectangle.height + 16),
     }
 }
