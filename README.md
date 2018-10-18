@@ -40,7 +40,7 @@
 - 精选
 ![](screenshot/1.png)
 - 排行
-![](screenshot/1.png)
+![](screenshot/rank.png)
 - QQ音乐歌手列表
 ![](screenshot/2.png)
 - 快速导入歌单
@@ -53,4 +53,15 @@
 ![](screenshot/6.png)
 - 社交分享
 ![](screenshot/7.png)
+
+## :moneybag: 捐赠
+捐赠会有两个用途
+- 请允许我买杯咖啡 :coffee:
+- 服务器升级与开多台负载均衡
+- 微信:
+
+![微信](screenshot/donate-wechat.jpg)
+- 支付宝:
+
+![支付宝](screenshot/donate-alipay.jpg)
 
