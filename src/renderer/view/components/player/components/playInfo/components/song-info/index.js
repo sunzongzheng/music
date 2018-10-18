@@ -197,14 +197,18 @@ export default {
             }
         },
         audioError(e) {
-            if (this.info.quality && Object.values(this.info.quality).filter(item => item).length) {
-                const notification = new Notification('无法播放', {
-                    body: '歌曲资源暂不可用，请切换其他音质或稍后再试',
-                })
-                setTimeout(() => {
-                    notification.close()
-                }, 5000)
-            } else {
+            const qualities = this.qualities.map(item => item.br)
+            const curIndex = qualities.indexOf(this.quality)
+            if (curIndex > 0) { // 高品质无法播放 且有较低资源 选择次级资源
+                for (let i = curIndex - 1; i >= 0; i--) {
+                    if (this.qualities[i].disabled) {
+                        continue
+                    } else {
+                        this.changeQuality(i)
+                        break
+                    }
+                }
+            } else { // 否则直接跳下一首
                 this.next(true)
             }
         },
