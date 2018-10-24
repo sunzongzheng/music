@@ -7,7 +7,7 @@
             <detail-header :title="detail.name"
                            :cover="detail.cover | image(vendor)"
                            play-text="播放全部"
-                           @play="play({ info: detail.songs[0], playlist: detail.songs })"
+                           @play="playAll(detail.songs)"
             >
                 <p :class="s.artist">歌手：<span>{{detail.artist.name}}</span></p>
                 <p :class="s.date">发行时间：<span>{{detail.publishTime | date}}</span></p>

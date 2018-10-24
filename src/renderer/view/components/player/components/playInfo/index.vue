@@ -103,7 +103,6 @@
         background-color: white;
         border-top: 1px solid #EBEBEB;
         padding: 0 12px;
-        user-select: none;
         .icon {
             color: #555;
             margin-right: 10px;

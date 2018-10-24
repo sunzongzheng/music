@@ -108,6 +108,26 @@ export default {
                 Vue.$message.warning(data.msg)
             }
         },
+        playAll({ dispatch }, list) {
+            const songs = list.filter(item => !item.cp)
+            if (!songs.length) {
+                Vue.$message.warning('暂无可试听歌曲')
+                return
+            }
+            const cycle = Vue.$store.state.c_playlist.cycle
+            if (cycle === 'random') {
+                const index = parseInt(Math.random() * (songs.length - 1), 10) + 1
+                dispatch('play', {
+                    info: songs[index],
+                    playlist: songs,
+                })
+            } else {
+                dispatch('play', {
+                    info: songs[0],
+                    playlist: songs,
+                })
+            }
+        },
     },
     getters: {
         hasHigherQuality(state) {

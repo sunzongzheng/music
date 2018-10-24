@@ -22,7 +22,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('play', ['play']),
+        ...mapActions('play', ['play', 'playAll']),
         async getDetail() {
             this.loading = true
             try {

@@ -23,7 +23,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('play', ['play']),
+        ...mapActions('play', ['play', 'playAll']),
         getOfflineStoreName(id = this.id) {
             return `offline_playlist_${id}_song`
         },

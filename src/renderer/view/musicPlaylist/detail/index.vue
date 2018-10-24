@@ -5,7 +5,7 @@
             <detail-header :title="detail.name"
                            :cover="detail.cover | image(vendor)"
                            play-text="播放全部"
-                           @play="doPlay"
+                           @play="playAll(songs)"
             >
                 <p :class="s.desc">{{detail.desc}}</p>
             </detail-header>
@@ -39,7 +39,7 @@
             }
         },
         methods: {
-            ...mapActions('play', ['play']),
+            ...mapActions('play', ['play', 'playAll']),
             async getDetail() {
                 this.loading = true
                 const data = await this.$musicApi.getAlbumSongs(this.vendor, this.id)

@@ -5,7 +5,7 @@
             <detail-header :title="info.name"
                            :cover="list[0].album.cover | image(list[0].vendor)"
                            play-text="播放全部"
-                           @play="doPlay(list[0])"
+                           @play="playAll(list)"
             >
                 <p v-if="info.createdAt" :class="s.created">{{info.createdAt | date}} 创建</p>
                 <template slot="btns">
