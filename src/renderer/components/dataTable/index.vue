@@ -36,11 +36,14 @@
                         <div :class="s.songControl" v-if="showOperate">
                             <slot name="songControlPrepend" :row="item" :$index="index"></slot>
                             <Icon type="item-play" @click="doPlay(item)" v-if="!item.cp" clickable></Icon>
-                            <Icon type="like" disabled></Icon>
-                            <Icon type="download" clickable :disabled="item.cp || !item.dl"
+                            <Icon type="like" disabled v-if="showLike"></Icon>
+                            <Icon type="download"
+                                  v-if="canDownload"
+                                  clickable
+                                  :disabled="item.cp || !item.dl"
                                   @click="download(item)"></Icon>
                             <slot name="songControlAppend" :row="item" :$index="index"></slot>
-                            <Icon type="more" clickable @click="showContextMenu(item)"></Icon>
+                            <Icon type="more" clickable @click="showContextMenu(item)" v-if="contextMenu"></Icon>
                         </div>
                     </div>
                 </el-col>
@@ -57,11 +60,15 @@
                     </template>
                 </el-col>
                 <el-col :span="spanList[2]">
-                    <router-link :class="s.link"
+                    <router-link v-if="item.album.id"
+                                 :class="s.link"
                                  :to="{ name: 'album.detail', params: { id: item.album.id }, query: { vendor: item.vendor } }"
                     >
                         {{item.album.name}}
                     </router-link>
+                    <template v-else>
+                        {{item.album.name}}
+                    </template>
                 </el-col>
                 <el-col :span="spanList[3]" v-if="showVendor">
                     {{item.vendor | source}}
@@ -115,6 +122,18 @@
                 type: Boolean,
                 default: false,
             },
+            contextMenu: {
+                type: Boolean,
+                default: true,
+            },
+            canDownload: {
+                type: Boolean,
+                default: true,
+            },
+            showLike: {
+                type: Boolean,
+                default: true,
+            },
         },
         data() {
             return {
@@ -152,6 +171,7 @@
             },
             // 显示右键菜单
             showContextMenu(item) {
+                if (!this.contextMenu) return
                 this.$contextMenu.song({
                     ...item,
                     id: item.songId,

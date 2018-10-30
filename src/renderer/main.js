@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import axios from 'axios'
 import ElementUI from 'element-ui'
 import './assets/theme.scss'
 import directive from 'element-ui/packages/popover/src/directive'
@@ -10,55 +9,22 @@ import './assets/iconfont'
 import './components'
 import { ipcRenderer, remote } from 'electron'
 import './filters'
-import config from '../../config/index'
+import http from './util/http'
 import socket from './util/socket'
 import contextMenu from './util/context-menu'
 import musicApi from './util/musicApi'
+import config from './util/config'
 
 require('electron').webFrame.setVisualZoomLevelLimits(1, 1) // 禁用缩放
 
 Vue.use(ElementUI)
 Vue.directive('popover', directive)
 
-// http instance
-const instance = axios.create({
-    baseURL: config.api,
-    timeout: 30000,
-})
-instance.interceptors.request.use(function(config) {
-    const token = localStorage.token
-    if (token) {
-        config.headers.accesstoken = token
-    }
-    return config
-}, function(error) {
-    return Promise.reject(error)
-})
-instance.interceptors.response.use(
-    response => response.data,
-    e => {
-        console.warn(e)
-        if (e.response) {
-            const data = e.response.data
-            if (e.response.status === 401) {
-                localStorage.removeItem('token')
-                Vue.$store.dispatch('user/logout', false)
-            } else if (e.response.status === 502) {
-                Vue.$message.warning('服务端可能正在发版本~请稍后重试')
-            } else if (data.msg) {
-                Vue.$message.warning(data.msg)
-            }
-        } else {
-            Vue.$message.warning('请检查网络连接')
-        }
-        return Promise.reject(e)
-    })
-Vue.$http = Vue.prototype.$http = instance
+Vue.$http = Vue.prototype.$http = http
 
 Vue.$clientApi = remote.getGlobal('clientApi')
 
-Vue.$mainWindow = Vue.prototype.$mainWindow = remote.getGlobal('mainWindow')
-Vue.$backgroundWindow = Vue.prototype.$backgroundWindow = remote.getGlobal('backgroundWindow')
+Vue.$mainWindow = Vue.prototype.$mainWindow = remote.getCurrentWindow()
 
 Vue.$musicApi = Vue.prototype.$musicApi = musicApi
 
@@ -78,21 +44,7 @@ Vue.$notify = ElementUI.Notification
 
 Vue.$socket = Vue.prototype.$socket = socket
 
-let platform
-switch (process.platform) {
-    case 'darwin':
-        platform = 'osx'
-        break
-    case 'win32':
-        platform = 'windows'
-        break
-    default:
-        platform = 'linux'
-}
-
-Vue.$config = Vue.prototype.$config = {
-    platform
-}
+Vue.$config = Vue.prototype.$config = config
 
 Vue.$contextMenu = Vue.prototype.$contextMenu = contextMenu
 

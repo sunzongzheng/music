@@ -1,4 +1,4 @@
-import {remote} from 'electron'
+import { remote } from 'electron'
 
 export default {
     song(contextItem, songList = [], append = []) {
@@ -17,89 +17,91 @@ export default {
                 click: () => {
                     play({
                         info: contextItem,
-                        playlist: songList
+                        playlist: songList,
                     })
-                }
+                },
             },
             {
-                type: 'separator'
+                type: 'separator',
             },
         ]
-        const playlistMenu = {
-            label: '添加到',
-            submenu: []
-        }
-        if ((userInfo && playlist.length) || offline_playlist.length) {
-            if (userInfo && playlist.length) {
+        if (!contextItem.fullpath) {
+            const playlistMenu = {
+                label: '添加到',
+                submenu: [],
+            }
+            if ((userInfo && playlist.length) || offline_playlist.length) {
+                if (userInfo && playlist.length) {
+                    playlistMenu.submenu.push({
+                        label: '云歌单',
+                        enabled: false,
+                    })
+                    playlist.forEach(item => {
+                        playlistMenu.submenu.push({
+                            label: item.name,
+                            click: () => {
+                                collect({
+                                    id: item.id,
+                                    info: contextItem,
+                                })
+                            },
+                        })
+                    })
+                    playlistMenu.submenu.push({
+                        type: 'separator',
+                    })
+                }
+                if (offline_playlist.length) {
+                    playlistMenu.submenu.push({
+                        label: '离线歌单',
+                        enabled: false,
+                    })
+                    offline_playlist.forEach(item => {
+                        playlistMenu.submenu.push({
+                            label: item.name,
+                            click: () => {
+                                collectOffline({
+                                    id: item.id,
+                                    info: contextItem,
+                                })
+                            },
+                        })
+                    })
+                }
+            } else {
                 playlistMenu.submenu.push({
-                    label: '云歌单',
+                    label: '暂无歌单',
                     enabled: false,
                 })
-                playlist.forEach(item => {
-                    playlistMenu.submenu.push({
-                        label: item.name,
-                        click: () => {
-                            collect({
-                                id: item.id,
-                                info: contextItem
-                            })
-                        }
-                    })
-                })
-                playlistMenu.submenu.push({
-                    type: 'separator'
-                })
             }
-            if (offline_playlist.length) {
-                playlistMenu.submenu.push({
-                    label: '离线歌单',
-                    enabled: false
-                })
-                offline_playlist.forEach(item => {
-                    playlistMenu.submenu.push({
-                        label: item.name,
-                        click: () => {
-                            collectOffline({
-                                id: item.id,
-                                info: contextItem
-                            })
-                        }
+            menus.push(playlistMenu)
+            menus.push({
+                label: '查看评论',
+                click: () => {
+                    Vue.$router.push({
+                        name: 'song.comments',
+                        params: {
+                            id: contextItem.songId,
+                        },
+                        query: {
+                            vendor: contextItem.vendor,
+                        },
                     })
-                })
-            }
-        } else {
-            playlistMenu.submenu.push({
-                label: '暂无歌单',
-                enabled: false
+                },
+            })
+            menus.push({
+                label: '下载',
+                click: () => {
+                    Vue.$store.dispatch('download/download', contextItem)
+                },
+            })
+            menus.push({
+                label: '分享',
+                click: () => {
+                    Vue.$ipc.send('share', contextItem)
+                },
             })
         }
-        menus.push(playlistMenu)
-        menus.push({
-            label: '查看评论',
-            click: () => {
-                Vue.$router.push({
-                    name: 'song.comments',
-                    params: {
-                        id: contextItem.songId,
-                    },
-                    query: {
-                        vendor: contextItem.vendor
-                    }
-                })
-            }
-        })
-        menus.push({
-            label: '下载',
-            click: () => {
-                Vue.$store.dispatch('download/download', contextItem)
-            }
-        })
-        menus.push({
-            label: '分享',
-            click: () => {
-                Vue.$ipc.send('share', contextItem)
-            }
-        })
         remote.Menu.buildFromTemplate(menus.concat(append)).popup(remote.getCurrentWindow())
-    }
+    },
 }

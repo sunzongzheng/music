@@ -9,6 +9,8 @@
         },
         methods: {
             toggleLyrics() {
+                // 本地歌曲 不允许打开
+                if (this.info.fullpath) return
                 this.$store.commit('lyrics/update', {
                     show: !this.show
                 })
@@ -16,7 +18,11 @@
         },
         render(h) {
             return (
-                <div class={{[this.s.album]: true, [this.s.playing]: this.info, [this.s.lyric]: this.show}}>
+                <div class={{
+                    [this.s.album]: true,
+                    [this.s.playing]: this.info && !this.info.fullpath,
+                    [this.s.lyric]: this.show,
+                }}>
                     <img src={Vue.filter('defaultAlbum')(this.info)}/>
                     <div class={this.s.cover} onClick={this.toggleLyrics}>
                         <icon type="shuangjiantou"></icon>

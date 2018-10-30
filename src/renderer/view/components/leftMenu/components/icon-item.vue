@@ -1,6 +1,6 @@
 <template>
     <menu-item :route="route" :class="s.menuItem">
-        <Icon :type="icon"></Icon>
+        <Icon :type="icon" :class="s.icon"></Icon>
         <span>{{title}}</span>
     </menu-item>
 </template>

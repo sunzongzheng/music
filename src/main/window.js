@@ -14,7 +14,8 @@ function createWindow() {
         show: false,
         backgroundColor: '#f6f6f6',
         webPreferences: {
-            backgroundThrottling: false
+            backgroundThrottling: false,
+            webSecurity: false,
         },
         icon: __static + '/images/logo_256.png'
     })

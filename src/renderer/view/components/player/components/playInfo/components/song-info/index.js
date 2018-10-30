@@ -240,19 +240,25 @@ export default {
                 this.$nextTick(() => {
                     this.$refs.audio.currentTime = last.progress
                 })
-                let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId, last.quality)
-                if (data.status) {
-                    let url = data.data.url
-                    if (url) {
-                        url = url.startsWith('http') ? url : ('http://' + url)
-                    }
+                if (last.song.fullpath) {
                     this.update({
-                        url,
+                        url: `file://${last.song.fullpath}`,
                     })
-                    await Vue.$store.dispatch('lyrics/init')
-                    this.calcIndex()
                 } else {
-                    console.warn(data)
+                    let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId, last.quality)
+                    if (data.status) {
+                        let url = data.data.url
+                        if (url) {
+                            url = url.startsWith('http') ? url : ('http://' + url)
+                        }
+                        this.update({
+                            url,
+                        })
+                        await Vue.$store.dispatch('lyrics/init')
+                        this.calcIndex()
+                    } else {
+                        console.warn(data)
+                    }
                 }
             }
         }

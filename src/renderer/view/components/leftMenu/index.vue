@@ -8,6 +8,11 @@
                 <icon-item route="/rank" icon="paihang" title="排行"></icon-item>
                 <icon-item route="/artist" icon="renren" title="歌手"></icon-item>
             </menu-section>
+            <menu-section title="我的音乐">
+                <icon-item route="/local-songs" icon="local" title="本地歌曲"
+                           v-if="$config.aboveVersion('1.2.0')"></icon-item>
+                <icon-item route="/download" icon="download" title="下载歌曲"></icon-item>
+            </menu-section>
             <play-list></play-list>
             <offline-play-list></offline-play-list>
         </div>

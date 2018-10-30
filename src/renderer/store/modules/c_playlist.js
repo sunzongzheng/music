@@ -132,7 +132,7 @@ export default {
             const cur = Vue.$store.state.play.info
             for (let i = 0; i < state.playlist.length; i++) {
                 const item = state.playlist[i]
-                if (item.id === cur.id && item.vendor === cur.vendor) {
+                if (item.id && item.vendor && item.id === cur.id && item.vendor === cur.vendor || (cur.fullpath && cur.fullpath === item.fullpath)) {
                     return i
                 }
             }
@@ -142,7 +142,7 @@ export default {
             const cur = Vue.$store.state.play.info
             for (let i = 0; i < state.shuffleList.length; i++) {
                 const item = state.shuffleList[i]
-                if (item.id === cur.id && item.vendor === cur.vendor) {
+                if (item.id && item.vendor && item.id === cur.id && item.vendor === cur.vendor || (cur.fullpath && cur.fullpath === item.fullpath)) {
                     return i
                 }
             }

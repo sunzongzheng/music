@@ -1,8 +1,16 @@
+import { remote } from 'electron'
+
+const { app } = remote
+const path = remote.require('path')
+
 const defaultSetting = {
     linuxAutoUpdate: false, // linux下自动更新
     macStatusBar: true, // mac状态栏
     messageAlert: false, // 消息提示音
     quality: 128000, // 优先试听音质
+    localSongsFolders: [ // 本地歌曲 扫描路径
+        path.join(app.getPath('music'), '音乐湖'),
+    ],
 }
 let savedSetting = JSON.parse(localStorage.getItem('userSetting'))
 if (savedSetting) {

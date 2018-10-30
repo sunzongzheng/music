@@ -156,6 +156,11 @@ const router = new Router({
             path: '/chat',
             component: require('@/view/chat/index.vue')
         },
+        {
+            name: 'local-songs',
+            path: '/local-songs',
+            component: require('@/view/local-songs.vue'),
+        },
     ]
 })
 router.beforeEach((to, from, next) => {
