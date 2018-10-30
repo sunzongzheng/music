@@ -1,4 +1,4 @@
-import {app, globalShortcut} from 'electron'
+import { app, globalShortcut } from 'electron'
 import Tray from './tray'
 import initTouchBar from './touch-bar'
 import initUpdater from './updater'
@@ -18,6 +18,19 @@ global.nodeAdapter = nodeAdapter
 let mainWindow
 let backgroundWindow
 let touchBar
+
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore()
+        if (!mainWindow.isVisible()) mainWindow.show()
+        mainWindow.focus()
+    }
+})
+
+if (isSecondInstance) {
+    app.quit()
+}
 
 function createWindow() {
     const windows = initWindow()
