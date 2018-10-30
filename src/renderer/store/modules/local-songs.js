@@ -3,7 +3,7 @@ import uuid from 'uuid/v1'
 
 const fs = remote.require('fs')
 const path = remote.require('path')
-const mm = remote.require('music-metadata')
+const mm = require('music-metadata/lib/index')
 
 export default {
     namespaced: true,
