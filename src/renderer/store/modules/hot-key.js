@@ -231,7 +231,9 @@ export default {
                     }
                 })
             } else {
-                globalShortcut.unregisterAll()
+                state.hotKey.forEach(single => {
+                    globalShortcut.unregister(single.global)
+                })
             }
             localStorage.enableGlobal = JSON.stringify(val)
         },

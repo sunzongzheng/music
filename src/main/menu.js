@@ -1,4 +1,4 @@
-import {Menu, ipcMain, globalShortcut, app} from 'electron'
+import { Menu, globalShortcut, app } from 'electron'
 
 const template = [
     {
@@ -7,7 +7,7 @@ const template = [
             {
                 label: '打开控制台',
                 click() {
-                    global.mainWindow.webContents.openDevTools({detach: true})
+                    global.mainWindow.webContents.openDevTools({ mode: 'detach' })
                 }
             },
             {
@@ -40,43 +40,16 @@ const template = [
         ]
     }
 ]
-
-ipcMain.on('register-hotKey', (event, {hotKey, enableGlobal}) => {
-    globalShortcut.unregisterAll()
-    const submenu = []
-    hotKey.forEach(single => {
-        submenu.push({
-            label: single.name,
-            accelerator: single.key,
-            click: () => {
-                event.sender.send('hotKey-control', single.value)
-            }
-        })
-        if (enableGlobal) {
-            const res = globalShortcut.register(single.global, () => {
-                event.sender.send('hotKey-control', single.value)
-            })
-            if (res) {
-                console.log(`${single.global}注册成功`)
-            } else {
-                console.log(`${single.global}注册失败`)
-            }
-        }
-    })
-    if (!enableGlobal) {
-        globalShortcut.unregisterAll()
-    }
-    if (template[2]) {
-        template[2].submenu = submenu
-    } else {
-        template.push({
-            label: '控制',
-            submenu
-        })
-    }
-    initMenu()
-})
 export default function initMenu() {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
+    // 设置一个复杂的组合键打开控制台 方便调试
+    const res = globalShortcut.register('Control+Q+W+E+R', () => {
+        global.mainWindow.webContents.openDevTools({ mode: 'detach' })
+    })
+    if (res) {
+        console.log(`控制台组合键注册成功`)
+    } else {
+        console.log(`控制台组合键注册失败`)
+    }
 }
