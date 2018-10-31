@@ -59,8 +59,6 @@ export default {
                                     size: stat.size,
                                 })
                             }
-                        } else if (stat.isDirectory()) {
-                            this.refresh(pathname)
                         }
                     }
                 } catch (e) {
