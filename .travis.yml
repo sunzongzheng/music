@@ -4,7 +4,7 @@ dist: trusty
 sudo: true
 
 language: node_js
-node_js: "lts/*"
+node_js: "8"
 
 env:
   global:
@@ -25,12 +25,9 @@ before_script:
   - brew install rpm
   - npm update @suen/music-api
   - npm update @suen/electron-updater
-  - wget http://collection.b0.upaiyun.com/softwares/upx/upx-darwin-amd64-v0.2.3 -O upx
-  - chmod 755 upx
 
 script:
   - MUSICLAKEURL=$MUSICLAKE_URL npm run build-file
-  - ./upx --auth $UPX_AUTH sync -delete --strong ./dist/electron/
   - npm run build:publish
 
 deploy:
