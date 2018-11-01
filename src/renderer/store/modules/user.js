@@ -11,6 +11,18 @@ const defaultSetting = {
     localSongsFolders: [ // 本地歌曲 扫描路径
         path.join(app.getPath('music'), '音乐湖'),
     ],
+    bind: {
+        netease: {
+            nickname: null,
+            avatar: null,
+            cookies: null,
+        },
+        qq: {
+            nickname: null,
+            avatar: null,
+            cookies: null,
+        },
+    },
 }
 let savedSetting = JSON.parse(localStorage.getItem('userSetting'))
 if (savedSetting) {
@@ -52,6 +64,17 @@ export default {
             }
             localStorage.setItem('userSetting', JSON.stringify(state.setting))
         },
+        updateBind(state, { vendor, value }) {
+            state.setting.bind[vendor] = value
+            localStorage.setItem('userSetting', JSON.stringify(state.setting))
+        },
+        unBind(state, vendor) {
+            const bindinfo = state.setting.bind[vendor]
+            for (let i in bindinfo) {
+                bindinfo[i] = null
+            }
+            localStorage.setItem('userSetting', JSON.stringify(state.setting))
+        },
     },
     actions: {
         async init({ commit }) {
@@ -84,6 +107,14 @@ export default {
             } catch (e) {
                 console.warn(e)
                 Vue.$message.warning('检查更新失败')
+            }
+        },
+    },
+    getters: {
+        bind(state) {
+            return {
+                netease: state.setting.bind.netease.cookies,
+                qq: state.setting.bind.qq.cookies,
             }
         },
     },

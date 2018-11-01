@@ -22,7 +22,8 @@
             >
                 <div :class="s.playlist">
                     <div :class="s.item" v-for="sub in item.sub" @click="$emit('on-click', sub)">
-                        <img :src="sub.cover | image('netease', 280)"/>
+                        <render v-if="typeof sub.cover === 'function'" :render="sub.cover"></render>
+                        <img :src="sub.cover | image('netease', 280)" v-else/>
                         <p>{{sub.name}}</p>
                     </div>
                 </div>
@@ -31,7 +32,11 @@
     </div>
 </template>
 <script>
+    import render from './render'
     export default {
+        components: {
+            render,
+        },
         props: {
             title: String,
             list: {
