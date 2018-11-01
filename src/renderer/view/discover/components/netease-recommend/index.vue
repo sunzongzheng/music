@@ -27,7 +27,7 @@
             ...mapActions('play', ['playAll']),
             async clickHandle(item) {
                 if (item.id === 'daily') {
-                    const data = await this.$musicApi.netease.getRecommendSongs(this.setting.bind.netease.cookies)
+                    const data = await this.$musicApi.netease.getRecommendSongs()
                     if (data.status) {
                         this.playAll(data.data.map(item => {
                             item.vendor = 'netease'
@@ -61,6 +61,7 @@
                         'batch-method': 'GET',
                         'Host': 'music.163.com',
                     },
+                    rejectUnauthorized: false,
                 })
                 const data = response.data['/api/discovery/recommend/resource']
                 if (data.code === 200) {

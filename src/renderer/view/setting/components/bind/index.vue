@@ -1,14 +1,16 @@
 <template>
     <menuItem title="绑定云平台账号">
         <div :class="s.bind">
-            <div :class="s.item" @click="bindNetease">
+            <div :class="s.item" @click="handle('netease')">
                 <netease-icon :class="s.icon"
-                              :active="Boolean(setting.bind.netease.cookies)"
+                              :active="bind.netease"
                 ></netease-icon>
                 <p :class="s.nickname">{{setting.bind.netease.nickname || '未绑定'}}</p>
             </div>
-            <div :class="s.item">
-                <qqmusic-icon :class="s.icon"></qqmusic-icon>
+            <div :class="s.item" @click="handle('qq')">
+                <qqmusic-icon :class="s.icon"
+                              :active="bind.qq"
+                ></qqmusic-icon>
                 <p :class="s.nickname">{{setting.bind.qq.nickname || '未绑定'}}</p>
             </div>
             <p :class="s.tip">绑定成功后请在<span>&nbsp;精选&nbsp;</span>分类查收个性化推荐！</p>
@@ -18,25 +20,35 @@
 <script>
     import menuItem from '../menu-item.vue'
     import netease from './bind-netease-window'
-    import { mapState, mapMutations } from 'vuex'
+    import qq from './bind-qq-window'
+    import { mapState, mapMutations, mapGetters } from 'vuex'
 
     export default {
         components: {
             menuItem,
         },
+        data() {
+            return {
+                bindWindow: {
+                    netease,
+                    qq,
+                },
+            }
+        },
         computed: {
             ...mapState('user', ['setting']),
+            ...mapGetters('user', ['bind']),
         },
         methods: {
             ...mapMutations('user', ['updateBind', 'unBind']),
-            bindNetease() {
-                if (this.setting.bind.netease.cookies) {
+            handle(vendor) {
+                if (this.setting.bind[vendor].cookies) {
                     this.$confirm('解绑后精选分类不再有个性化推荐', '取消绑定', {
                         confirmButtonText: '解绑',
                         cancelButtonText: '取消',
                         type: 'warning',
                     }).then(() => {
-                        this.unBind('netease')
+                        this.unBind(vendor)
                     })
                 } else {
                     this.$confirm('绑定信息只存储在当前客户端，不同设备间无法同步', '绑定', {
@@ -44,7 +56,7 @@
                         cancelButtonText: '算了',
                         type: 'warning',
                     }).then(() => {
-                        netease.init()
+                        this.bindWindow[vendor].init()
                     })
                 }
             },

@@ -1,4 +1,5 @@
 import { remote } from 'electron'
+import fly from 'flyio'
 
 const { app } = remote
 const path = remote.require('path')
@@ -34,6 +35,24 @@ if (savedSetting) {
 } else {
     savedSetting = defaultSetting
 }
+
+const NETEASE_LOGIN_COOKIE = '@suen/music-api-netease-login-cookie'
+const QQ_LOGIN_COOKIE = '@suen/music-api-qq-login-cookie'
+
+const cacheSetting = (val) => {
+    localStorage.setItem('userSetting', JSON.stringify(val))
+    if (val.bind.netease.cookies) {
+        localStorage.setItem(NETEASE_LOGIN_COOKIE, JSON.stringify(val.bind.netease.cookies))
+    } else {
+        localStorage.removeItem(NETEASE_LOGIN_COOKIE)
+    }
+    if (val.bind.qq.cookies) {
+        localStorage.setItem(QQ_LOGIN_COOKIE, JSON.stringify(val.bind.qq.cookies))
+    } else {
+        localStorage.removeItem(QQ_LOGIN_COOKIE)
+    }
+}
+
 export default {
     namespaced: true,
     state: {
@@ -62,18 +81,18 @@ export default {
             for (let i in val) {
                 state.setting[i] = val[i]
             }
-            localStorage.setItem('userSetting', JSON.stringify(state.setting))
+            cacheSetting(state.setting)
         },
         updateBind(state, { vendor, value }) {
             state.setting.bind[vendor] = value
-            localStorage.setItem('userSetting', JSON.stringify(state.setting))
+            cacheSetting(state.setting)
         },
         unBind(state, vendor) {
             const bindinfo = state.setting.bind[vendor]
             for (let i in bindinfo) {
                 bindinfo[i] = null
             }
-            localStorage.setItem('userSetting', JSON.stringify(state.setting))
+            cacheSetting(state.setting)
         },
     },
     actions: {
@@ -109,12 +128,63 @@ export default {
                 Vue.$message.warning('检查更新失败')
             }
         },
+        // 检查网易云绑定账号 登录状态
+        async checkNeteaseBindAvalible({ getters, commit, state }, toastError = false) {
+            if (getters.bind.netease) {
+                const res = await fly.get('http://music.163.com', {}, {
+                    headers: {
+                        Host: 'music.163.com',
+                        Referer: 'https://music.163.com/',
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+                        Cookie: state.setting.bind.netease.cookies,
+                    },
+                    rejectUnauthorized: false,
+                })
+                const profile = eval(`(${/GUser\s*=\s*([^;]+);/.exec(res.data)[1]})`)
+                if (!profile.nickname && toastError) {
+                    commit('unBind', 'netease')
+                    Vue.$message.warning('获取登录状态失败')
+                    return
+                }
+                commit('updateBind', {
+                    vendor: 'netease',
+                    value: {
+                        nickname: profile.nickname,
+                        avatar: profile.avatarUrl,
+                        cookies: state.setting.bind.netease.cookies,
+                    },
+                })
+            } else {
+                commit('unBind', 'netease')
+            }
+        },
+        // 检查QQ音乐绑定账号 登录状态
+        async checkQQBindAvalible({ getters, commit, state }, toastError = false) {
+            if (getters.bind.qq) {
+                const data = await Vue.$musicApi.qq.getUserInfo()
+                if (data.status) {
+                    commit('updateBind', {
+                        vendor: 'qq',
+                        value: {
+                            nickname: data.data.nickname,
+                            avatar: data.data.face,
+                            cookies: state.setting.bind.qq.cookies,
+                        },
+                    })
+                } else {
+                    commit('unBind', 'qq')
+                    toastError && Vue.$message.warning('获取登录状态失败')
+                }
+            } else {
+                commit('unBind', 'qq')
+            }
+        },
     },
     getters: {
         bind(state) {
             return {
-                netease: state.setting.bind.netease.cookies,
-                qq: state.setting.bind.qq.cookies,
+                netease: Boolean(state.setting.bind.netease.cookies),
+                qq: Boolean(state.setting.bind.qq.cookies),
             }
         },
     },

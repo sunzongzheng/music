@@ -42,7 +42,7 @@
             ...mapActions('play', ['play', 'playAll']),
             async getDetail() {
                 this.loading = true
-                const data = await this.$musicApi.getAlbumSongs(this.vendor, this.id)
+                const data = await this.$musicApi.getPlaylistDetail(this.vendor, this.id)
                 if (data.status) {
                     this.detail = data.data.detail
                     this.songs = data.data.songs.map(item => {

@@ -1,9 +1,8 @@
 import { remote } from 'electron'
-import fly from 'flyio'
 
 export default {
     loginWindow: null,
-    loginUrl: 'https://music.163.com/#/login',
+    loginUrl: 'https://y.qq.com',
     init() {
         this.createWindow()
         this.loginWindow.loadURL(this.loginUrl)
@@ -11,7 +10,7 @@ export default {
     // 创建窗口
     createWindow() {
         this.loginWindow = new remote.BrowserWindow({
-            title: '绑定网易云账号',
+            title: '绑定QQ音乐账号',
             parent: Vue.$mainWindow,
             height: 700,
             resizable: false,
@@ -30,25 +29,36 @@ export default {
     },
     // 初始化  事件
     initEvent() {
+        this.loginWindow.webContents.on('did-finish-load', () => {
+            this.loginWindow.webContents.executeJavaScript(`
+                setTimeout(() => {
+                    document.body.querySelector('.top_login__link.js_login').click()
+                }, 500)
+            `)
+        })
         const cookies = this.loginWindow.webContents.session.cookies
         cookies.on('changed', (event, cookie, cause) => {
-            if (cookie.name === '__csrf') {
-                cookies.get({ url: 'https://music.163.com' }, async (error, cookies) => {
+            if (cookie.name === 'p_skey') {
+                cookies.get({ url: 'https://y.qq.com' }, async (error, cookies) => {
                     if (error) {
                         this.loginWindow.destroy()
                         Vue.$message.warning('获取登录状态失败')
                     } else {
                         this.loginWindow.destroy()
-                        const cookieStr = cookies.map(item => `${item.name}=${item.value}`).join('; ')
+                        const cookieObject = {}
+                        const cookieStr = cookies.map(item => {
+                            cookieObject[item.name] = item.value
+                            return `${item.name}=${item.value}`
+                        }).join('; ')
                         Vue.$store.commit('user/updateBind', {
-                            vendor: 'netease',
+                            vendor: 'qq',
                             value: {
                                 nickname: null,
                                 avatar: null,
                                 cookies: cookieStr,
                             },
                         })
-                        Vue.$store.dispatch('user/checkNeteaseBindAvalible', true)
+                        Vue.$store.dispatch('user/checkQQBindAvalible', true)
                     }
                 })
             }

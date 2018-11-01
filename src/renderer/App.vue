@@ -51,6 +51,7 @@
         },
         methods: {
             ...mapActions('c_playlist', ['last', 'next']),
+            ...mapActions('user', ['checkNeteaseBindAvalible', 'checkQQBindAvalible']),
             ...mapActions('download', {
                 initDownload: 'init',
             }),
@@ -108,6 +109,8 @@
             this.initMenu()
             this.initGlobalShortcut()
             this.initDownload()
+            this.checkNeteaseBindAvalible()
+            this.checkQQBindAvalible()
             setTimeout(() => {
                 this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
             }, 5000)

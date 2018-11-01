@@ -23,7 +23,7 @@
                 <div :class="s.playlist">
                     <div :class="s.item" v-for="sub in item.sub" @click="$emit('on-click', sub)">
                         <render v-if="typeof sub.cover === 'function'" :render="sub.cover"></render>
-                        <img :src="sub.cover | image('netease', 280)" v-else/>
+                        <img :src="sub.cover | image(vendor, 280)" v-else/>
                         <p>{{sub.name}}</p>
                     </div>
                 </div>
@@ -44,6 +44,10 @@
                 default() {
                     return []
                 }
+            },
+            vendor: {
+                type: String,
+                default: 'netease',
             }
         },
         computed: {

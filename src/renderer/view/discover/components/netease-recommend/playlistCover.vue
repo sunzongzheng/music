@@ -3,6 +3,7 @@
         <span :class="s.head">{{week}}</span>
         <span :class="s.day">{{day}}</span>
         <div :class="s.mask"></div>
+        <Icon type="play1" :class="s.icon"></Icon>
     </div>
 </template>
 <script>
@@ -61,6 +62,29 @@
             width: 100%;
             height: 107px;
             background: url('https://s2.music.126.net/style/web2/img/date.png?abcf54adc3952c1219f7155c083f8d43') no-repeat 0 -150px;
+        }
+        .icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            opacity: 0;
+            cursor: pointer;
+            color: white;
+            font-size: 40px;
+            background-color: #29c777;
+            border-radius: 50%;
+            padding: 8px;
+            padding-left: 12px;
+        }
+        &:hover {
+            opacity: .8;
+            transition: opacity .25s;
+            .icon {
+                opacity: 1;
+            }
         }
     }
 </style>
