@@ -10,7 +10,7 @@
                 ></component>
             </ul>
         </template>
-        <title-bar :title="`最新评论（${comments.length}）`"></title-bar>
+        <title-bar :title="`最新评论（${total}）`"></title-bar>
         <ul>
             <component v-for="item in comments"
                        :is="`${vendor}CommentItem`"

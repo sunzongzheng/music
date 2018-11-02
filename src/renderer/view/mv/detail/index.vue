@@ -24,6 +24,7 @@
                           :vendor="vendor"
                           :hotComments="hotComments"
                           :comments="comments"
+                          :total="total"
             ></comment-list>
             <el-pagination layout="prev, pager, next"
                            :total="total"
