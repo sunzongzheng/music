@@ -90,6 +90,7 @@
             height: calc(100% - 60px);
             width: 60%;
             transition: all .4s;
+            -webkit-mask: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), #fff 25%, #fff 75%, rgba(0, 0, 0, 0));
             .item {
                 padding: 8px 0;
                 &.active {
