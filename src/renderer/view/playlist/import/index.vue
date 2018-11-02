@@ -127,7 +127,7 @@
             async getAlbumSongs() {
                 this.loading.getAlbumSongs = true
                 try {
-                    const data = await Vue.$musicApi.getAlbumSongs(this.vendor, this.id)
+                    const data = await Vue.$musicApi.getPlaylistDetail(this.vendor, this.id)
                     if (data.status) {
                         this.album = {}
                         Vue.set(this.album, 'detail', data.data.detail)
