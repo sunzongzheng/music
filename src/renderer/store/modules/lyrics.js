@@ -24,15 +24,18 @@ export default {
                 loading: true
             })
             const data = await Vue.$musicApi.getLyric(playInfo.vendor, playInfo.songId)
+            const startsArr = new Array(6).fill(null).map(item => ['0:0.0', ' '])
+            const endsArr = new Array(6).fill(null).map(item => ['99:99.0', ' '])
             commit('update', {
-                lyrics: (data.status ? data.data.lyric : []).map(item => {
-                    let arr = item[0].match(/^(\d+):(\d+).(\d+)$/)
+                lyrics: startsArr.concat((data.status ? data.data.lyric : [])).concat(endsArr).map(item => {
+                    const lyric = [...item] // 避免污染startsArr,endsArr中的值
+                    let arr = lyric[0].match(/^(\d+):(\d+).(\d+)$/)
                     if (arr) {
-                        item[0] = parseInt(arr[1]) * 60 * 1000 + parseInt(arr[2]) * 1000 + parseInt(arr[3].padEnd(3, '0'))
+                        lyric[0] = parseInt(arr[1]) * 60 * 1000 + parseInt(arr[2]) * 1000 + parseInt(arr[3].padEnd(3, '0'))
                     }
-                    return item
+                    return lyric
                 }),
-                translate: (data.status ? data.data.translate : []).map(item => {
+                translate: startsArr.concat((data.status ? data.data.translate : [])).concat(endsArr).map(item => {
                     let arr = item[0].match(/^(\d+):(\d+).(\d+)$/)
                     if (arr) {
                         item[0] = parseInt(arr[1]) * 60 * 1000 + parseInt(arr[2]) * 1000 + parseInt(arr[3].padEnd(3, '0'))
