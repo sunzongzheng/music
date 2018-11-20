@@ -9,7 +9,9 @@ import axios from 'axios'
 import nodeAdapter from 'flyio/src/adapter/node'
 
 if (process.env.NODE_ENV !== 'development') {
-    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+    global.__static = require('path')
+        .join(__dirname, '/static')
+        .replace(/\\/g, '\\\\')
 }
 global.clientApi = axios
 global.Tray = Tray
@@ -19,18 +21,18 @@ let mainWindow
 let backgroundWindow
 let touchBar
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-        if (mainWindow.isMinimized()) mainWindow.restore()
-        if (!mainWindow.isVisible()) mainWindow.show()
-        mainWindow.focus()
-    }
-})
-
-if (isSecondInstance) {
-    app.quit()
-}
+// const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+//     // Someone tried to run a second instance, we should focus our window.
+//     if (mainWindow) {
+//         if (mainWindow.isMinimized()) mainWindow.restore()
+//         if (!mainWindow.isVisible()) mainWindow.show()
+//         mainWindow.focus()
+//     }
+// })
+//
+// if (isSecondInstance) {
+//     app.quit()
+// }
 
 function createWindow() {
     const windows = initWindow()

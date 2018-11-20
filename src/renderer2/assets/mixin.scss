@@ -1,0 +1,19 @@
+@mixin text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@mixin size($size) {
+    width: $size;
+    height: $size;
+}
+
+@mixin link($color: $color-content) {
+    transition: all 0.2s;
+    color: $color;
+    cursor: pointer;
+    &:hover {
+        color: $color-primary;
+    }
+}
