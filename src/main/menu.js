@@ -23,6 +23,20 @@ const template = [
                     global.mainWindow = null
                     app.exit()
                 }
+            },
+            {
+                label: 'Close Window',
+                accelerator: 'CommandOrControl+W',
+                click: () => {
+                    global.mainWindow.hide()
+                }
+            },
+            {
+                label: 'Hide',
+                accelerator: 'CommandOrControl+H',
+                click: () => {
+                    global.mainWindow.hide()
+                }
             }
         ]
     },
