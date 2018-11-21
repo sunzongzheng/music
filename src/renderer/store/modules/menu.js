@@ -15,6 +15,7 @@ export default {
                             Vue.$mainWindow.webContents.openDevTools({ mode: 'detach' })
                         },
                     },
+                    
                     {
                         label: '关于',
                         click() {
@@ -29,13 +30,28 @@ export default {
                         },
                     },
                     {
+    					label: '关闭窗口',
+    					accelerator: 'CommandOrControl+W',
+    					click: () => {
+        					Vue.$mainWindow.hide()
+    					}
+					},
+					{
+    					label: '隐藏窗口',
+    					accelerator: 'CommandOrControl+H',
+    					click: () => {
+        					Vue.$mainWindow.hide()
+    					}
+					},
+                    {
                         label: '退出音乐湖',
                         accelerator: 'CommandOrControl+Q',
                         click: () => {
                             Vue.$mainWindow = null
                             app.exit()
                         },
-                    },
+                    }
+                    
                 ],
             },
             {
