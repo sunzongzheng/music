@@ -5,17 +5,22 @@
             <top-section></top-section>
             <div :class="s.main"><router-view></router-view></div>
         </div>
+        <player></player> <playlist></playlist>
     </div>
 </template>
 <script>
 import leftMenu from './ui/left-menu/index.vue'
 import topSection from './ui/top-section/index.vue'
+import player from './ui/player/index.vue'
+import playlist from './ui/playlist/index.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
     components: {
         leftMenu,
         topSection,
+        player,
+        playlist,
     },
     computed: {
         ...mapGetters('user', ['logged']),
@@ -61,6 +66,14 @@ body {
         flex-direction: column;
         .main {
             flex: 1;
+            overflow: auto;
+            padding-bottom: $player-height;
+        }
+    }
+    a {
+        color: $color-content;
+        &:hover {
+            color: $color-primary;
         }
     }
 }

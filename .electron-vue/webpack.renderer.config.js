@@ -30,6 +30,7 @@ const scss_loader = [
             resources: [
                 path.join(__dirname, '../src/renderer2/assets/variable.scss'),
                 path.join(__dirname, '../src/renderer2/assets/mixin.scss'),
+                path.join(__dirname, '../src/renderer2/assets/function.scss'),
             ],
         },
     },
@@ -150,7 +151,7 @@ let rendererConfig = {
     },
     resolve: {
         alias: {
-            '@': path.join(__dirname, '../src/renderer'),
+            '@': path.join(__dirname, '../src/renderer2'),
             src: path.join(__dirname, '../src'),
             vue$: 'vue/dist/vue.esm.js',
         },

@@ -1,6 +1,6 @@
 <template>
     <div :class="s.iconGroup">
-        <Icon type="shezhi1" :class="s.icon"></Icon>
+        <Icon type="setting" :class="s.icon"></Icon>
         <Icon type="mini" :class="s.icon"></Icon>
     </div>
 </template>

@@ -12,17 +12,18 @@ export default {
         playlist,
     },
     actions: {
-        logout() {
-            Vue.$store.dispatch('user/token/update', null)
+        logout({ dispatch }) {
+            dispatch('user/token/update', null, { root: true })
+            dispatch('user/playlist/online/clear', null, { root: true })
         },
-        init() {
-            Vue.$store.dispatch('user/profile/init')
-            Vue.$store.dispatch('user/playlist/init')
+        init({ dispatch }) {
+            dispatch('user/profile/init', null, { root: true })
+            dispatch('user/playlist/online/init', null, { root: true })
         },
     },
     getters: {
-        logged() {
-            return Boolean(Vue.$store.state.user.token.token)
+        logged(state, getters, rootState) {
+            return Boolean(rootState.user.token.token)
         },
     },
 }

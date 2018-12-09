@@ -1,0 +1,56 @@
+.dataTable {
+    color: $color-content;
+    font-size: 13px;
+    padding: 0 20px 12px;
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $color-border4;
+        padding: 16px 10px 10px;
+        .total {
+            font-size: 14px;
+            color: $color-content;
+            span {
+                color: $color-primary;
+            }
+        }
+        .input {
+            width: 200px;
+        }
+    }
+    .row {
+        transition: all 0.2s;
+        :global {
+            .el-col {
+                display: block;
+                height: 48px;
+                line-height: 48px;
+                padding: 0 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        &:not(.thead):hover {
+            transition: all 0.2s;
+            background: #f5f7fa;
+        }
+        &.thead {
+            font-weight: bold;
+        }
+        .link {
+            color: $color-content;
+            text-decoration: none;
+            &:hover {
+                color: $color-primary;
+            }
+        }
+        &.disabled {
+            color: rgba(68, 68, 68, 0.6);
+            .link {
+                color: rgba(68, 68, 68, 0.6);
+            }
+        }
+    }
+}

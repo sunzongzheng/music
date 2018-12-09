@@ -1,18 +1,35 @@
+import online from './playlist/online'
+import offline from './playlist/offline'
+
 export default {
     namespaced: true,
-    state: {
-        online: [],
-        offline: [],
+    modules: {
+        online,
+        offline,
     },
-    mutations: {
-        updateOnline(state, list) {
-            state.online = list
+    state: {},
+    mutations: {},
+    actions: {
+        getPlaylistSong({ dispatch }, { id, type }) {
+            return dispatch(`user/playlist/${type}/getPlaylistSong`, id, {
+                root: true,
+            })
         },
     },
-    actions: {
-        async init({ commit }) {
-            const data = await Vue.$http.get('/playlist')
-            commit('updateOnline', data)
+    getters: {
+        playlistObject(state, getters, rootState) {
+            const online = {}
+            const offline = {}
+            rootState.user.playlist.online.list.forEach(
+                item => (online[item.id] = item)
+            )
+            rootState.user.playlist.offline.list.forEach(
+                item => (offline[item.id] = item)
+            )
+            return {
+                online,
+                offline,
+            }
         },
     },
 }

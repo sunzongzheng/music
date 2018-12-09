@@ -40,7 +40,7 @@ export default {
                         } else if (cookies.length) {
                             Vue.$store.dispatch(
                                 'user/token/update',
-                                cookies[0].value
+                                cookies.pop().value
                             )
                         }
                     }

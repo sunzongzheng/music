@@ -29,6 +29,7 @@ export default {
 .topSection {
     height: 50px;
     display: flex;
+    flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
     padding: 0 24px;

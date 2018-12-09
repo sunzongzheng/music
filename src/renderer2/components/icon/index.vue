@@ -40,6 +40,7 @@ export default {
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+    user-select: none;
     &.disabled {
         opacity: 0.6;
         cursor: not-allowed !important;

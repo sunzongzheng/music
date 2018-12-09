@@ -15,5 +15,7 @@ export default {
     color: $color-disabled;
     margin-top: 12px;
     flex-shrink: 0;
+    height: 32px;
+    line-height: 32px;
 }
 </style>

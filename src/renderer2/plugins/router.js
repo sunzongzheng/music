@@ -1,5 +1,5 @@
 import Router from 'vue-router'
-import children from '../page/router'
+import pages from '../page/router'
 
 export default function install(Vue) {
     Vue.use(Router)
@@ -12,8 +12,8 @@ export default function install(Vue) {
                 redirect: {
                     name: 'discover',
                 },
-                children,
             },
+            ...pages,
         ],
     })
     router.beforeEach((to, from, next) => {

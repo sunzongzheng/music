@@ -17,12 +17,16 @@ export default {
         update({ commit, dispatch }, val) {
             commit('update', val)
             if (val) {
-                Vue.$store.dispatch('user/init')
+                dispatch('user/init', null, { root: true })
             } else {
-                Vue.$store.commit('user/profile/update', {
-                    nickname: null,
-                    avatar: null,
-                })
+                commit(
+                    'user/profile/update',
+                    {
+                        nickname: null,
+                        avatar: null,
+                    },
+                    { root: true }
+                )
             }
         },
     },

@@ -1,44 +1,36 @@
 <template>
     <div :class="s.viewControl">
-        <div :class="s.inner" v-if="status !== 'fullscreen'">
-            <Icon
-                type="close"
-                :class="s.close"
-                @click.native="op('close')"
-            ></Icon>
-            <Icon
-                type="narrow"
-                :class="s.narrow"
-                @click.native="op('minimize')"
-            ></Icon>
+        <Icon
+            type="leaveFullscreen"
+            :class="s.fullscreen"
+            @click="leaveFullscreen"
+            v-if="status === 'fullscreen'"
+        ></Icon>
+        <div :class="s.inner" v-else>
+            <Icon type="close" :class="s.close" @click="close"></Icon>
+            <Icon type="narrow" :class="s.narrow" @click="minimize"></Icon>
             <Icon
                 type="fullscreen"
                 :class="s.fullscreen"
-                @click.native="op('fullscreen')"
+                @click="fullscreen"
             ></Icon>
         </div>
-        <Icon
-            type="fullscreenexit"
-            :class="s.fullscreen"
-            @click.native="op('leaveFullscreen')"
-            v-else
-        ></Icon>
     </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     computed: {
-        status() {
-            return 'normal'
-        },
-        // ...mapState('windowStatus', ['status']),
+        ...mapState('window', ['status']),
     },
     methods: {
-        op(val) {
-            // this.$store.commit('windowStatus/update', val)
-        },
+        ...mapActions('window', [
+            'close',
+            'minimize',
+            'fullscreen',
+            'leaveFullscreen',
+        ]),
     },
 }
 </script>
@@ -50,6 +42,8 @@ export default {
     justify-content: flex-start;
     align-items: center;
     flex-shrink: 0;
+    padding: 0 18px;
+    -webkit-app-region: drag;
     & > * {
         -webkit-app-region: no-drag;
     }

@@ -14,12 +14,12 @@
         "pack": "npm run pack:main && npm run pack:renderer",
         "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
         "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-        "iconfont": "./.electron-vue/iconfont.js",
+        "icon": "./.electron-vue/iconfont.js",
         "build-file": "node .electron-vue/build.js",
         "build:publish": "electron-builder -wml --publish onTagOrDraft"
     },
     "build": {
-        "productName": "音乐湖",
+        "productName": "MusicLake",
         "appId": "com.sunzongzheng.music-lake",
         "artifactName": "${name}-${version}-${os}.${ext}",
         "directories": {
@@ -78,6 +78,7 @@
         "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
         "axios": "^0.16.1",
         "bufferutil": "^4.0.0",
+        "dayjs": "^1.7.7",
         "electron-dl": "^1.12.0",
         "element-ui": "^2.4.1",
         "flyio": "^0.6.2",

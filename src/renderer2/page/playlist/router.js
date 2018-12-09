@@ -4,14 +4,14 @@ export default {
     component: require('./index.vue'),
     children: [
         {
-            path: 'online.detail',
-            name: 'playlist.online.detail',
-            component: require('./index.vue'),
+            path: ':type/:id/detail',
+            name: 'playlist.detail',
+            component: require('./detail/index.vue'),
         },
         {
-            path: 'offline.detail',
-            name: 'playlist.offline.detail',
-            component: require('./index.vue'),
+            path: ':type/:id/import',
+            name: 'playlist.import',
+            component: require('./import/index.vue'),
         },
     ],
 }
