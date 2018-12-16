@@ -30,7 +30,6 @@
         font-size: 13px;
         line-height: 1;
         user-select: none;
-        height: 25px;
         &:hover {
             background-color: rgba(222, 222, 222, 0.49);
         }
