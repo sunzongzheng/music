@@ -6,7 +6,7 @@
         <linux-auto-update v-if="platform === 'linux'"></linux-auto-update>
         <top-menu v-if="platform === 'darwin'"></top-menu>
         <hot-key></hot-key>
-        <message-alert></message-alert>
+        <local-songs-folder></local-songs-folder>
         <statistics></statistics>
         <version></version>
         <debug></debug>
@@ -23,6 +23,7 @@
     import messageAlert from './components/message-alert.vue'
     import quality from './components/quality.vue'
     import bind from './components/bind/index.vue'
+    import localSongsFolder from './components/local-songs-folder.vue'
 
     export default {
         components: {
@@ -36,6 +37,7 @@
             messageAlert,
             quality,
             bind,
+            localSongsFolder,
         },
         computed: {
             platform() {
