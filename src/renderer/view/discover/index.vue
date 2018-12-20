@@ -2,7 +2,7 @@
     <div :class="s.discover">
         <banner></banner>
         <netease-recomment v-if="bind.netease"></netease-recomment>
-        <qq-recomment v-if="bind.qq"></qq-recomment>
+        <!--<qq-recomment v-if="bind.qq"></qq-recomment>-->
         <playlist></playlist>
         <album></album>
         <mv></mv>

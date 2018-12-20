@@ -7,12 +7,12 @@
                 ></netease-icon>
                 <p :class="s.nickname">{{setting.bind.netease.nickname || '未绑定'}}</p>
             </div>
-            <div :class="s.item" @click="handle('qq')">
-                <qqmusic-icon :class="s.icon"
-                              :active="bind.qq"
-                ></qqmusic-icon>
-                <p :class="s.nickname">{{setting.bind.qq.nickname || '未绑定'}}</p>
-            </div>
+            <!--<div :class="s.item" @click="handle('qq')">-->
+            <!--<qqmusic-icon :class="s.icon"-->
+            <!--:active="bind.qq"-->
+            <!--&gt;</qqmusic-icon>-->
+            <!--<p :class="s.nickname">{{setting.bind.qq.nickname || '未绑定'}}</p>-->
+            <!--</div>-->
             <p :class="s.tip">绑定成功后请在<span>&nbsp;精选&nbsp;</span>分类查收个性化推荐！</p>
         </div>
     </menuItem>

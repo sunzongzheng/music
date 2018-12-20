@@ -83,11 +83,11 @@
                         home: 'http://music.163.com/',
                         album: 'http://music.163.com/#/my/'
                     },
-                    qq: {
-                        text: 'QQ音乐',
-                        home: 'https://y.qq.com/',
-                        album: 'https://y.qq.com/portal/profile.html#sub=other&tab=create&'
-                    },
+                    // qq: {
+                    //     text: 'QQ音乐',
+                    //     home: 'https://y.qq.com/',
+                    //     album: 'https://y.qq.com/portal/profile.html#sub=other&tab=create&'
+                    // },
                     xiami: {
                         text: '虾米音乐',
                         home: 'https://www.xiami.com/',

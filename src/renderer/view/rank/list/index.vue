@@ -2,7 +2,7 @@
     <div :class="s.app" v-loading="loading">
         <p>
             {{text}}音乐排行榜
-            <Icon type="qiehuan1" :class="s.icon" @click="changeVendor"></Icon>
+            <!--<Icon type="qiehuan1" :class="s.icon" @click="changeVendor"></Icon>-->
         </p>
         <ul :class="s.main">
             <v-item v-for="item in list"
@@ -24,7 +24,8 @@
         data() {
             return {
                 list: [],
-                vendor: localStorage.getItem('rank-vendor') || 'netease',
+                // vendor: localStorage.getItem('rank-vendor') || 'netease',
+                vendor: 'netease',
                 loading: false
             }
         },
