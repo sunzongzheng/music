@@ -1,6 +1,6 @@
 {
   "name": "player",
-    "version": "1.2.0",
+  "version": "1.2.0",
   "author": "sunzongzheng <sunzongzhengwy@163.com>",
   "description": "A player",
   "license": "CC0-1.0",
@@ -56,12 +56,12 @@
       "target": "nsis",
       "icon": "build/icons/icon.ico"
     },
-      "nsis": {
-          "allowToChangeInstallationDirectory": true,
-          "oneClick": false,
-          "menuCategory": true,
-          "allowElevation": false
-      },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "menuCategory": true,
+      "allowElevation": false
+    },
     "linux": {
       "icon": "build/icons",
       "executableName": "MusicLake",
@@ -85,7 +85,7 @@
     "element-ui": "^2.4.1",
     "flyio": "^0.6.2",
     "moment": "^2.18.1",
-      "music-metadata": "^3.1.4",
+    "music-metadata": "^3.1.4",
     "sass-resources-loader": "^1.3.1",
     "social-share.js": "^1.0.16",
     "socket.io-client": "^2.1.1",
@@ -94,7 +94,8 @@
     "velocity-animate": "^1.5.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "xlsx": "^0.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.46",

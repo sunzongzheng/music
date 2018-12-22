@@ -50,19 +50,6 @@
                 height: 48px;
             }
         }
-
-        .alert {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            z-index: 99999;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
     </style>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
     <!-- Add `node_modules/` to global paths so `require` works properly in development -->
@@ -73,14 +60,11 @@
 </head>
 <body>
 <div id="app"></div>
-<!--<div id="page-loading">-->
-<!--<div class="line1"></div>-->
-<!--<div class="line2"></div>-->
-<!--<div class="line3"></div>-->
-<!--<div class="line4"></div>-->
-<!--</div>-->
-<div class="alert">
-    <p>由于受到QQ音乐、网易云音乐的警告函，现已关闭服务</p>
+<div id="page-loading">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+    <div class="line4"></div>
 </div>
 <!-- Set `__static` path to static files in production -->
 <script>
