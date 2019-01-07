@@ -1,4 +1,8 @@
 # music player [![Build Status](https://travis-ci.org/sunzongzheng/music.svg?branch=master)](https://travis-ci.org/sunzongzheng/music)
+
+# 由于收到网易云音乐和QQ音乐的警告函，服务已关闭，可自行回滚代码使用离线歌单，有服务器资源可自行搭建云歌单，所有代码均已开源
+
+## 简介
 - 歌曲Api涵盖网易云、QQ音乐、虾米
 - 界面仿QQ音乐
 - Mac > Windows > Linux都会逐步适配
