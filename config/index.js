@@ -1,4 +1,4 @@
 export default {
-    api: 'https://player.zzsun.cc',
-    socket: 'https://socket.zzsun.cc'
+    api: 'http://your-player-be-address',
+    socket: 'http://your-player-be-address'
 }

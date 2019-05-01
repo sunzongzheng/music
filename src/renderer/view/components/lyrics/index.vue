@@ -20,9 +20,9 @@
             </div>
             <ul :class="s.main" ref="main" @wheel="scrollBarWheel" v-if="lyrics.length" :style="mainStyle">
                 <li v-for="(item,index) in lyrics" :class="{[s.item]:true,[s.active]:activeIndex === index}">
-                    <span v-html="item[1]"></span>
+                    <p v-html="item[1]"></p>
                     <template v-if="showTranslate && translate[index] && translate[index][1]">
-                        <br/><span v-html="translate[index][1]"></span>
+                        <p v-html="translate[index][1]"></p>
                     </template>
                 </li>
             </ul>
@@ -92,10 +92,8 @@
             transition: all .4s;
             -webkit-mask: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), #fff 25%, #fff 75%, rgba(0, 0, 0, 0));
             .item {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 40px;
+                margin: 22px 0;
+                min-height: 18px;
                 &.active {
                     color: $color-primary;
                 }
