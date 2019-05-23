@@ -97,7 +97,7 @@ export default {
                         quality = Vue.$store.state.user.setting.quality
                     } else {
                         // 降级
-                        const qualities = [320, 192]
+                        const qualities = [320]
                         for (let item of qualities) {
                             if (info.quality[item]) {
                                 quality = item * 1000
@@ -151,7 +151,7 @@ export default {
     },
     getters: {
         hasHigherQuality(state) {
-            return state.info && state.info.quality && (state.info.quality['192'] || state.info.quality['320'] || state.info.quality['999'])
+            return state.info && state.info.quality && (state.info.quality['320'] || state.info.quality['999'])
         },
     },
 }

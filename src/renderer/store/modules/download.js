@@ -61,8 +61,8 @@ export default {
             })
         },
         async download({commit, getters}, song) {
-            if (song.cp || !song.dl) {
-                Vue.$message.warning('歌曲无法免费下载')
+            if (song.cp) {
+                Vue.$message.warning('歌曲无法下载')
                 return
             }
             const id = `${song.vendor}_${song.songId}`

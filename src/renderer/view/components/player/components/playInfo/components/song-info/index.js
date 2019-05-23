@@ -16,12 +16,12 @@ export default {
                     disabled: false,
                     br: 128000,
                 },
-                {
-                    name: '较高品质',
-                    checked: false,
-                    disabled: true,
-                    br: 192000,
-                },
+                // {
+                //     name: '较高品质',
+                //     checked: false,
+                //     disabled: true,
+                //     br: 192000,
+                // },
                 {
                     name: '极高品质',
                     checked: false,
