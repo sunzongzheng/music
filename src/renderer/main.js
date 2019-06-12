@@ -4,7 +4,6 @@ import './assets/theme.scss'
 import directive from 'element-ui/packages/popover/src/directive'
 import App from './App'
 import router from './router'
-import store from './store'
 import './assets/iconfont'
 import './components'
 import { ipcRenderer, remote } from 'electron'
@@ -28,13 +27,14 @@ Vue.$mainWindow = Vue.prototype.$mainWindow = remote.getCurrentWindow()
 
 Vue.$musicApi = Vue.prototype.$musicApi = musicApi
 
-Vue.$store = Vue.prototype.$store = store
+Vue.$ipc = Vue.prototype.$ipc = ipcRenderer
+
+Vue.$store = Vue.prototype.$store = require('./store').default
 
 Vue.$router = router
 
 Vue.config.productionTip = false
 
-Vue.$ipc = Vue.prototype.$ipc = ipcRenderer
 
 Vue.$updater = Vue.prototype.$updater = remote.getGlobal('updater')
 
@@ -52,6 +52,6 @@ Vue.$contextMenu = Vue.prototype.$contextMenu = contextMenu
 new Vue({
     components: { App },
     router,
-    store,
+    store: Vue.$store,
     template: '<App/>',
 }).$mount('#app')

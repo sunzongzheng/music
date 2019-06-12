@@ -2,6 +2,7 @@ import {ipcMain, nativeImage, app} from 'electron'
 import login from './login'
 import share from './share'
 import addToPlaylist from './add-to-playlist'
+import url from 'url'
 
 const {download} = require('electron-dl')
 const downloads = {}
@@ -98,5 +99,14 @@ export default function (mainWindow, backgroundWindow, touchBar) {
     })
     ipcMain.on('download-cancel', (e, id) => {
         downloads[id].cancel && downloads[id].cancel()
+    })
+    ipcMain.on('set-proxy', (e, val) => {
+        console.log('set-proxy', val)
+        const {hostname, port} = url.parse(val)
+        const ses = mainWindow.webContents.session
+        ses.setProxy({
+            proxyRules: (hostname && port) ? `${hostname}:${port}` : ''
+        }, function () {
+        })
     })
 }

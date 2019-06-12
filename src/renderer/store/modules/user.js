@@ -1,7 +1,7 @@
-import { remote } from 'electron'
+import {remote} from 'electron'
 import fly from 'flyio'
 
-const { app } = remote
+const {app} = remote
 const path = remote.require('path')
 
 const defaultSetting = {
@@ -24,6 +24,7 @@ const defaultSetting = {
             cookies: null,
         },
     },
+    proxy: null
 }
 let savedSetting = JSON.parse(localStorage.getItem('userSetting'))
 if (savedSetting) {
@@ -53,6 +54,21 @@ const cacheSetting = (val) => {
     }
 }
 
+const setProxy = (val) => {
+    console.log('setProxy', val)
+    const proxy = `http://${val}`
+    const vendors = ['qq', 'netease', 'xiami']
+
+    vendors.forEach(vendor => {
+        Vue.$musicApi[vendor].instance.config.proxy = val ? proxy : null
+    })
+    Vue.$ipc.send('set-proxy', proxy)
+}
+
+if (savedSetting.proxy) {
+    setProxy(savedSetting.proxy)
+}
+
 export default {
     namespaced: true,
     state: {
@@ -78,12 +94,15 @@ export default {
             }
         },
         updateSetting(state, val) {
+            if (val.proxy !== state.setting.proxy) {
+                setProxy(val.proxy)
+            }
             for (let i in val) {
                 state.setting[i] = val[i]
             }
             cacheSetting(state.setting)
         },
-        updateBind(state, { vendor, value }) {
+        updateBind(state, {vendor, value}) {
             state.setting.bind[vendor] = value
             cacheSetting(state.setting)
         },
@@ -96,17 +115,17 @@ export default {
         },
     },
     actions: {
-        async init({ commit }) {
+        async init({commit}) {
             const data = await Vue.$http.get('/user')
             commit('update', data)
         },
-        logout({ commit }, msg = true) {
+        logout({commit}, msg = true) {
             commit('update', null)
             Vue.$store.commit('token/clear')
             msg && Vue.$message.success('退出成功')
         },
         // 检查更新
-        async checkUpdate({ state }) {
+        async checkUpdate({state}) {
             try {
                 if (state.setting.linuxAutoUpdate) {
                     await Vue.$updater.checkForUpdatesAndNotify()
@@ -129,7 +148,7 @@ export default {
             }
         },
         // 检查网易云绑定账号 登录状态
-        async checkNeteaseBindAvalible({ getters, commit, state }, toastError = false) {
+        async checkNeteaseBindAvalible({getters, commit, state}, toastError = false) {
             if (getters.bind.netease) {
                 const res = await fly.get('http://music.163.com', {}, {
                     headers: {
@@ -159,7 +178,7 @@ export default {
             }
         },
         // 检查QQ音乐绑定账号 登录状态
-        async checkQQBindAvalible({ getters, commit, state }, toastError = false) {
+        async checkQQBindAvalible({getters, commit, state}, toastError = false) {
             if (getters.bind.qq) {
                 const data = await Vue.$musicApi.qq.getUserInfo()
                 if (data.status) {
@@ -178,7 +197,7 @@ export default {
             } else {
                 commit('unBind', 'qq')
             }
-        },
+        }
     },
     getters: {
         bind(state) {
