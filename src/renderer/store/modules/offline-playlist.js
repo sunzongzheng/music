@@ -50,6 +50,23 @@ export default {
             list.push(info)
             localStorage.setItem(storage_name, JSON.stringify(list))
             Vue.$message.success('添加成功')
+        },
+        batchCollect(store, {id, songs}) {
+            const storage_name = `offline_playlist_${id}_song`
+            const list = JSON.parse(localStorage.getItem(storage_name)) || []
+            const failedList = []
+            songs.forEach(song => {
+                if (list.find(item => item.songId === song.songId && item.vendor === song.vendor)) {
+                    failedList.push({
+                        id: song.id,
+                        msg: '已存在'
+                    })
+                } else {
+                    list.push(song)
+                }
+            })
+            localStorage.setItem(storage_name, JSON.stringify(list))
+            return failedList
         }
     }
 }

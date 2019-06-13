@@ -82,7 +82,7 @@
     "axios": "^0.16.1",
     "bufferutil": "^4.0.0",
     "electron-dl": "^1.12.0",
-    "element-ui": "^2.4.1",
+    "element-ui": "2.4.1",
     "flyio": "^0.6.2",
     "moment": "^2.18.1",
     "music-metadata": "^3.1.4",

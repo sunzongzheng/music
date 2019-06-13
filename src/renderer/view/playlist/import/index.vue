@@ -1,7 +1,7 @@
 <template>
     <div :class="s.import">
         <el-breadcrumb style="margin-top: 8px;">
-            <el-breadcrumb-item :to="{ name: 'playlist', params: { id: albumId } }">{{name}}</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'playlist', params: { id: albumId }, query: $route.query }">{{name}}</el-breadcrumb-item>
             <el-breadcrumb-item>导入歌曲</el-breadcrumb-item>
         </el-breadcrumb>
         <div :class="s.main">
@@ -62,7 +62,7 @@
 <script>
     import {shell} from 'electron'
     import vTable from './table.vue'
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
 
     export default {
         components: {
@@ -120,6 +120,7 @@
             }
         },
         methods: {
+            ...mapActions('offline-playlist', ['batchCollect']),
             openExternal(isAlbum = true) {
                 shell.openExternal(isAlbum ? this.chosen.album : this.chosen.home)
             },
@@ -153,10 +154,14 @@
             async importSongs() {
                 this.loading.importSongs = true
                 try {
+                    let failedList = []
                     if (this.offline) {
-
+                        failedList = await this.batchCollect({
+                            id: this.albumId,
+                            songs: this.album.songs
+                        })
                     } else {
-                        const {failedList} = await Vue.$http.post(`/playlist/${this.albumId}/batch2`, {
+                        const data = await Vue.$http.post(`/playlist/${this.albumId}/batch2`, {
                             collects: this.album.songs.map(item => {
                                 return {
                                     id: item.id,
@@ -164,17 +169,18 @@
                                 }
                             })
                         })
-                        this.album.songs = this.album.songs.map(song => {
-                            const cur = failedList.filter(item => song.id === item.id)[0]
-                            if (cur) {
-                                song.status = 0
-                                song.msg = cur.msg
-                            } else {
-                                song.status = 1
-                            }
-                            return song
-                        })
+                        failedList = data.failedList
                     }
+                    this.album.songs = this.album.songs.map(song => {
+                        const cur = failedList.find(item => song.id === item.id)
+                        if (cur) {
+                            song.status = 0
+                            song.msg = cur.msg
+                        } else {
+                            song.status = 1
+                        }
+                        return song
+                    })
                 } catch (e) {
                     console.warn(e)
                     e.msg && this.$message.warning(e.msg)

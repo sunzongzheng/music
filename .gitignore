@@ -10,7 +10,5 @@ thumbs.db
 !.gitkeep
 releases/
 .idea/
-package-lock.json
-yarn.lock
 yarn-error.log
 upx

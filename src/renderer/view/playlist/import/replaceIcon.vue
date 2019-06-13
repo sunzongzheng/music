@@ -3,7 +3,7 @@
         <el-popover ref="replace"
                     placement="top"
                     trigger="click"
-                    v-model="show"
+                    @show="search"
         >
             <p :class="s.title">单击行将直接更换</p>
             <DataTable :data="result"
@@ -13,7 +13,7 @@
                        element-loading-text="拼命加载中...搜索三个平台...还要花时间去重哦~"
                        style="max-height: 300px; overflow: auto; width: 600px; padding: 0"
             ></DataTable>
-            <span slot="reference" :class="s.replace" @click="show = true">换</span>
+            <span slot="reference" :class="s.replace">换</span>
         </el-popover>
     </div>
 </template>
@@ -30,16 +30,8 @@
         },
         data() {
             return {
-                show: false,
                 result: [],
                 loading: false,
-            }
-        },
-        watch: {
-            show(val) {
-                if (val) {
-                    this.search()
-                }
             }
         },
         methods: {

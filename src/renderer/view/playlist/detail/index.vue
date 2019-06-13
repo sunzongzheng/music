@@ -9,9 +9,7 @@
             >
                 <p v-if="info.createdAt" :class="s.created">{{info.createdAt | date}} 创建</p>
                 <template slot="btns">
-                    <el-button @click="$router.push({ name: 'playlist.import', query: { offline: offline } })"
-                               v-if="!offline"
-                    >
+                    <el-button @click="$router.push({ name: 'playlist.import', query: { offline: offline } })">
                         <Icon type="daoru"></Icon>
                         导入歌曲
                     </el-button>
