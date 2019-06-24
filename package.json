@@ -1,143 +1,151 @@
 {
-  "name": "player",
-  "version": "1.2.0",
-  "author": "sunzongzheng <sunzongzhengwy@163.com>",
-  "description": "A player",
-  "license": "CC0-1.0",
-  "main": "./dist/electron/main.js",
-  "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
-    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
-    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
-    "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
-    "dev": "node .electron-vue/dev-runner.js",
-    "pack": "npm run pack:main && npm run pack:renderer",
-    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
-    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
-    "iconfont": "./.electron-vue/iconfont.js",
-    "build-file": "node .electron-vue/build.js",
-    "build:publish": "electron-builder -wml --publish onTagOrDraft"
-  },
-  "build": {
-    "productName": "MusicLake",
-    "appId": "org.sunzongzheng.player",
-    "artifactName": "${name}-${version}-${os}.${ext}",
-    "directories": {
-      "output": "releases"
+    "name": "player",
+    "version": "1.2.0",
+    "author": "sunzongzheng <sunzongzhengwy@163.com>",
+    "description": "A player",
+    "license": "CC0-1.0",
+    "main": "./dist/electron/main.js",
+    "scripts": {
+        "build": "node .electron-vue/build.js && electron-builder",
+        "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+        "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+        "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+        "dev": "node .electron-vue/dev-runner.js",
+        "pack": "npm run pack:main && npm run pack:renderer",
+        "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
+        "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+        "iconfont": "./.electron-vue/iconfont.js",
+        "build-file": "node .electron-vue/build.js",
+        "build:publish": "electron-builder -wml --publish onTagOrDraft"
     },
-    "files": [
-      "**/*",
-      "build/icon.*"
-    ],
-    "dmg": {
-      "title": "MusicLake",
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
+    "build": {
+        "productName": "MusicLake",
+        "appId": "org.sunzongzheng.player",
+        "artifactName": "${name}-${version}-${os}.${ext}",
+        "directories": {
+            "output": "releases"
         },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
+        "files": [
+            "**/*",
+            "build/icon.*"
+        ],
+        "dmg": {
+            "title": "MusicLake",
+            "contents": [
+                {
+                    "x": 410,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 130,
+                    "y": 150,
+                    "type": "file"
+                }
+            ]
+        },
+        "mac": {
+            "target": [
+                "dmg",
+                "zip"
+            ],
+            "icon": "build/icons/icon.icns"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "build/icons/icon.ico"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "oneClick": false,
+            "menuCategory": true,
+            "allowElevation": false
+        },
+        "linux": {
+            "icon": "build/icons",
+            "executableName": "MusicLake",
+            "category": "Music",
+            "target": [
+                "AppImage",
+                "deb",
+                "rpm"
+            ]
+        },
+        "appImage": {
+            "systemIntegration": "doNotAsk"
         }
-      ]
     },
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "icon": "build/icons/icon.icns"
+    "dependencies": {
+        "@suen/electron-updater": "git+https://github.com/sunzongzheng/electron-updater.git",
+        "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
+        "axios": "^0.16.1",
+        "bufferutil": "^4.0.0",
+        "electron-dl": "^1.12.0",
+        "element-ui": "2.4.1",
+        "flyio": "^0.6.2",
+        "moment": "^2.18.1",
+        "music-metadata": "^3.1.4",
+        "sass-resources-loader": "^1.3.1",
+        "social-share.js": "^1.0.16",
+        "socket.io-client": "^2.1.1",
+        "utf-8-validate": "^5.0.1",
+        "uuid": "^3.2.1",
+        "velocity-animate": "^1.5.0",
+        "vue": "^2.5.16",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1"
     },
-    "win": {
-      "target": "nsis",
-      "icon": "build/icons/icon.ico"
+    "devDependencies": {
+        "@babel/core": "^7.0.0-beta.46",
+        "@babel/helper-module-imports": "^7.0.0-beta.52",
+        "@babel/node": "^7.0.0-beta.46",
+        "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
+        "@babel/plugin-transform-runtime": "^7.0.0-beta.46",
+        "@babel/preset-env": "^7.0.0-beta.46",
+        "@babel/register": "^7.0.0-beta.46",
+        "@babel/runtime": "^7.0.0-beta.46",
+        "babel-helper-vue-jsx-merge-props": "^2.0.3",
+        "babel-loader": "^8.0.0-beta",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "babel-plugin-transform-vue-jsx": "^3.7.0",
+        "babili-webpack-plugin": "^0.1.2",
+        "cfonts": "^1.1.3",
+        "chalk": "^2.1.0",
+        "copy-webpack-plugin": "^4.0.1",
+        "cross-env": "^5.0.5",
+        "css-loader": "^0.28.4",
+        "del": "^3.0.0",
+        "devtron": "^1.4.0",
+        "electron": "^2.0.9",
+        "electron-builder": "^19.19.1",
+        "electron-debug": "^1.4.0",
+        "electron-devtools-installer": "^2.2.0",
+        "extract-text-webpack-plugin": "^3.0.0",
+        "file-loader": "^0.11.2",
+        "html-webpack-plugin": "^2.30.1",
+        "husky": "^2.5.0",
+        "multispinner": "^0.2.1",
+        "node-loader": "^0.6.0",
+        "node-sass": "^4.5.3",
+        "prettier": "1.18.2",
+        "pretty-quick": "^1.11.1",
+        "sass-loader": "^6.0.6",
+        "style-loader": "^0.18.2",
+        "url-loader": "^0.5.9",
+        "vue-html-loader": "^1.2.4",
+        "vue-loader": "^12.2.2",
+        "vue-style-loader": "^3.0.1",
+        "vue-template-compiler": "^2.5.16",
+        "webpack": "^3.5.2",
+        "webpack-dev-server": "^2.7.1",
+        "webpack-hot-middleware": "^2.18.2",
+        "webpack-merge": "^4.1.0"
     },
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false,
-      "menuCategory": true,
-      "allowElevation": false
-    },
-    "linux": {
-      "icon": "build/icons",
-      "executableName": "MusicLake",
-      "category": "Music",
-      "target": [
-        "AppImage",
-        "deb",
-        "rpm"
-      ]
-    },
-    "appImage": {
-      "systemIntegration": "doNotAsk"
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
     }
-  },
-  "dependencies": {
-    "@suen/electron-updater": "git+https://github.com/sunzongzheng/electron-updater.git",
-    "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
-    "axios": "^0.16.1",
-    "bufferutil": "^4.0.0",
-    "electron-dl": "^1.12.0",
-    "element-ui": "2.4.1",
-    "flyio": "^0.6.2",
-    "moment": "^2.18.1",
-    "music-metadata": "^3.1.4",
-    "sass-resources-loader": "^1.3.1",
-    "social-share.js": "^1.0.16",
-    "socket.io-client": "^2.1.1",
-    "utf-8-validate": "^5.0.1",
-    "uuid": "^3.2.1",
-    "velocity-animate": "^1.5.0",
-    "vue": "^2.5.16",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0-beta.46",
-    "@babel/helper-module-imports": "^7.0.0-beta.52",
-    "@babel/node": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.46",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.46",
-    "@babel/preset-env": "^7.0.0-beta.46",
-    "@babel/register": "^7.0.0-beta.46",
-    "@babel/runtime": "^7.0.0-beta.46",
-    "babel-helper-vue-jsx-merge-props": "^2.0.3",
-    "babel-loader": "^8.0.0-beta",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-vue-jsx": "^3.7.0",
-    "babili-webpack-plugin": "^0.1.2",
-    "cfonts": "^1.1.3",
-    "chalk": "^2.1.0",
-    "copy-webpack-plugin": "^4.0.1",
-    "cross-env": "^5.0.5",
-    "css-loader": "^0.28.4",
-    "del": "^3.0.0",
-    "devtron": "^1.4.0",
-    "electron": "^2.0.9",
-    "electron-builder": "^19.19.1",
-    "electron-debug": "^1.4.0",
-    "electron-devtools-installer": "^2.2.0",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "file-loader": "^0.11.2",
-    "html-webpack-plugin": "^2.30.1",
-    "multispinner": "^0.2.1",
-    "node-loader": "^0.6.0",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.18.2",
-    "url-loader": "^0.5.9",
-    "vue-html-loader": "^1.2.4",
-    "vue-loader": "^12.2.2",
-    "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^3.5.2",
-    "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.18.2",
-    "webpack-merge": "^4.1.0"
-  }
 }
