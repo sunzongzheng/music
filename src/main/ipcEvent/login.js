@@ -1,4 +1,4 @@
-import {BrowserWindow} from 'electron'
+import { BrowserWindow } from 'electron'
 import config from '../../../config/index'
 
 export default {
@@ -23,7 +23,10 @@ export default {
             fullscreen: false,
             maximizable: false,
             minimizable: false,
-            autoHideMenuBar: true
+            autoHideMenuBar: true,
+            webPreferences: {
+                nodeIntegration: true,
+            },
         })
         this.loginWindow.setMenu(null) // 去掉windows linux下的Menu
         this.initEvent()
@@ -37,18 +40,22 @@ export default {
     })
     `)
         // 跳转事件
-        this.loginWindow.webContents.on('will-navigate', async (event, url) => {
-            // 阻止跳转
-            event.preventDefault()
-            // 将 即将跳转的url发送给登录窗口
-            this.loginWindow.webContents.send('url', url)
-            // 登录窗口请求数据 并将数据暴露出来
-            let data = await this.loginWindow.webContents.executeJavaScript(`
-      fetch(window.login_callback).then(resp => resp.json())
-      `)
-            console.log(data)
-            this.loginWindow.destroy()
-            this.mainWindow.webContents.send('loginSuccessed', data)
+        this.loginWindow.webContents.on('will-redirect', async (event, url) => {
+            const _url = new URL(url)
+            if (_url.pathname === '/auth/qq/callback') {
+                // 阻止跳转
+                event.preventDefault()
+                // 将 即将跳转的url发送给登录窗口
+                this.loginWindow.webContents.send('url', url)
+                // 登录窗口请求数据 并将数据暴露出来
+                let data = await this.loginWindow.webContents
+                    .executeJavaScript(`
+                  fetch(window.login_callback).then(resp => resp.json())
+                `)
+                console.log(data)
+                this.loginWindow.destroy()
+                this.mainWindow.webContents.send('loginSuccessed', data)
+            }
         })
-    }
+    },
 }

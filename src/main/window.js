@@ -1,4 +1,4 @@
-import {BrowserWindow} from "electron"
+import { BrowserWindow } from 'electron'
 
 // 创建主进程
 function createWindow() {
@@ -16,8 +16,9 @@ function createWindow() {
         webPreferences: {
             backgroundThrottling: false,
             webSecurity: false,
+            nodeIntegration: true,
         },
-        icon: __static + '/images/logo_256.png'
+        icon: __static + '/images/logo_256.png',
     })
     mainWindow.loadURL(winURL)
     // mainWindow.webContents.openDevTools({detach: true})
@@ -43,9 +44,10 @@ function createBackgroundWindow(parent, width, x, y) {
         show: false,
         webPreferences: {
             backgroundThrottling: false,
+            nodeIntegration: true,
             // devTools: true
         },
-        hasShadow: false
+        hasShadow: false,
     })
     backgroundWindow.loadURL(winURL)
     // linux下定时置顶
@@ -58,11 +60,16 @@ function createBackgroundWindow(parent, width, x, y) {
     return backgroundWindow
 }
 
-export default function () {
+export default function() {
     const mainWindow = createWindow()
     const rectangle = mainWindow.getBounds()
     return {
         mainWindow,
-        backgroundWindow: createBackgroundWindow(mainWindow, rectangle.width, rectangle.x, rectangle.y + rectangle.height + 16),
+        backgroundWindow: createBackgroundWindow(
+            mainWindow,
+            rectangle.width,
+            rectangle.x,
+            rectangle.y + rectangle.height + 16
+        ),
     }
 }

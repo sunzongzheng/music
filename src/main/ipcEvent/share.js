@@ -1,5 +1,5 @@
-import {BrowserWindow} from 'electron'
-import {URL} from 'url'
+import { BrowserWindow } from 'electron'
+import { URL } from 'url'
 
 export default {
     window: null,
@@ -27,8 +27,11 @@ export default {
             fullscreen: false,
             maximizable: false,
             minimizable: false,
-            autoHideMenuBar: true
+            autoHideMenuBar: true,
+            webPreferences: {
+                nodeIntegration: true,
+            },
         })
         this.window.setMenu(null) // 去掉windows linux下的Menu
-    }
+    },
 }
