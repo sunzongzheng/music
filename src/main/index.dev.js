@@ -1,4 +1,5 @@
-import { globalShortcut, BrowserWindow } from 'electron'
+import { BrowserWindow } from 'electron'
+import localShortcut from 'electron-localshortcut'
 
 function toggleDevTools(win = BrowserWindow.getFocusedWindow()) {
     if (win) {
@@ -20,13 +21,13 @@ function refresh(win = BrowserWindow.getFocusedWindow()) {
 const isMacOS = process.platform === 'darwin'
 
 require('electron').app.on('ready', () => {
-    globalShortcut.register('F12', toggleDevTools)
-    globalShortcut.register(
+    localShortcut.register('F12', toggleDevTools)
+    localShortcut.register(
         isMacOS ? 'Command+Alt+I' : 'Control+Shift+I',
         toggleDevTools
     )
-    globalShortcut.register('CommandOrControl+R', refresh)
-    globalShortcut.register('F5', refresh)
+    localShortcut.register('CommandOrControl+R', refresh)
+    localShortcut.register('F5', refresh)
 
     let installExtension = require('electron-devtools-installer')
     installExtension
