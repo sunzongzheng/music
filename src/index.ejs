@@ -5,6 +5,7 @@
     <% if (process.env.NODE_ENV === 'production' && process.env.MUSICLAKEURL && process.env.MUSICLAKEURL.startsWith('https')) { %>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <% } %>
+    <meta name="referrer" content="no-referrer" />
     <style>
         #page-loading {
             position: fixed;
