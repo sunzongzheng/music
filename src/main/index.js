@@ -7,6 +7,7 @@ import initIpcEvent from './ipcEvent'
 import initMenu from './menu'
 import axios from 'axios'
 import nodeAdapter from 'flyio/src/adapter/node'
+import URL from 'url'
 
 if (process.env.NODE_ENV !== 'development') {
     global.__static = require('path')
@@ -52,7 +53,27 @@ if (!gotTheLock) {
         }
     })
 
-    app.on('ready', createWindow)
+    app.on('ready', () => {
+        const protocol = 'musiclake'
+        if (process.platform === 'win32') {
+            app.setAsDefaultProtocolClient(protocol, process.execPath, [
+                '--protocol-launcher',
+            ])
+        } else {
+            app.setAsDefaultProtocolClient('musiclake')
+        }
+        app.on('open-url', (event, url) => {
+            event.preventDefault()
+            const { hostname, query } = URL.parse(url, true)
+            if (hostname === 'oauth' && query.accesstoken) {
+                mainWindow.webContents.send(
+                    'login-with-token',
+                    query.accesstoken
+                )
+            }
+        })
+        createWindow()
+    })
 
     app.on('window-all-closed', () => {
         if (process.platform !== 'darwin') {

@@ -62,16 +62,10 @@ export default {
         ...mapActions('hot-key', ['initGlobalShortcut']),
         ...mapMutations('c_playlist', ['cycleChange']),
         ...mapMutations('play', ['pauseChange', 'updateVolume']),
-        // 登录成功回调
-        loginSuccessed(event, info) {
-            console.log(info)
-            // 更新userInfo
-            this.$store.commit('user/update', {
-                nickname: info.nickname,
-                avatar: info.avatar,
-            })
-            // 更新token
-            this.$store.commit('token/update', info.token)
+        // token登录
+        loginWithToken(event, token) {
+            this.$store.commit('token/update', token)
+            this.$store.dispatch('user/init')
         },
         // 有更新
         updateAlert() {
@@ -91,15 +85,12 @@ export default {
     },
     created() {
         Vue.$store.dispatch('offline-playlist/init') // 初始化离线歌单
-        this.$ipc.on('loginSuccessed', this.loginSuccessed) // 监听登录成功
         this.$ipc.on('update-alert', this.updateAlert) // 监听版本更新
         this.$ipc.send('toggle-tray', this.setting.macStatusBar)
         this.$ipc.send('tray-control-volume', this.volume)
+        this.$ipc.on('login-with-token', this.loginWithToken)
         if (localStorage.token) {
             this.$store.dispatch('user/init')
-        }
-        if (!['add-to-playlist', 'share'].includes(this.$route.name)) {
-            Vue.$socket.connect() // 连接 socket
         }
         eventBus.$on('refresh', () => {
             this.refresh = true
@@ -112,15 +103,9 @@ export default {
         this.initDownload()
         this.checkNeteaseBindAvalible()
         this.checkQQBindAvalible()
-        setTimeout(() => {
-            this.$updater.__judgeUpdater(this.setting.linuxAutoUpdate)
-        }, 5000)
     },
     mounted() {
         document.body.querySelector('#page-loading').style.display = 'none'
-    },
-    beforeDestroy() {
-        Vue.$socket.disconnect()
     },
 }
 </script>

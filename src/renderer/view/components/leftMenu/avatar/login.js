@@ -3,13 +3,17 @@ import { remote } from 'electron'
 export default class Login {
     win = null
 
-    constructor(url, windowOpions) {
-        this.createWindow(windowOpions)
-        this.win.loadURL(url)
-        this.win.show()
+    constructor(url, loginWithBrowser = false) {
+        if (loginWithBrowser) {
+            remote.shell.openExternal(url + '?open_client=true')
+        } else {
+            this.createWindow()
+            this.win.loadURL(url)
+            this.win.show()
+        }
     }
 
-    createWindow(options) {
+    createWindow() {
         this.win = new remote.BrowserWindow({
             title: '授权登录',
             parent: Vue.$mainWindow,
@@ -21,7 +25,6 @@ export default class Login {
             maximizable: false,
             minimizable: false,
             autoHideMenuBar: true,
-            ...options,
         })
         // this.win.webContents.openDevTools()
         this.win.setMenu(null) // 去掉windows linux下的Menu

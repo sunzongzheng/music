@@ -7,21 +7,28 @@
             ref="popover"
             trigger="hover"
         >
-            <span @click="logout" v-if="info">退出账号</span>
-            <div :class="s.loginMethod" v-else>
-                <div @click="showLoginDialog('qq')">
-                    <Icon type="QQ"></Icon>
-                    <span>QQ</span>
+            <p @click="logout" v-if="info" :class="s.logout">退出账号</p>
+            <template v-else>
+                <div :class="s.loginMethod">
+                    <div @click="showLoginDialog('qq')">
+                        <Icon type="QQ"></Icon>
+                        <span>QQ</span>
+                    </div>
+                    <div @click="showLoginDialog('weibo')">
+                        <Icon type="weibo"></Icon>
+                        <span>微博</span>
+                    </div>
+                    <div @click="showLoginDialog('github')">
+                        <Icon type="github"></Icon>
+                        <span>Github</span>
+                    </div>
                 </div>
-                <div @click="showLoginDialog('weibo')">
-                    <Icon type="weibo"></Icon>
-                    <span>微博</span>
+                <div :class="s.loginWithBrowser">
+                    <el-checkbox v-model="loginWithBrowser"
+                        >使用你的浏览器进行登录</el-checkbox
+                    >
                 </div>
-                <div @click="showLoginDialog('github')">
-                    <Icon type="github"></Icon>
-                    <span>Github</span>
-                </div>
-            </div>
+            </template>
         </el-popover>
         <img :src="info | avatar" v-popover:popover />
         <span :class="s.nickname">{{ info | nickname }}</span>
@@ -39,6 +46,7 @@ export default {
                 logout: false,
                 login: false,
             },
+            loginWithBrowser: true,
         }
     },
     computed: {
@@ -50,7 +58,7 @@ export default {
     },
     methods: {
         showLoginDialog(type) {
-            new Login(`${config.api}/auth/${type}`)
+            new Login(`${config.api}/auth/${type}`, this.loginWithBrowser)
         },
         // 退出
         logout() {
@@ -102,7 +110,7 @@ export default {
 .avatarPopover {
     -webkit-app-region: no-drag;
 
-    span {
+    .logout {
         font-size: 12px;
         cursor: pointer;
 
@@ -134,6 +142,10 @@ export default {
                 opacity: 0.8;
             }
         }
+    }
+    .loginWithBrowser {
+        margin-top: 12px;
+        text-align: center;
     }
 }
 </style>
