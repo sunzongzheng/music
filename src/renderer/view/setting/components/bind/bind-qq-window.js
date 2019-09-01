@@ -29,6 +29,7 @@ export default {
     },
     // 初始化  事件
     initEvent() {
+        let firstFlag = true
         this.loginWindow.webContents.on('did-finish-load', () => {
             this.loginWindow.webContents.executeJavaScript(`
                 setTimeout(() => {
@@ -36,31 +37,32 @@ export default {
                 }, 500)
             `)
         })
-        const cookies = this.loginWindow.webContents.session.cookies
-        cookies.on('changed', (event, cookie, cause) => {
-            if (cookie.name === 'p_skey') {
-                cookies.get({ url: 'https://y.qq.com' }, async (error, cookies) => {
-                    if (error) {
-                        this.loginWindow.destroy()
-                        Vue.$message.warning('获取登录状态失败')
-                    } else {
-                        this.loginWindow.destroy()
-                        const cookieObject = {}
-                        const cookieStr = cookies.map(item => {
-                            cookieObject[item.name] = item.value
-                            return `${item.name}=${item.value}`
-                        }).join('; ')
-                        Vue.$store.commit('user/updateBind', {
-                            vendor: 'qq',
-                            value: {
-                                nickname: null,
-                                avatar: null,
-                                cookies: cookieStr,
-                            },
-                        })
-                        Vue.$store.dispatch('user/checkQQBindAvalible', true)
-                    }
-                })
+        const Cookies = this.loginWindow.webContents.session.cookies
+        this.loginWindow.webContents.on('did-navigate', async (event, url) => {
+            if (firstFlag) {
+                firstFlag = false
+            } else {
+                const cookies = await Cookies.get({ url: 'https://y.qq.com' })
+                const cookieObject = {}
+                const cookieStr = cookies
+                    .map(item => {
+                        cookieObject[item.name] = item.value
+                        return `${item.name}=${item.value}`
+                    })
+                    .join('; ')
+                console.log(cookieObject)
+                if (cookieObject['uin']) {
+                    this.loginWindow.destroy()
+                    Vue.$store.commit('user/updateBind', {
+                        vendor: 'qq',
+                        value: {
+                            nickname: null,
+                            avatar: null,
+                            cookies: cookieStr,
+                        },
+                    })
+                    Vue.$store.dispatch('user/checkQQBindAvalible', true)
+                }
             }
         })
     },

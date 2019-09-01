@@ -23,7 +23,7 @@
                         <span>Github</span>
                     </div>
                 </div>
-                <div :class="s.loginWithBrowser" v-if="!__LINUX__">
+                <div :class="s.loginWithBrowser" v-if="!linux">
                     <el-checkbox v-model="loginWithBrowser"
                         >使用你的浏览器进行登录</el-checkbox
                     >
@@ -41,15 +41,15 @@ import config from '../../../../../../config/index'
 
 export default {
     data() {
-        const __LINUX__ =
+        const linux =
             process.platform !== 'darwin' && process.platform !== 'win32'
         return {
             popover: {
                 logout: false,
                 login: false,
             },
-            __LINUX__,
-            loginWithBrowser: !__LINUX__,
+            linux,
+            loginWithBrowser: !linux,
         }
     },
     computed: {
