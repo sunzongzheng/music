@@ -11,25 +11,25 @@ export default {
             percentage: 0,
             qualities: [
                 {
-                    name: '标准品质',
+                    name: '128k',
                     checked: true,
                     disabled: false,
                     br: 128000,
                 },
-                // {
-                //     name: '较高品质',
-                //     checked: false,
-                //     disabled: true,
-                //     br: 192000,
-                // },
                 {
-                    name: '极高品质',
+                    name: '192k',
+                    checked: false,
+                    disabled: true,
+                    br: 192000,
+                },
+                {
+                    name: '320k',
                     checked: false,
                     disabled: true,
                     br: 320000,
                 },
                 {
-                    name: '无损品质',
+                    name: 'flac',
                     checked: false,
                     disabled: true,
                     br: 999000,
@@ -43,11 +43,12 @@ export default {
         ...mapState('lyrics', ['show', 'lyrics', 'activeIndex']),
         ...mapGetters('play', ['hasHigherQuality']),
         qualityText() {
+            console.log()
             return this.qualities.filter(item => item.checked)[0].name
         },
     },
     watch: {
-        'pause'(val) {
+        pause(val) {
             this.$ipc.send('tray-control-pause-main', val)
             this.$nextTick(() => {
                 const audio = this.$refs.audio
@@ -58,7 +59,7 @@ export default {
                 }
             })
         },
-        'info'(val) {
+        info(val) {
             this.duration = {
                 cur: 0,
                 total: 0,
@@ -95,12 +96,12 @@ export default {
                 })
             }
         },
-        'volume'(val) {
+        volume(val) {
             if (this.$refs.audio) {
                 this.$refs.audio.volume = val / 100
             }
         },
-        'duration': {
+        duration: {
             deep: true,
             handler() {
                 this.setPercentage()
@@ -130,7 +131,8 @@ export default {
             const lyric = this.lyrics
             let answer = 0
             lyric.every((item, index) => {
-                if (index < lyric.length - 1) { // 非最后一行
+                if (index < lyric.length - 1) {
+                    // 非最后一行
                     if (cur >= lyric[index][0] && cur < lyric[index + 1][0]) {
                         if (lyric[index][1].length) {
                             answer = index
@@ -143,7 +145,8 @@ export default {
                         }
                         return false
                     }
-                } else if (cur >= lyric[index][0]) { // 最后一行 & 播放进度大于最后一行的时间
+                } else if (cur >= lyric[index][0]) {
+                    // 最后一行 & 播放进度大于最后一行的时间
                     answer = index
                     return false
                 }
@@ -156,11 +159,15 @@ export default {
             }
         },
         setPercentage() {
-            this.percentage = this.duration.total ? (this.duration.cur / this.duration.total) * 100 : 0
+            this.percentage = this.duration.total
+                ? (this.duration.cur / this.duration.total) * 100
+                : 0
             this.$ipc.send('tray-control-progress', this.percentage)
         },
         pregressChange(val) {
-            this.$refs.audio && (this.$refs.audio.currentTime = val * this.duration.total / 100)
+            this.$refs.audio &&
+                (this.$refs.audio.currentTime =
+                    (val * this.duration.total) / 100)
         },
         minute(val) {
             return moment(val * 1000).format('mm:ss')
@@ -169,8 +176,13 @@ export default {
             this.duration.total = this.$refs.audio.duration
         },
         async changeQuality(index) {
-            if (this.qualities[index].disabled || this.qualities[index].checked) return
-            const data = await Vue.$musicApi.getSongUrl(this.info.vendor, this.info.songId, this.qualities[index].br)
+            if (this.qualities[index].disabled || this.qualities[index].checked)
+                return
+            const data = await Vue.$musicApi.getSongUrl(
+                this.info.vendor,
+                this.info.songId,
+                this.qualities[index].br
+            )
             if (data.status) {
                 // 先记录当前播放位置和播放状态
                 const currentTime = this.$refs.audio.currentTime
@@ -199,7 +211,8 @@ export default {
         audioError(e) {
             const qualities = this.qualities.map(item => item.br)
             const curIndex = qualities.indexOf(this.quality)
-            if (curIndex > 0) { // 高品质无法播放 且有较低资源 选择次级资源
+            if (curIndex > 0) {
+                // 高品质无法播放 且有较低资源 选择次级资源
                 for (let i = curIndex - 1; i >= 0; i--) {
                     if (this.qualities[i].disabled) {
                         continue
@@ -208,7 +221,8 @@ export default {
                         break
                     }
                 }
-            } else { // 否则直接跳下一首
+            } else {
+                // 否则直接跳下一首
                 this.next(true)
             }
         },
@@ -220,13 +234,16 @@ export default {
         this.$ipc.on('tray-control-progress', (event, val) => {
             this.pregressChange(val)
         })
-        window.onbeforeunload = (e) => {
-            localStorage.setItem('last-play-song', JSON.stringify({
-                song: this.info,
-                playlist: this.playlist,
-                progress: this.duration.cur,
-                quality: this.quality,
-            }))
+        window.onbeforeunload = e => {
+            localStorage.setItem(
+                'last-play-song',
+                JSON.stringify({
+                    song: this.info,
+                    playlist: this.playlist,
+                    progress: this.duration.cur,
+                    quality: this.quality,
+                })
+            )
         }
         let last = localStorage.getItem('last-play-song')
         if (last) {
@@ -245,11 +262,15 @@ export default {
                         url: `file://${last.song.fullpath}`,
                     })
                 } else {
-                    let data = await Vue.$musicApi.getSongUrl(last.song.vendor, last.song.songId, last.quality)
+                    let data = await Vue.$musicApi.getSongUrl(
+                        last.song.vendor,
+                        last.song.songId,
+                        last.quality
+                    )
                     if (data.status) {
                         let url = data.data.url
                         if (url) {
-                            url = url.startsWith('http') ? url : ('http://' + url)
+                            url = url.startsWith('http') ? url : 'http://' + url
                         }
                         this.update({
                             url,
