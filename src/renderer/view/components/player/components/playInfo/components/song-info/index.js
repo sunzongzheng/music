@@ -44,7 +44,7 @@ export default {
         ...mapGetters('play', ['hasHigherQuality']),
         qualityText() {
             const matched = this.qualities.find(item => item.checked)
-            return matched ? matched.name : this.quality / 1000 + 'k'
+            return matched ? matched.name : parseInt(this.quality / 1000) + 'k'
         },
     },
     watch: {
