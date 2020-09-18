@@ -7,7 +7,9 @@ export default {
     state: {
         url: null,
         pause: true,
-        volume: isNaN(localStorage.volume) ? 100 : parseInt(localStorage.volume),
+        volume: isNaN(localStorage.volume)
+            ? 100
+            : parseInt(localStorage.volume),
         info: null,
         quality: 128000,
     },
@@ -42,10 +44,7 @@ export default {
         },
     },
     actions: {
-        async play({ commit }, {
-            info,
-            playlist = null,
-        }) {
+        async play({ commit }, { info, playlist = null }) {
             // 有本地文件 直接播放本地文件
             if (info.fullpath) {
                 if (playlist) {
@@ -77,12 +76,15 @@ export default {
                 console.log(info)
                 // 首先检查ip
                 try {
-                    const { data } = await Vue.$clientApi('http://txt.go.sohu.com/ip/soip')
+                    const { data } = await Vue.$clientApi(
+                        'http://txt.go.sohu.com/ip/soip'
+                    )
                     const match = data.match(/sohu_IP_Loc_V="(.*?)"/)
                     if (match && match[1].substr(0, 2) !== 'CN') {
                         console.log(match)
                         Vue.$message({
-                            message: '当前ip来自海外,请检查是否使用了vpn,部分音乐可能无法播放',
+                            message:
+                                '当前ip来自海外,请检查是否使用了vpn,部分音乐可能无法播放',
                             duration: 5000,
                             type: 'warning',
                         })
@@ -109,13 +111,13 @@ export default {
                 let data = await Vue.$musicApi.getSongUrl(
                     info.vendor,
                     info.songId,
-                    quality,
+                    quality
                 )
                 if (data.status) {
                     Vue.$store.dispatch('lyrics/init')
                     let url = data.data.url
                     if (url) {
-                        url = url.startsWith('http') ? url : ('http://' + url)
+                        url = url.startsWith('http') ? url : 'http://' + url
                     }
                     commit('update', {
                         url,
@@ -136,7 +138,8 @@ export default {
             }
             const cycle = Vue.$store.state.c_playlist.cycle
             if (cycle === 'random') {
-                const index = parseInt(Math.random() * (songs.length - 1), 10) + 1
+                const index =
+                    parseInt(Math.random() * (songs.length - 1), 10) + 1
                 dispatch('play', {
                     info: songs[index],
                     playlist: songs,
@@ -148,10 +151,19 @@ export default {
                 })
             }
         },
+        pause({ commit }) {
+            commit('update', {
+                pause: true,
+            })
+        },
     },
     getters: {
         hasHigherQuality(state) {
-            return state.info && state.info.quality && (state.info.quality['320'] || state.info.quality['999'])
+            return (
+                state.info &&
+                state.info.quality &&
+                (state.info.quality['320'] || state.info.quality['999'])
+            )
         },
     },
 }

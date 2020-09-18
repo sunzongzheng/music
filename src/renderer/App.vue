@@ -62,6 +62,7 @@ export default {
         ...mapActions('hot-key', ['initGlobalShortcut']),
         ...mapMutations('c_playlist', ['cycleChange']),
         ...mapMutations('play', ['pauseChange', 'updateVolume']),
+        ...mapActions('play', ['pause']),
         // token登录
         loginWithToken(event, token) {
             this.$store.commit('token/update', token)
@@ -103,6 +104,7 @@ export default {
         this.initDownload()
         this.checkNeteaseBindAvalible()
         this.checkQQBindAvalible()
+        navigator.mediaDevices.addEventListener('devicechange', this.pause)
     },
     mounted() {
         document.body.querySelector('#page-loading').style.display = 'none'
