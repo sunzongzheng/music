@@ -115,7 +115,7 @@
         "css-loader": "^0.28.4",
         "del": "^3.0.0",
         "devtron": "^1.4.0",
-        "electron": "^5.0.5",
+        "electron": "^7.2.4",
         "electron-builder": "^20.44.4",
         "electron-devtools-installer": "^2.2.4",
         "extract-text-webpack-plugin": "^3.0.0",
