@@ -78,7 +78,8 @@ export default {
                 Vue.$ipc.send('download-btn', {
                     url: data.data.url,
                     filename: song.name + '.mp3',
-                    id
+                    id,
+                    directory: Vue.$store.state.user.setting.downloadedSongsFolders
                 })
                 commit('addDownloading', {
                     ...song,

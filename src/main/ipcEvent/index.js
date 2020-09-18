@@ -71,7 +71,7 @@ export default function(mainWindow, backgroundWindow, touchBar) {
     ipcMain.on('download-btn', (e, args) => {
         download(mainWindow, args.url, {
             filename: args.filename,
-            directory: `${app.getPath('music')}/音乐湖`,
+            directory: args.directory,
             onProgress(progress) {
                 mainWindow.webContents.send('download-onProgress', {
                     id: args.id,

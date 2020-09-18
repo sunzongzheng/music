@@ -7,6 +7,7 @@
         <top-menu v-if="platform === 'darwin'"></top-menu>
         <hot-key></hot-key>
         <local-songs-folder></local-songs-folder>
+        <downloaded-songs-folder></downloaded-songs-folder>
         <proxy></proxy>
         <statistics></statistics>
         <version></version>
@@ -25,6 +26,7 @@
     import quality from './components/quality.vue'
     import bind from './components/bind/index.vue'
     import localSongsFolder from './components/local-songs-folder.vue'
+    import downloadedSongsFolder from './components/downloaded-songs-folder.vue'
     import proxy from './components/proxy.vue'
 
     export default {
@@ -40,6 +42,7 @@
             quality,
             bind,
             localSongsFolder,
+            downloadedSongsFolder,
             proxy
         },
         computed: {

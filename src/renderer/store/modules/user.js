@@ -12,6 +12,7 @@ const defaultSetting = {
     localSongsFolders: [ // 本地歌曲 扫描路径
         path.join(app.getPath('music'), '音乐湖'),
     ],
+    downloadedSongsFolders: path.join(app.getPath('music'), '音乐湖'),
     bind: {
         netease: {
             nickname: null,
