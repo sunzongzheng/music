@@ -1,7 +1,7 @@
-import {remote} from 'electron'
+import { remote } from 'electron'
 import fly from 'flyio'
 
-const {app} = remote
+const { app } = remote
 const path = remote.require('path')
 
 const defaultSetting = {
@@ -9,10 +9,11 @@ const defaultSetting = {
     macStatusBar: true, // mac状态栏
     messageAlert: false, // 消息提示音
     quality: 128000, // 优先试听音质
-    localSongsFolders: [ // 本地歌曲 扫描路径
+    localSongsFolders: [
+        // 本地歌曲 扫描路径
         path.join(app.getPath('music'), '音乐湖'),
     ],
-    downloadedSongsFolders: path.join(app.getPath('music'), '音乐湖'),
+    downloadedSongsFolder: path.join(app.getPath('music'), '音乐湖'),
     bind: {
         netease: {
             nickname: null,
@@ -25,7 +26,7 @@ const defaultSetting = {
             cookies: null,
         },
     },
-    proxy: null
+    proxy: null,
 }
 let savedSetting = JSON.parse(localStorage.getItem('userSetting'))
 if (savedSetting) {
@@ -41,21 +42,27 @@ if (savedSetting) {
 const NETEASE_LOGIN_COOKIE = '@suen/music-api-netease-login-cookie'
 const QQ_LOGIN_COOKIE = '@suen/music-api-qq-login-cookie'
 
-const cacheSetting = (val) => {
+const cacheSetting = val => {
     localStorage.setItem('userSetting', JSON.stringify(val))
     if (val.bind.netease.cookies) {
-        localStorage.setItem(NETEASE_LOGIN_COOKIE, JSON.stringify(val.bind.netease.cookies))
+        localStorage.setItem(
+            NETEASE_LOGIN_COOKIE,
+            JSON.stringify(val.bind.netease.cookies)
+        )
     } else {
         localStorage.removeItem(NETEASE_LOGIN_COOKIE)
     }
     if (val.bind.qq.cookies) {
-        localStorage.setItem(QQ_LOGIN_COOKIE, JSON.stringify(val.bind.qq.cookies))
+        localStorage.setItem(
+            QQ_LOGIN_COOKIE,
+            JSON.stringify(val.bind.qq.cookies)
+        )
     } else {
         localStorage.removeItem(QQ_LOGIN_COOKIE)
     }
 }
 
-const setProxy = (val) => {
+const setProxy = val => {
     console.log('setProxy', val)
     const proxy = `http://${val}`
     const vendors = ['qq', 'netease', 'xiami']
@@ -103,7 +110,7 @@ export default {
             }
             cacheSetting(state.setting)
         },
-        updateBind(state, {vendor, value}) {
+        updateBind(state, { vendor, value }) {
             state.setting.bind[vendor] = value
             cacheSetting(state.setting)
         },
@@ -116,17 +123,17 @@ export default {
         },
     },
     actions: {
-        async init({commit}) {
+        async init({ commit }) {
             const data = await Vue.$http.get('/user')
             commit('update', data)
         },
-        logout({commit}, msg = true) {
+        logout({ commit }, msg = true) {
             commit('update', null)
             Vue.$store.commit('token/clear')
             msg && Vue.$message.success('退出成功')
         },
         // 检查更新
-        async checkUpdate({state}) {
+        async checkUpdate({ state }) {
             try {
                 if (state.setting.linuxAutoUpdate) {
                     await Vue.$updater.checkForUpdatesAndNotify()
@@ -134,7 +141,10 @@ export default {
                     const needUpdate = await Vue.$updater.checkUpdate()
                     if (needUpdate) {
                         // osx 或 windows 使用默认的更新
-                        if (process.platform === 'darwin' || process.platform === 'win32') {
+                        if (
+                            process.platform === 'darwin' ||
+                            process.platform === 'win32'
+                        ) {
                             Vue.$updater.updateAvailableCallback()
                         } else {
                             Vue.$mainWindow.webContents.send('update-alert')
@@ -149,18 +159,28 @@ export default {
             }
         },
         // 检查网易云绑定账号 登录状态
-        async checkNeteaseBindAvalible({getters, commit, state}, toastError = false) {
+        async checkNeteaseBindAvalible(
+            { getters, commit, state },
+            toastError = false
+        ) {
             if (getters.bind.netease) {
-                const res = await fly.get('http://music.163.com', {}, {
-                    headers: {
-                        Host: 'music.163.com',
-                        Referer: 'https://music.163.com/',
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
-                        Cookie: state.setting.bind.netease.cookies,
-                    },
-                    rejectUnauthorized: false,
-                })
-                const profile = eval(`(${/GUser\s*=\s*([^;]+);/.exec(res.data)[1]})`)
+                const res = await fly.get(
+                    'http://music.163.com',
+                    {},
+                    {
+                        headers: {
+                            Host: 'music.163.com',
+                            Referer: 'https://music.163.com/',
+                            'User-Agent':
+                                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+                            Cookie: state.setting.bind.netease.cookies,
+                        },
+                        rejectUnauthorized: false,
+                    }
+                )
+                const profile = eval(
+                    `(${/GUser\s*=\s*([^;]+);/.exec(res.data)[1]})`
+                )
                 if (!profile.nickname && toastError) {
                     commit('unBind', 'netease')
                     Vue.$message.warning('获取登录状态失败')
@@ -179,7 +199,10 @@ export default {
             }
         },
         // 检查QQ音乐绑定账号 登录状态
-        async checkQQBindAvalible({getters, commit, state}, toastError = false) {
+        async checkQQBindAvalible(
+            { getters, commit, state },
+            toastError = false
+        ) {
             if (getters.bind.qq) {
                 const data = await Vue.$musicApi.qq.getUserInfo()
                 if (data.status) {
@@ -198,7 +221,7 @@ export default {
             } else {
                 commit('unBind', 'qq')
             }
-        }
+        },
     },
     getters: {
         bind(state) {

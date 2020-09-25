@@ -74,6 +74,7 @@ export default {
     },
     computed: {
         ...mapState('download', ['downloaded', 'downloading']),
+        ...mapState('user', ['setting']),
     },
     methods: {
         ...mapMutations('download', [
@@ -81,7 +82,7 @@ export default {
             'removeFromDownloading',
         ]),
         openDownloadFolder() {
-            shell.showItemInFolder(`${remote.app.getPath('music')}/音乐湖`)
+            shell.showItemInFolder(this.setting.downloadedSongsFolder)
         },
     },
 }
