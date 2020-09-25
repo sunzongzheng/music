@@ -22,6 +22,7 @@ export default {
             autoHideMenuBar: true,
             webPreferences: {
                 sandbox: true,
+                partition: Math.random().toString(),
             },
         })
         this.loginWindow.setMenu(null) // 去掉windows linux下的Menu
