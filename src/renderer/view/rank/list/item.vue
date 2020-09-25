@@ -1,12 +1,15 @@
 <template>
-    <li :class="{ [s.item]: true, [s.onlyCover]: info && !info.list.length }">
+    <li
+        :class="{ [s.item]: true, [s.onlyCover]: info && !info.list.length }"
+        @click="go2RankList"
+    >
         <template v-if="info">
             <div :class="s.cover">
                 <div :class="s.play">
                     <play-loading v-if="loading"></play-loading>
                     <Icon
                         type="play1"
-                        @click="playList"
+                        @click.stop="playList"
                         :class="s.icon"
                         v-else
                     ></Icon>
@@ -15,7 +18,7 @@
             <div :class="s.img">
                 <img :src="info.cover | image(vendor, -1)" />
             </div>
-            <ul :class="s.songs" @click="go2RankList" v-if="list.length">
+            <ul :class="s.songs" v-if="list.length">
                 <li v-for="(song, index) in list" :class="s.song">
                     <span>{{ index + 1 }}</span>
                     <span>{{ song.name }}</span
@@ -121,6 +124,7 @@ export default {
         transition: all 0.2s;
         text-align: center;
         user-select: none;
+        cursor: pointer;
         .play {
             display: none;
             position: absolute;
@@ -132,7 +136,6 @@ export default {
             align-items: center;
             justify-content: center;
             .icon {
-                cursor: pointer;
                 color: white;
                 font-size: 40px;
                 padding: 8px;
