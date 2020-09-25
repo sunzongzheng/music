@@ -3,7 +3,7 @@ import uuid from 'uuid/v1'
 
 const fs = remote.require('fs')
 const path = remote.require('path')
-const mm = require('music-metadata/lib/index')
+const mm = require('music-metadata')
 
 export default {
     namespaced: true,
@@ -34,17 +34,21 @@ export default {
                             filename.endsWith('flac')
                         ) {
                             const metadata = await mm.parseFile(filepath)
+                            const { common } = metadata
+                            console.log(metadata)
                             const bitrate = metadata.format.bitrate || 128000
                             commit('add', {
-                                name: filename.substring(
-                                    0,
-                                    filename.lastIndexOf('.')
-                                ),
+                                name:
+                                    common.title ||
+                                    filename.substring(
+                                        0,
+                                        filename.lastIndexOf('.')
+                                    ),
                                 album: {
-                                    name: metadata.common.album,
+                                    name: common.album,
                                 },
-                                artists: metadata.common.artists
-                                    ? metadata.common.artists.map(name => {
+                                artists: common.artists
+                                    ? common.artists.map(name => {
                                           return {
                                               name,
                                           }

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 Vue.filter('source', val => {
     return {
@@ -32,10 +32,10 @@ Vue.filter('defaultAlbum', info => {
     }
 })
 Vue.filter('date', (val, format = 'YYYY-MM-DD') => {
-    return moment(val).format(format)
+    return dayjs(val).format(format)
 })
 Vue.filter('dateDiff', (val, format) => {
-    return moment(val).fromNow()
+    return dayjs(val).fromNow()
 })
 Vue.filter('keyboardChar', val => {
     if (!val) return ''

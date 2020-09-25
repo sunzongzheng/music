@@ -1,4 +1,4 @@
-import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import Velocity from 'velocity-animate'
 
 export default {
@@ -8,18 +8,27 @@ export default {
             timer: null,
             showComment: false,
             singleLyric: '',
-            placeholder: '暂无歌词信息...'
+            placeholder: '暂无歌词信息...',
         }
     },
     computed: {
-        ...mapState('lyrics', ['show', 'loading', 'lyrics', 'activeIndex', 'showTranslate', 'translate']),
+        ...mapState('lyrics', [
+            'show',
+            'loading',
+            'lyrics',
+            'activeIndex',
+            'showTranslate',
+            'translate',
+        ]),
         ...mapGetters('lyrics', ['hasTranslation']),
         ...mapState('play', ['info']),
         ...mapState('windowStatus', ['status']),
         style() {
             if (this.info) {
                 return {
-                    'background-image': `url(${Vue.filter('defaultAlbum')(this.info)})`
+                    'background-image': `url(${Vue.filter('defaultAlbum')(
+                        this.info
+                    )})`,
                 }
             } else {
                 return {}
@@ -27,7 +36,7 @@ export default {
         },
         mainStyle() {
             return {
-                width: this.showComment ? '60%' : '100%'
+                width: this.showComment ? '60%' : '100%',
             }
         },
     },
@@ -62,14 +71,14 @@ export default {
             this.$nextTick(() => {
                 this.handleLyric(false)
             })
-        }
+        },
     },
     methods: {
         ...mapActions('lyrics', ['init']),
         ...mapMutations('lyrics', ['update']),
         close() {
             this.update({
-                show: false
+                show: false,
             })
         },
         scrollBarWheel() {
@@ -79,7 +88,9 @@ export default {
             }
             this.timer = window.setTimeout(() => {
                 const main = this.$refs.main
-                main.scrollTop = main.children[this.activeIndex].offsetTop - main.offsetHeight / 2
+                main.scrollTop =
+                    main.children[this.activeIndex].offsetTop -
+                    main.offsetHeight / 2
                 this.userScrolling = false
             }, 2000)
         },
@@ -90,7 +101,7 @@ export default {
             if (this.lyrics.length < 1) {
                 this.$ipc.send('tray-control-lyrics', {
                     text: this.placeholder,
-                    time: 0
+                    time: 0,
                 })
                 return
             }
@@ -99,14 +110,15 @@ export default {
             if (!singleLyric) return
             // 先计算当前句 和 下一句 的时间差
             let time = 0
-            if (index === lyric.length - 1) { // 如果是最后一行 就默认10s吧，没有可靠的逻辑
+            if (index === lyric.length - 1) {
+                // 如果是最后一行 就默认10s吧，没有可靠的逻辑
                 time = 10 * 1000
             } else {
                 time = lyric[index + 1][0] - lyric[index][0]
             }
             this.$ipc.send('tray-control-lyrics', {
                 text: singleLyric,
-                time
+                time,
             })
         },
         // 跳转至评论页
@@ -117,11 +129,11 @@ export default {
                     id: this.info.songId,
                 },
                 query: {
-                    vendor: this.info.vendor
-                }
+                    vendor: this.info.vendor,
+                },
             })
             this.update({
-                show: false
+                show: false,
             })
         },
         // 处理歌词
@@ -130,21 +142,28 @@ export default {
             if (main && main.children[this.activeIndex]) {
                 // 传递到状态栏
                 transfer && this.transfer(this.activeIndex)
-                const need = main.children[this.activeIndex].offsetTop - main.offsetHeight / 2
+                const need =
+                    main.children[this.activeIndex].offsetTop -
+                    main.offsetHeight / 2
                 // 是否打开了歌词面板
                 if (this.show) {
                     // 判断是否用户处于滚动浏览中
                     if (!this.userScrolling) {
                         if (need !== main.scrollTop) {
                             Velocity(main, 'stop')
-                            Velocity(main, 'scroll', {
-                                container: main,
-                                duration: 300,
-                                offset: need - main.scrollTop
-                            })
+                            Velocity(
+                                main,
+                                {
+                                    scrollTop: need + 'px',
+                                },
+                                {
+                                    duration: 300,
+                                }
+                            )
                         }
                     }
-                } else { // 未打开的话则不用缓动歌词
+                } else {
+                    // 未打开的话则不用缓动歌词
                     Velocity(main, 'stop')
                     this.$nextTick(() => {
                         main.scrollTop = need
@@ -154,8 +173,8 @@ export default {
         },
         toggleTranslate() {
             this.update({
-                showTranslate: !this.showTranslate
+                showTranslate: !this.showTranslate,
             })
-        }
-    }
+        },
+    },
 }

@@ -1,4 +1,4 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import eventBus from '../../eventBus/chat'
 import alertResource from '../../assets/alert.mp3'
 
@@ -28,7 +28,9 @@ export default {
             try {
                 const data = await Vue.$http.get('/chat-history', {
                     params: {
-                        start_dt: moment().subtract(3, 'day').format('YYYY-MM-DD 00:00:00'),
+                        start_dt: dayjs()
+                            .subtract(3, 'day')
+                            .format('YYYY-MM-DD 00:00:00'),
                     },
                 })
                 const chatHistory = data.concat(state.chatHistory)
@@ -36,19 +38,24 @@ export default {
                     chatHistory,
                     readIndex: chatHistory.length,
                 })
-            } catch (e) {
-            }
+            } catch (e) {}
         },
         isSelf(store, user) {
             const userInfo = Vue.$store.state.user.info
             if (!userInfo) return true
-            return user.nickname === userInfo.nickname && user.avatar === userInfo.avatar
+            return (
+                user.nickname === userInfo.nickname &&
+                user.avatar === userInfo.avatar
+            )
         },
         addChatHistory({ state, commit, dispatch }, val) {
             commit('addChatHistory', val)
             if (val.type === 'system') {
                 commit('setReadIndex', state.readIndex + 1)
-            } else if (Vue.$store.state.user.setting.messageAlert && !(dispatch('isSelf', val.userInfo))) {
+            } else if (
+                Vue.$store.state.user.setting.messageAlert &&
+                !dispatch('isSelf', val.userInfo)
+            ) {
                 const alert = document.createElement('audio')
                 alert.src = alertResource
                 alert.autoplay = true
