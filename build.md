@@ -7,8 +7,10 @@
 ### 打包
 
 -   打包命令：(不推荐用npm)
-`yarn`
-`yarn run build`
+```
+yarn
+yarn run build
+```
 
 构建当前操作系统可用的程序，生成的文件在 release 文件夹内，具体打包参数见[https://www.electron.build/](https://www.electron.build/)
 
