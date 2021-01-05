@@ -79,7 +79,7 @@
     "dependencies": {
         "@suen/electron-updater": "git+https://github.com/sunzongzheng/electron-updater.git",
         "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
-        "axios": "^0.20.0",
+        "axios": "^0.21.1",
         "bufferutil": "^4.0.0",
         "dayjs": "^1.8.36",
         "electron-dl": "^3.0.2",
