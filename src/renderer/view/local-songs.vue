@@ -2,13 +2,15 @@
     <div :class="s.localSongs">
         <div :class="s.top">
             <p :class="s.title">本地歌曲</p>
-            <p :class="s.sub">当前设置的扫描路径：{{setting.localSongsFolders.join('、')}}</p>
+            <p :class="s.sub">
+                当前设置的扫描路径：{{ setting.localSongsFolders.join('、') }}
+            </p>
         </div>
-        <data-table :data="songs"
-                    :show-vendor="false"
-                    :contextMenu="false"
-                    :canDownload="false"
-                    :showLike="false"
+        <data-table
+            :data="songs"
+            :show-vendor="false"
+            :contextMenu="false"
+            :canDownload="false"
         ></data-table>
         <!--<el-table :data="songs"-->
         <!--style="width: 100%; margin-top: 16px;"-->
@@ -32,40 +34,40 @@
     </div>
 </template>
 <script>
-    import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
-    export default {
-        data() {
-            return {
-                loading: false,
-            }
-        },
-        computed: {
-            ...mapState('user', ['setting']),
-            ...mapState('local-songs', ['songs']),
-        },
-        methods: {
-            ...mapActions('local-songs', ['refresh']),
-        },
-        created() {
-            this.loading = true
-            this.refresh()
-            this.loading = false
-        },
-    }
+export default {
+    data() {
+        return {
+            loading: false,
+        }
+    },
+    computed: {
+        ...mapState('user', ['setting']),
+        ...mapState('local-songs', ['songs']),
+    },
+    methods: {
+        ...mapActions('local-songs', ['refresh']),
+    },
+    created() {
+        this.loading = true
+        this.refresh()
+        this.loading = false
+    },
+}
 </script>
 <style lang="scss" module="s">
-    .localSongs {
-        .top {
-            padding: 16px 24px;
-            .title {
-                font-size: 22px;
-                color: $color-title;
-            }
-            .sub {
-                color: $color-sub;
-                font-size: 12px;
-            }
+.localSongs {
+    .top {
+        padding: 16px 24px;
+        .title {
+            font-size: 22px;
+            color: $color-title;
+        }
+        .sub {
+            color: $color-sub;
+            font-size: 12px;
         }
     }
+}
 </style>
