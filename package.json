@@ -1,6 +1,6 @@
 {
     "name": "player",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "author": "sunzongzheng <sunzongzhengwy@163.com>",
     "description": "A player",
     "license": "CC0-1.0",
@@ -71,9 +71,6 @@
                 "deb",
                 "rpm"
             ]
-        },
-        "appImage": {
-            "systemIntegration": "doNotAsk"
         }
     },
     "dependencies": {
@@ -116,7 +113,7 @@
         "del": "^3.0.0",
         "devtron": "^1.4.0",
         "electron": "^5.0.5",
-        "electron-builder": "^20.44.4",
+        "electron-builder": "22.9.1",
         "electron-devtools-installer": "^2.2.4",
         "extract-text-webpack-plugin": "^3.0.0",
         "file-loader": "^0.11.2",
