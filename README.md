@@ -1,6 +1,6 @@
-# music player [![Build Status](https://travis-ci.org/sunzongzheng/music.svg?branch=master)](https://travis-ci.org/sunzongzheng/music)
+# 音乐湖 PC 端 ![Build Status](https://github.com/sunzongzheng/music/workflows/Build/release/badge.svg)
 
-# 由于收到网易云音乐和 QQ 音乐的警告函，在线服务已关闭，可继续使用离线歌单，有服务器资源可自行搭建云歌单，所有代码均已开源。打包介绍见[build.md](build.md)
+# 由于收到网易云音乐和 QQ 音乐的警告函，登录/云歌单服务已关闭，可继续使用离线歌单，有服务器资源可自行搭建云歌单，所有代码均已开源。打包介绍见[build.md](build.md)
 
 ## 简介
 
@@ -10,10 +10,7 @@
 -   安卓客户端详见[caiyonglong/MusicLake](https://github.com/caiyonglong/MusicLake)
 -   登录、收藏、播放的流程基本没问题，可作为日用上班挂后台听歌程序
 -   精力有限，需求不饱和都会逐步完善，有兴趣可赏个 star 静等完善与 bug 修复，期望的功能也可提 issues
--   [更新日志](https://github.com/sunzongzheng/music/blob/master/CHANGELOG.md)
--   [下载页](https://github.com/sunzongzheng/music/releases)
--   [版本计划](https://github.com/sunzongzheng/music/projects)
--   交流群：[telegram](https://t.me/joinchat/JSPZKxJmhbE8OkzaYc7BaA)、[QQ](https://jq.qq.com/?_wv=1027&k=5xPZe7V)
+-   [代码架构图](screenshot/code-architecture.png)
 
 ## Feature
 
@@ -29,17 +26,6 @@
 -   Mac 状态栏歌词 / TouchBar 播放控制 / 桌面歌词
 -   快键键 / 全局快捷键
 -   社会化分享：QQ、微博、微信等
-
-## 版权声明
-
-“QQ”、“QQ 音乐”及企鹅形象等文字、图形和商业标识，其著作权或商标权归腾讯公司所有。 QQ 音乐享有对其平台授权音乐的版权，请勿随意下载，复制版权内容。具体内容请参考 QQ 音乐用户协议。
-
-> 为了尽可能不侵害音乐平台的版权，本程序做到了以下
-
--   不允许试听被限制的歌曲
--   不允许下载被限制的歌曲
--   分享使用原生 h5 分享，连文案都一样 :smirk:
--   所有搜索结果均注明来源音乐平台
 
 ## 关联项目
 
@@ -79,4 +65,4 @@
 
 -   支付宝:
 
-![支付宝](screenshot/donate-alipay.jpg)
+![支付宝](screenshot/donate-alipay.png)
