@@ -43,13 +43,4 @@ const template = [
 export default function initMenu() {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
-    // 设置一个复杂的组合键打开控制台 方便调试
-    const res = globalShortcut.register('Control+Q+W+E+R', () => {
-        global.mainWindow.webContents.openDevTools({ mode: 'detach' })
-    })
-    if (res) {
-        console.log(`控制台组合键注册成功`)
-    } else {
-        console.log(`控制台组合键注册失败`)
-    }
 }
