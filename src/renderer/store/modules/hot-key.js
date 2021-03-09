@@ -95,8 +95,8 @@ const meta = [
     },
     {
         keyCode: 222,
-        char: '\'',
-        registerKey: '\'',
+        char: "'",
+        registerKey: "'",
     },
     {
         keyCode: 219,
@@ -210,7 +210,6 @@ export default {
     mutations: {
         updateHotKey(state, { index, type, val }) {
             state.hotKey[index][type] = val
-            Vue.$store.dispatch('menu/init')
             localStorage.hotKey = JSON.stringify(state.hotKey)
         },
         resetHotKey(state) {
@@ -222,7 +221,10 @@ export default {
             if (val) {
                 systemGlobalShortcut.concat(state.hotKey).forEach(single => {
                     const res = globalShortcut.register(single.global, () => {
-                        Vue.$store.dispatch('hot-key/hotKeyControl', single.value)
+                        Vue.$store.dispatch(
+                            'hot-key/hotKeyControl',
+                            single.value
+                        )
                     })
                     if (res) {
                         console.log(`${single.global}注册成功`)
@@ -277,13 +279,21 @@ export default {
                     eventBus.$emit('focus')
             }
         },
-        initGlobalShortcut({state, commit}) {
+        initGlobalShortcut({ state, commit }) {
             commit('updateEnableGlobal', state.enableGlobal)
         },
         reset({ commit }) {
             commit('resetHotKey')
             commit('updateEnableGlobal', false)
             Vue.$store.dispatch('menu/init')
+        },
+        updateHotKey({ commit, dispatch }, payload) {
+            commit('updateHotKey', payload)
+            if (payload.type === 'global') {
+                dispatch('initGlobalShortcut')
+            } else {
+                Vue.$store.dispatch('menu/init')
+            }
         },
     },
     getters: {
