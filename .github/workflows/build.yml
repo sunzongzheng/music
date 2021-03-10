@@ -29,6 +29,8 @@ jobs:
                   # GitHub token, automatically provided to the action
                   # (No need to define this secret in the repo settings)
                   github_token: ${{ secrets.github_token }}
+                  mac_certs: ${{ secrets.CSC_LINK }}
+                  mac_certs_password: ${{ secrets.CSC_KEY_PASSWORD }}
 
                   # If the commit is tagged with a version (e.g. "v1.0.0"),
                   # release the app after building
