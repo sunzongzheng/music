@@ -1,20 +1,23 @@
-import config from '../../../config'
 import axios from 'axios'
 import Vue from 'vue'
 
 const instance = axios.create({
-    baseURL: config.api,
     timeout: 30000,
 })
-instance.interceptors.request.use(function(config) {
-    const token = localStorage.token
-    if (token) {
-        config.headers.accesstoken = token
+instance.interceptors.request.use(
+    function(config) {
+        const token = localStorage.token
+        if (token) {
+            config.headers.accesstoken = token
+        }
+        const apiAddress = Vue.$store.state.user.setting.apiAddress || ''
+        config.url = apiAddress + config.url
+        return config
+    },
+    function(error) {
+        return Promise.reject(error)
     }
-    return config
-}, function(error) {
-    return Promise.reject(error)
-})
+)
 instance.interceptors.response.use(
     response => response.data,
     e => {
@@ -33,6 +36,7 @@ instance.interceptors.response.use(
             Vue.$message.warning('请检查网络连接')
         }
         return Promise.reject(e)
-    })
+    }
+)
 
 export default instance

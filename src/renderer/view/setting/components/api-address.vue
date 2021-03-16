@@ -1,15 +1,12 @@
 <template>
-    <menu-item title="代理">
+    <menu-item title="云歌单服务地址">
         <el-input
-            placeholder="host:port"
-            v-model="proxy"
+            placeholder="请输入完整地址"
+            v-model="apiAddress"
             size="small"
             clearable
-            style="width: 450px; margin-top: -8px;"
+            style="width: 450px; margin-top: -6px;"
         >
-            <template slot="prepend"
-                >http://</template
-            >
             <el-button slot="append" @click="submit">确定</el-button>
         </el-input>
     </menu-item>
@@ -24,7 +21,7 @@ export default {
     },
     data() {
         return {
-            proxy: Vue.$store.state.user.setting.proxy,
+            apiAddress: Vue.$store.state.user.setting.apiAddress,
         }
     },
     computed: {
@@ -34,7 +31,7 @@ export default {
         ...mapMutations('user', ['updateSetting']),
         submit() {
             this.updateSetting({
-                proxy: this.proxy,
+                apiAddress: this.apiAddress,
             })
             this.$message.success('设置成功')
         },

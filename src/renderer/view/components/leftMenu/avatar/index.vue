@@ -37,7 +37,6 @@
 <script>
 import { mapState } from 'vuex'
 import Login from './login'
-import config from '../../../../../../config/index'
 
 export default {
     data() {
@@ -53,7 +52,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('user', ['info']),
+        ...mapState('user', ['info', 'setting']),
     },
     filters: {
         avatar: info => (info ? info.avatar : require('@/assets/user.png')),
@@ -61,7 +60,10 @@ export default {
     },
     methods: {
         showLoginDialog(type) {
-            new Login(`${config.api}/auth/${type}`, this.loginWithBrowser)
+            new Login(
+                `${this.setting.apiAddress || ''}/auth/${type}`,
+                this.loginWithBrowser
+            )
         },
         // 退出
         logout() {

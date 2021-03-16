@@ -1,6 +1,5 @@
-import io from "socket.io-client"
+import io from 'socket.io-client'
 import eventBus from '../eventBus/chat'
-import config from '../../../config'
 
 export default {
     socket: null,
@@ -20,15 +19,15 @@ export default {
                 platform = 'linux'
                 break
         }
-        this.socket = io(config.socket, {
+        this.socket = io(Vue.$store.state.user.setting.socketAddress, {
             transportOptions: {
                 polling: {
                     extraHeaders: {
                         accesstoken: localStorage.token || '',
-                        platform
-                    }
-                }
-            }
+                        platform,
+                    },
+                },
+            },
         })
         this.initEvent()
     },
@@ -42,24 +41,24 @@ export default {
     },
     initEvent() {
         const store = Vue.$store
-        this.socket.on('error', (error) => {
+        this.socket.on('error', error => {
             console.warn(error)
         })
-        const isSelf = (user) => {
+        const isSelf = user => {
             return store.dispatch('socket/isSelf', user)
         }
         // 在线总人数
         this.socket.on('online total', total => {
             console.log('online total: ', total)
             store.commit('socket/update', {
-                onlineTotal: total
+                onlineTotal: total,
             })
         })
         // 在线登录用户
         this.socket.on('online users', users => {
             console.log('online users', users)
             store.commit('socket/update', {
-                onlineUsers: users
+                onlineUsers: users,
             })
         })
         // 有人上线
@@ -96,5 +95,5 @@ export default {
     },
     on() {
         this.socket.on(...arguments)
-    }
+    },
 }

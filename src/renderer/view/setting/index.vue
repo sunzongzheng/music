@@ -8,6 +8,8 @@
         <hot-key></hot-key>
         <local-songs-folder></local-songs-folder>
         <downloaded-songs-folder></downloaded-songs-folder>
+        <api-address></api-address>
+        <socket-address></socket-address>
         <proxy></proxy>
         <statistics></statistics>
         <version></version>
@@ -15,60 +17,64 @@
     </div>
 </template>
 <script>
-    import menuItem from './components/menu-item.vue'
-    import hotKey from './components/hot-key.vue'
-    import topMenu from './components/topMenu.vue'
-    import linuxAutoUpdate from './components/linuxAutoUpdate.vue'
-    import version from './components/version.vue'
-    import statistics from './components/statictics.vue'
-    import debug from './components/debug.vue'
-    import messageAlert from './components/message-alert.vue'
-    import quality from './components/quality.vue'
-    import bind from './components/bind/index.vue'
-    import localSongsFolder from './components/local-songs-folder.vue'
-    import downloadedSongsFolder from './components/downloaded-songs-folder.vue'
-    import proxy from './components/proxy.vue'
+import menuItem from './components/menu-item.vue'
+import hotKey from './components/hot-key.vue'
+import topMenu from './components/topMenu.vue'
+import linuxAutoUpdate from './components/linuxAutoUpdate.vue'
+import version from './components/version.vue'
+import statistics from './components/statictics.vue'
+import debug from './components/debug.vue'
+import messageAlert from './components/message-alert.vue'
+import quality from './components/quality.vue'
+import bind from './components/bind/index.vue'
+import localSongsFolder from './components/local-songs-folder.vue'
+import downloadedSongsFolder from './components/downloaded-songs-folder.vue'
+import proxy from './components/proxy.vue'
+import apiAddress from './components/api-address.vue'
+import socketAddress from './components/socket-address.vue'
 
-    export default {
-        components: {
-            topMenu,
-            menuItem,
-            hotKey,
-            linuxAutoUpdate,
-            version,
-            statistics,
-            debug,
-            messageAlert,
-            quality,
-            bind,
-            localSongsFolder,
-            downloadedSongsFolder,
-            proxy
-        },
-        computed: {
-            platform() {
-                switch (process.platform) {
-                    case 'darwin':
-                        return 'darwin'
-                    case 'win32':
-                        return 'win32'
-                    default:
-                        return 'linux'
-                }
+export default {
+    components: {
+        topMenu,
+        menuItem,
+        hotKey,
+        linuxAutoUpdate,
+        version,
+        statistics,
+        debug,
+        messageAlert,
+        quality,
+        bind,
+        localSongsFolder,
+        downloadedSongsFolder,
+        proxy,
+        apiAddress,
+        socketAddress,
+    },
+    computed: {
+        platform() {
+            switch (process.platform) {
+                case 'darwin':
+                    return 'darwin'
+                case 'win32':
+                    return 'win32'
+                default:
+                    return 'linux'
             }
-        }
-    }
+        },
+    },
+}
 </script>
 <style lang="scss" module="s">
-    .setting {
-        padding: 24px;
-        font-size: 13px;
-        color: $color-content;
-        .title {
-            font-size: 20px;
-            color: $color-title;
-            padding-bottom: 16px;
-            border-bottom: 1px solid $color-border4;
-        }
+.setting {
+    padding: 24px;
+    font-size: 13px;
+    color: $color-content;
+    .title {
+        font-size: 20px;
+        color: $color-title;
+        padding-bottom: 16px;
+        border-bottom: 1px solid $color-border4;
     }
+}
 </style>
