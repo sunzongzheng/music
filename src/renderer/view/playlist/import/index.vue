@@ -20,16 +20,6 @@
             >
                 {{ item.text }}
             </el-radio>
-            <el-alert
-                v-if="vendor === 'netease' && !setting.bind.netease.nickname"
-                type="warning"
-                :class="s.warning"
-            >
-                <template slot="title">
-                    受网易云接口限制，未绑定网易云账号时，仅可获取歌单部分歌曲，
-                    <router-link to="/setting">点击</router-link>前往绑定
-                </template>
-            </el-alert>
             <el-input
                 placeholder="请输入歌单ID"
                 v-model="id"
