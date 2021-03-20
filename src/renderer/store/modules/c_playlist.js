@@ -65,13 +65,13 @@ export default {
         setNextPlay(state, payload) {
             state.nextPlay = payload
         },
-        add(state, { song, index }) {
+        add(state, { song, index, alert = true }) {
             if (
                 state.playlist.find(
                     item => item.id === song.id && item.vendor === song.vendor
                 )
             ) {
-                Vue.$message.warning('播放列表中已存在！')
+                alert && Vue.$message.warning('播放列表中已存在！')
                 return
             }
             if (index === undefined) {
@@ -170,9 +170,13 @@ export default {
         addToNextPlay({ commit, getters }, song) {
             commit('setNextPlay', song)
             if (getters.playingIndex > -1) {
-                commit('add', { song, index: getters.playingIndex + 1 })
+                commit('add', {
+                    song,
+                    index: getters.playingIndex + 1,
+                    alert: false,
+                })
             } else {
-                commit('add', { song })
+                commit('add', { song, alert: false })
             }
         },
     },

@@ -28,6 +28,7 @@ export default {
                 label: '下一首播放',
                 click: () => {
                     addToNextPlay(contextItem)
+                    Vue.$message.success('操作成功')
                 },
             },
             {
