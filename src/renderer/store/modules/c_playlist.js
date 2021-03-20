@@ -8,10 +8,13 @@ export default {
         show: false,
         cycle: localStorage.cycle ? localStorage.cycle : 'list', // list: 列表循环; random: 随机; single: 单曲,
         shuffleList: [], // 打乱后的数组 用于随机
+        nextPlay: null, // 下一首播放的歌曲信息
     },
     mutations: {
         update(state, val) {
-            state.playlist = val.filter(item => !item.cp).map(item => Object.freeze(item))
+            state.playlist = val
+                .filter(item => !item.cp)
+                .map(item => Object.freeze(item))
             // 更换列表时如果当前是随机模式 则立即生成
             if (state.cycle === 'random') {
                 state.shuffleList = shuffle(state.playlist)
@@ -44,7 +47,10 @@ export default {
                 const info = state.playlist[index]
                 for (let i in state.shuffleList) {
                     const item = state.shuffleList[i]
-                    if (item.songId === info.songId && item.vendor === info.vendor) {
+                    if (
+                        item.songId === info.songId &&
+                        item.vendor === info.vendor
+                    ) {
                         state.shuffleList.splice(i, 1)
                         break
                     }
@@ -55,6 +61,27 @@ export default {
         clear(state) {
             state.playlist = state.shuffleList = []
             Vue.$store.commit('play/clear')
+        },
+        setNextPlay(state, payload) {
+            state.nextPlay = payload
+        },
+        add(state, { song, index }) {
+            if (
+                state.playlist.find(
+                    item => item.id === song.id && item.vendor === song.vendor
+                )
+            ) {
+                Vue.$message.warning('播放列表中已存在！')
+                return
+            }
+            if (index === undefined) {
+                state.playlist.push(song)
+            } else {
+                state.playlist.splice(index, 0, song)
+            }
+            if (state.cycle === 'random') {
+                state.shuffleList.push(song)
+            }
         },
     },
     actions: {
@@ -68,10 +95,16 @@ export default {
                             break
                         }
                     case 'list':
-                        index = (index + state.playlist.length - 1) % state.playlist.length
+                        index =
+                            (index + state.playlist.length - 1) %
+                            state.playlist.length
                         break
                     case 'random':
-                        index = (getters.playingShuffleIndex + state.shuffleList.length - 1) % state.shuffleList.length
+                        index =
+                            (getters.playingShuffleIndex +
+                                state.shuffleList.length -
+                                1) %
+                            state.shuffleList.length
                         Vue.$store.dispatch('play/play', {
                             info: state.shuffleList[index],
                         })
@@ -87,6 +120,7 @@ export default {
                 Vue.$store.dispatch('play/play', {
                     info: state.nextPlay,
                 })
+                commit('setNextPlay', null)
                 return
             }
             if (state.playlist.length) {
@@ -98,10 +132,14 @@ export default {
                             break
                         }
                     case 'list':
-                        index = (index + state.playlist.length + 1) % state.playlist.length
+                        index =
+                            (index + state.playlist.length + 1) %
+                            state.playlist.length
                         break
                     case 'random':
-                        index = (getters.playingShuffleIndex + 1) % state.shuffleList.length
+                        index =
+                            (getters.playingShuffleIndex + 1) %
+                            state.shuffleList.length
                         Vue.$store.dispatch('play/play', {
                             info: state.shuffleList[index],
                         })
@@ -115,7 +153,10 @@ export default {
         remove({ state, commit, dispatch }, index) {
             const playInfo = Vue.$store.state.play.info
             const removeInfo = state.playlist[index]
-            if (removeInfo.songId === playInfo.songId && removeInfo.vendor === playInfo.vendor) {
+            if (
+                removeInfo.songId === playInfo.songId &&
+                removeInfo.vendor === playInfo.vendor
+            ) {
                 if (state.playlist.length > 1) {
                     commit('remove', index)
                     dispatch('next')
@@ -126,13 +167,27 @@ export default {
                 commit('remove', index)
             }
         },
+        addToNextPlay({ commit, getters }, song) {
+            commit('setNextPlay', song)
+            if (getters.playingIndex > -1) {
+                commit('add', { song, index: getters.playingIndex + 1 })
+            } else {
+                commit('add', { song })
+            }
+        },
     },
     getters: {
         playingIndex(state) {
             const cur = Vue.$store.state.play.info
             for (let i = 0; i < state.playlist.length; i++) {
                 const item = state.playlist[i]
-                if (item.id && item.vendor && item.id === cur.id && item.vendor === cur.vendor || (cur.fullpath && cur.fullpath === item.fullpath)) {
+                if (
+                    (item.id &&
+                        item.vendor &&
+                        item.id === cur.id &&
+                        item.vendor === cur.vendor) ||
+                    (cur.fullpath && cur.fullpath === item.fullpath)
+                ) {
                     return i
                 }
             }
@@ -142,7 +197,13 @@ export default {
             const cur = Vue.$store.state.play.info
             for (let i = 0; i < state.shuffleList.length; i++) {
                 const item = state.shuffleList[i]
-                if (item.id && item.vendor && item.id === cur.id && item.vendor === cur.vendor || (cur.fullpath && cur.fullpath === item.fullpath)) {
+                if (
+                    (item.id &&
+                        item.vendor &&
+                        item.id === cur.id &&
+                        item.vendor === cur.vendor) ||
+                    (cur.fullpath && cur.fullpath === item.fullpath)
+                ) {
                     return i
                 }
             }

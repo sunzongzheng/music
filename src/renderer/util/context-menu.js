@@ -9,8 +9,11 @@ export default {
         const playlist = state.playlist.playlist
         const offline_playlist = state['offline-playlist'].offline_playlist
         const collect = $event => store.dispatch('playlist/collect', $event)
-        const collectOffline = $event => store.dispatch('offline-playlist/collect', $event)
+        const collectOffline = $event =>
+            store.dispatch('offline-playlist/collect', $event)
         const play = $event => store.dispatch('play/play', $event)
+        const addToNextPlay = $event =>
+            store.dispatch('c_playlist/addToNextPlay', $event)
         const menus = [
             {
                 label: '播放',
@@ -19,6 +22,12 @@ export default {
                         info: contextItem,
                         playlist: songList,
                     })
+                },
+            },
+            {
+                label: '下一首播放',
+                click: () => {
+                    addToNextPlay(contextItem)
                 },
             },
             {
@@ -102,6 +111,8 @@ export default {
                 },
             })
         }
-        remote.Menu.buildFromTemplate(menus.concat(append)).popup(remote.getCurrentWindow())
+        remote.Menu.buildFromTemplate(menus.concat(append)).popup(
+            remote.getCurrentWindow()
+        )
     },
 }
