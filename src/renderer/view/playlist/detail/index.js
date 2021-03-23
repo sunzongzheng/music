@@ -16,11 +16,15 @@ export default {
             return isNaN(Number(id)) ? id : Number(id)
         },
         info() {
-            return (this.offline ? this.offline_playlist : this.playlist).filter(item => item.id === this.id)[0] || {}
+            return (
+                (this.offline ? this.offline_playlist : this.playlist).filter(
+                    item => item.id === this.id
+                )[0] || {}
+            )
         },
         offline() {
             return this.$route.query.offline
-        }
+        },
     },
     methods: {
         ...mapActions('play', ['play', 'playAll']),
@@ -29,13 +33,16 @@ export default {
         },
         async getSong(id = this.id) {
             if (this.offline) {
-                this.list = (JSON.parse(localStorage.getItem(this.getOfflineStoreName(id))) || [])
+                this.list =
+                    JSON.parse(
+                        localStorage.getItem(this.getOfflineStoreName(id))
+                    ) || []
                 this.updateSongsInfo()
                 return
             }
             this.loading = true
             try {
-                this.list = await this.$http.get(`playlist/${id}`)
+                this.list = await this.$http.get(`/playlist/${id}`)
                 this.updateSongsInfo()
             } catch (e) {
                 console.warn(e)
@@ -45,18 +52,27 @@ export default {
         },
         async removeFromPlaylist(item) {
             if (this.offline) {
-                const list = JSON.parse(localStorage.getItem(this.getOfflineStoreName())) || []
+                const list =
+                    JSON.parse(
+                        localStorage.getItem(this.getOfflineStoreName())
+                    ) || []
                 for (let i in list) {
-                    if (list[i].songId === item.songId && list[i].vendor === item.vendor) {
+                    if (
+                        list[i].songId === item.songId &&
+                        list[i].vendor === item.vendor
+                    ) {
                         list.splice(i, 1)
                         break
                     }
                 }
-                localStorage.setItem(this.getOfflineStoreName(), JSON.stringify(list))
+                localStorage.setItem(
+                    this.getOfflineStoreName(),
+                    JSON.stringify(list)
+                )
                 this.getSong()
                 return
             }
-            await this.$http.delete(`playlist/${this.id}`, {
+            await this.$http.delete(`/playlist/${this.id}`, {
                 params: {
                     id: item.id,
                 },
@@ -74,9 +90,7 @@ export default {
             })
         },
         rowClassName({ row, rowIndex }) {
-            const rs = [
-                this.s.row,
-            ]
+            const rs = [this.s.row]
             if (row.cp) {
                 rs.push(this.s.disabled)
             }
@@ -84,12 +98,14 @@ export default {
         },
         // 更新歌曲信息
         async updateSongsInfo() {
-            const data = await this.$musicApi.getAnyVendorSongDetail(this.list.map(item => {
-                return {
-                    id: item.songId,
-                    vendor: item.vendor,
-                }
-            }))
+            const data = await this.$musicApi.getAnyVendorSongDetail(
+                this.list.map(item => {
+                    return {
+                        id: item.songId,
+                        vendor: item.vendor,
+                    }
+                })
+            )
             this.list = data.map((item, index) => {
                 if (!item) {
                     return this.list[index]
