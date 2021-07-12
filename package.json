@@ -73,6 +73,9 @@
             ]
         }
     },
+    "engines": {
+        "node": ">=12.0.0 <14"
+    },
     "dependencies": {
         "@suen/electron-updater": "git+https://github.com/sunzongzheng/electron-updater.git",
         "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
