@@ -81,6 +81,7 @@
         "@suen/music-api": "git+https://github.com/sunzongzheng/musicApi.git",
         "axios": "^0.21.1",
         "bufferutil": "^4.0.0",
+        "compare-versions": "^3.6.0",
         "dayjs": "^1.8.36",
         "electron-dl": "^3.0.2",
         "electron-localshortcut": "^3.1.0",
