@@ -19,6 +19,14 @@ export default {
     mutations: {
         addSong(state, song) {
             state.list.push(Object.freeze(song))
+            if (state.cycle === 'random') {
+                state.randomList = shuffle(
+                    Array.from(
+                        new Array(state.list.length),
+                        (item, index) => index
+                    )
+                )
+            }
         },
         setIndex(state, index) {
             state.index = index

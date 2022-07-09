@@ -8,6 +8,8 @@ import {
     Row,
     Pagination,
     Slider,
+    Tabs,
+    TabPane
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/reset.css'
@@ -21,5 +23,7 @@ export default function install(Vue) {
     Vue.use(Row)
     Vue.use(Pagination)
     Vue.use(Slider)
+    Vue.use(Tabs)
+    Vue.use(TabPane)
     Vue.$message = Vue.prototype.$message = Message
 }

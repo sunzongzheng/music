@@ -19,5 +19,8 @@ export default {
         async getPlaylistSong(ctx, id) {
             return Vue.$http.get(`/playlist/${id}`)
         },
+        async collect(ctx, { playlistId, song }) {
+            return Vue.$http.post(`/playlist/${playlistId}`, song)
+        },
     },
 }

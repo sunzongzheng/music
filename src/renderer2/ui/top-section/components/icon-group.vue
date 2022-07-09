@@ -1,9 +1,17 @@
 <template>
     <div :class="s.iconGroup">
         <Icon type="setting" :class="s.icon"></Icon>
-        <Icon type="mini" :class="s.icon"></Icon>
+        <Icon type="mini" :class="s.icon" @click="simplify"></Icon>
     </div>
 </template>
+<script>
+    import {mapActions} from 'vuex'
+    export default {
+        methods: {
+            ...mapActions('window', ['simplify'])
+        }
+    }
+</script>
 <style lang="scss" module="s">
 .iconGroup {
     position: relative;

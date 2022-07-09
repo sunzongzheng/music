@@ -39,7 +39,7 @@
 <script>
 import menuItem from './components/item.vue'
 import menuTitle from './components/title.vue'
-import viewControl from './components/viewControl.vue'
+import viewControl from './components/view-control.vue'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
@@ -66,7 +66,6 @@ export default {
     position: relative;
     width: $leftmenu-width;
     background: rgba(245, 245, 245, 0.98);
-    padding: 8px 0 16px;
     height: calc(100% - #{$player-height});
     .menus {
         overflow: auto;

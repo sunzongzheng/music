@@ -2,7 +2,7 @@
     <div :class="s.detailPage">
         <!-- 回到顶部浮层 ! -->
         <back-top-layer :fixed="fixed"></back-top-layer>
-        <div :class="s.top" v-loading="!cover" ref="top">
+        <div :class="s.top" v-loading="!name" ref="top">
             <cover :src="cover"></cover>
             <div :class="s.detail">
                 <p :class="s.name">{{ name }}</p>

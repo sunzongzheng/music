@@ -2,7 +2,7 @@
     <div :class="s.right">
         <div :class="s.volume">
             <Icon
-                :type="_volume ? 'music_volume_down' : 'music_mute'"
+                :type="_volume ? 'volume' : 'volume_mute'"
                 :class="s.icon"
                 clickable
                 @click="toggleVolume"

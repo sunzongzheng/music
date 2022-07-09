@@ -11,6 +11,8 @@ import directive from './plugins/directive'
 import musicApi from './plugins/music-api'
 import './assets/iconfont'
 
+// Vue.config.performance = true
+
 Vue.use(config)
 Vue.use(electron)
 Vue.use(http)

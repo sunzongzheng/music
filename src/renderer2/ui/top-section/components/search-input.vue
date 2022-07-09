@@ -2,21 +2,21 @@
     <div :class="s.searchInput">
         <input
             :class="s.input"
-            v-model="key"
+            v-model="keyword"
             @keyup.enter="search"
             @compositionstart="ime = true"
             @compositionend="ime = false"
             ref="input"
         />
         <div :class="{ [s.holder]: true, [s.empty]: empty }">
-            <Icon type="sousuo" :class="s.searchIcon"></Icon>
+            <Icon type="search" :class="s.searchIcon"></Icon>
             <span v-show="empty && !ime">搜索</span>
         </div>
         <Icon
             type="close-2"
             :class="s.clean"
             v-show="!empty"
-            @click.native="key = ''"
+            @click.native="keyword = ''"
         ></Icon>
     </div>
 </template>
@@ -24,17 +24,27 @@
 export default {
     data() {
         return {
-            key: '',
+            keyword: '',
             ime: false,
         }
     },
     computed: {
         empty() {
-            return this.key.length < 1
+            return this.keyword.length < 1
         },
     },
     methods: {
-        async search() {},
+        async search() {
+            if (this.empty) {
+                return
+            }
+            this.$router.push({
+                name: 'search-result',
+                query: {
+                    keyword: this.keyword
+                }
+            })
+        },
     },
 }
 </script>
@@ -78,6 +88,9 @@ export default {
         &.empty {
             left: 92px;
             margin: auto;
+        }
+        span {
+            line-height: 1;
         }
     }
     .clean {

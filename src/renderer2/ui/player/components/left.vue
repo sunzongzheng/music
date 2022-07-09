@@ -11,7 +11,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import defaultAlbum from '../../../assets/default-album.png'
+import defaultAlbum from '../../../assets/album.png'
 
 export default {
     props: {

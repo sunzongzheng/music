@@ -2,7 +2,8 @@
     <div :class="s.songName">
         <div :class="s.info">
             <div :class="s.name" :title="song.name">{{ song.name }}</div>
-            <quality :quality="song.quality" :class="s.quality"></quality>
+            <quality :maxbr="song.maxbr" :class="s.quality" v-if="!song.cp"></quality>
+            <Icon type="play-video" :class="s.mv" v-if="song.mv" @click="goMv(song.vendor, song.mv)"></Icon>
         </div>
         <div :class="s.control" v-show="showControl">
             <Icon
@@ -11,18 +12,13 @@
                 v-if="!song.cp"
                 clickable
             ></Icon>
-            <Icon
-                type="download"
-                clickable
-                :disabled="song.cp || !song.dl"
-                @click="download(song)"
-            ></Icon>
-            <Icon type="more" clickable @click="showContextMenu(song)"></Icon>
+            <Icon type="more" clickable @click="$emit('showContextMenu')"></Icon>
         </div>
     </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
+import {remote} from 'electron'
 
 export default {
     props: {
@@ -40,8 +36,13 @@ export default {
     },
     methods: {
         ...mapActions('audio', ['playSong']),
-        download() {},
-        showContextMenu() {},
+        goMv(vendor, id) {
+            remote.shell.openExternal({
+                qq: `https://y.qq.com/n/yqq/mv/v/${id}.html`,
+                xiami: `https://www.xiami.com/mv/${id}`,
+                netease: `https://music.163.com/#/mv?id=${id}`
+            }[vendor])
+        }
     },
 }
 </script>
@@ -65,6 +66,12 @@ export default {
         }
         .quality {
             margin-left: 6px;
+        }
+        .mv {
+            margin-left: 6px;
+            color: #31C27C;
+            font-size: 18px;
+            cursor: pointer;
         }
     }
 

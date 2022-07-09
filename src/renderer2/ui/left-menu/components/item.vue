@@ -19,8 +19,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 32px;
-    padding: 0 12px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;

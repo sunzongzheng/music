@@ -46,9 +46,9 @@ export default {
         cursor: not-allowed !important;
     }
     &.clickable {
+        cursor: pointer;
         &:hover {
-            color: $color-primary;
-            cursor: pointer;
+            color: $color-primary !important;
         }
     }
 }

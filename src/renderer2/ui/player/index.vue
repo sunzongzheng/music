@@ -26,7 +26,7 @@ export default {
     left: 0;
     width: 100%;
     height: $player-height;
-    z-index: 99;
+    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;

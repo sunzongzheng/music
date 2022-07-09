@@ -1,0 +1,109 @@
+.dataTable {
+    color: $color-content;
+    font-size: 13px;
+    padding: 0 20px;
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid $color-border4;
+        padding: 24px 10px 12px;
+        .total {
+            font-size: 14px;
+            color: $color-content;
+            span {
+                color: $color-primary;
+            }
+        }
+        .input {
+            width: 200px;
+        }
+    }
+    .row {
+        transition: all .2s;
+        :global {
+            .el-col {
+                display: block;
+                height: 48px;;
+                line-height: 48px;
+                padding: 0 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        &:not(.thead):hover {
+            transition: all .2s;
+            background: #f5f7fa;
+        }
+        &.thead {
+            font-weight: bold;
+        }
+        .nameItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            .nameMain {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                flex: 1;
+                .songName {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    cursor: pointer;
+                    user-select: none;
+                }
+                .quality {
+                    margin-left: 6px;
+                }
+            }
+
+            .songControl {
+                display: none;
+                align-items: center;
+                color: $color-content;
+                flex-shrink: 0;
+
+                svg {
+                    margin-left: 9px;
+                    font-size: 14px;
+                }
+            }
+        }
+        &:hover {
+            .songControl {
+                display: flex;
+            }
+        }
+        .link {
+            color: $color-content;
+            text-decoration: none;
+            &:hover {
+                color: $color-primary;
+            }
+        }
+        &.disabled {
+            color: rgba(68, 68, 68, .6);
+            .link {
+                color: rgba(68, 68, 68, .6);
+            }
+        }
+    }
+    .nodata {
+        display: flex;
+        width: 100%;
+        min-height: 200px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .icon {
+            font-size: 100px;
+        }
+        p {
+            margin: 0;
+        }
+    }
+}

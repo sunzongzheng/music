@@ -5,7 +5,7 @@ import initUpdater from './updater'
 import initWindow from './window'
 import initIpcEvent from './ipcEvent'
 import initMenu from './menu'
-import axios from 'axios'
+import flyio from 'flyio'
 import nodeAdapter from 'flyio/src/adapter/node'
 
 if (process.env.NODE_ENV !== 'development') {
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'development') {
         .join(__dirname, '/static')
         .replace(/\\/g, '\\\\')
 }
-global.clientApi = axios
+global.clientApi = flyio
 global.Tray = Tray
 global.nodeAdapter = nodeAdapter
 

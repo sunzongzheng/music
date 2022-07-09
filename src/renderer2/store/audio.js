@@ -63,12 +63,15 @@ export default {
         },
     },
     actions: {
-        togglePause() {
-            if (!audio.src) return
-            if (audio.paused) {
-                audio.play()
-            } else {
-                audio.pause()
+        togglePause({ dispatch }) {
+            if (audio.src) {
+                if (audio.paused) {
+                    audio.play()
+                } else {
+                    audio.pause()
+                }
+            } else if (Vue.$store.getters['playing/song']) {
+                dispatch('play', Vue.$store.state.playing.index)
             }
         },
         async play({ state }, index) {
@@ -80,16 +83,13 @@ export default {
                 audio.src = `file://${song.filepath}`
                 audio.play()
             } else {
-                const songUrl = await Vue.$musicApi.getSongUrl(
-                    song.vendor,
-                    song.songId
-                ) // 获取url
-                if (songUrl.status) {
-                    audio.src = songUrl.data.url
-                    audio.play()
-                } else {
-                    Vue.$message.warning(songUrl.msg)
-                }
+                console.log(song.songId, song.vendor, song.maxbr)
+                // 获取url
+                audio.src = await Vue.$musicApi[song.vendor].getSongUrl(
+                    song.songId,
+                    // song.maxbr
+                )
+                audio.play()
             }
         },
         // 播放单曲

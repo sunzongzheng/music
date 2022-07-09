@@ -16,7 +16,7 @@ export default function install(Vue) {
         return dayjs(value).format('YYYY-MM-DD')
     })
     Vue.filter('image', (url, width = 140) => {
-        if (!url) return require('../assets/default-album.png')
+        if (!url) return require('../assets/album.png')
         let qqWidth
         if (width <= 150) {
             qqWidth = 150

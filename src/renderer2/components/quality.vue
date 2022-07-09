@@ -6,19 +6,16 @@
 <script>
 export default {
     props: {
-        quality: {
-            type: Object,
-            default() {
-                return {}
-            },
+        maxbr: {
+            type: Number
         },
     },
     computed: {
         show() {
-            return this.quality && (this.quality['320'] || this.quality['999'])
+            return this.maxbr > 128
         },
         sq() {
-            return this.quality && this.quality['999']
+            return this.maxbr === 999
         },
     },
 }

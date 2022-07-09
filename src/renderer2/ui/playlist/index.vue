@@ -74,6 +74,9 @@ export default {
                 this.$refs.songs.scrollTop = this.activeIndex * 55
             }
         },
+        list(val) {
+            console.log(val)
+        }
     },
     methods: {
         ...mapMutations('playing', ['setShowPlaylist']),
@@ -106,6 +109,7 @@ export default {
     -webkit-app-region: no-drag;
     transition: all 0.4s;
     will-change: transform;
+    backface-visibility: hidden;
     &.lyricShow {
         box-shadow: none;
     }
@@ -140,7 +144,6 @@ export default {
             display: flex;
             width: 100%;
             padding: 10px 16px;
-            transition: background-color 0.2s;
             cursor: pointer;
             position: relative;
             .album_wrap {
@@ -177,11 +180,7 @@ export default {
                 }
             }
             &:hover {
-                background-color: color-primary(0.7);
-                transition: background-color 0.2s;
-                * {
-                    color: white;
-                }
+                background: linear-gradient(to right, white 32px, color-primary(0.5));
             }
             &.active {
                 &::before {

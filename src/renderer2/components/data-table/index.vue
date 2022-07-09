@@ -2,7 +2,7 @@
     <div :class="s.dataTable" v-loading="loading">
         <div v-if="loading" style="min-height: 400px;"></div>
         <template v-else-if="data.length">
-            <div :class="s.top">
+            <div :class="s.top" v-if="showTopBar">
                 <p :class="s.total">
                     共&nbsp;<span>{{ data.length }}</span
                     >&nbsp;首歌曲
@@ -10,7 +10,7 @@
                 <el-input
                     placeholder="搜索歌曲名/歌手/专辑"
                     prefix-icon="el-icon-search"
-                    v-model="key"
+                    v-model="keyword"
                     :class="s.input"
                     size="mini"
                 ></el-input>
@@ -37,6 +37,7 @@
                     <song-name
                         :song="item"
                         :ref="`songName_${index}`"
+                        @showContextMenu="showContextMenu(item)"
                     ></song-name>
                 </el-col>
                 <el-col :span="spanList[1]">
@@ -92,17 +93,24 @@ export default {
             type: String,
             default: '来源',
         },
+        // 列宽数组
         spanWidth: Array,
-        keyword: {
-            type: String,
-            default: '',
+        // 是否显示顶部 歌曲数量 和 搜索框
+        showTopBar: {
+            type: Boolean,
+            default: true
         },
+        // 是否显示右键菜单
+        contextMenu: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
             page: 1,
             limit: 20,
-            key: this.keyword,
+            keyword: '',
         }
     },
     computed: {
@@ -120,20 +128,15 @@ export default {
             return this.data.slice(start, start + this.limit)
         },
         filterList() {
-            return this.list.filter(song => {
+            return this.keyword ? this.list.filter(song => {
                 return (
-                    song.name.includes(this.key) ||
+                    song.name.includes(this.keyword) ||
                     song.artists
                         .reduce((a, b) => a + b.name, '')
-                        .includes(this.key) ||
-                    song.album.name.includes(this.key)
+                        .includes(this.keyword) ||
+                    song.album.name.includes(this.keyword)
                 )
-            })
-        },
-    },
-    watch: {
-        keyword(val) {
-            this.key = val
+            }) : this.list
         },
     },
     methods: {

@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
@@ -130,7 +130,7 @@ export default {
         },
     },
     mounted() {
-        this.audio.addEventListener('timeupdate', async event => {
+        this.audio.addEventListener('timeupdate', event => {
             this.currentTime = this.audio.currentTime
         })
         this.audio.addEventListener('loadstart', this.reset)
@@ -146,7 +146,7 @@ export default {
     cursor: pointer;
     transition: all 0.2s linear;
     user-select: none;
-    z-index: 1;
+    z-index: 2001;
     .time {
         position: absolute;
         left: 0;
@@ -157,7 +157,7 @@ export default {
         background: black;
         color: white;
         cursor: pointer;
-        z-index: 2;
+        z-index: 2002;
     }
 }
 </style>

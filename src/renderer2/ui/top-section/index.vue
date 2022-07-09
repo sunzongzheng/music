@@ -33,9 +33,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 24px;
+    -webkit-app-region: drag;
     .section {
         display: flex;
         align-items: center;
+        -webkit-app-region: no-drag;
     }
 }
 </style>
